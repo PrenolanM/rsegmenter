@@ -3,7 +3,7 @@
 #' @param df should be a dataframe of numeric variables
 
 check_flatline <- function(df){
-
+  ### just making a change to see how it affectes github
   return_df <- as.data.frame(apply(df,1,
                                    function(x){
                                      max(table(x))
