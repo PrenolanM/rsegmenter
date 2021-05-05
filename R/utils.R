@@ -13,5 +13,5 @@ check_all_na <- function(df){
 
 # check that we don't have variables that are not numeric
 check_all_numeric <- function(df){
-  return(all(apply(df,2,is.numeric)))
+  return(!all(apply(df,2,is.numeric)))
 }
