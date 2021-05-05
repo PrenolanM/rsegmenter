@@ -2,13 +2,19 @@
 % Please edit documentation in R/check_flatline.R
 \name{check_flatline}
 \alias{check_flatline}
-\title{gets the number of responses that are the same per person}
+\title{check_flatine returns the maximum number of times the most common value occurs per row
+missing values can be replaced with one of the mean,mode,min,max per variable}
 \usage{
-check_flatline(df)
+check_flatline(df, vars, impute_type = "mean")
 }
 \arguments{
-\item{df}{should be a dataframe of numeric variables}
+\item{df}{must be a data.frame of numeric variables}
+
+\item{vars}{must be a string of variable names to operate on}
+
+\item{impute_type}{must be a string of one of "mean","min","max"}
 }
 \description{
-gets the number of responses that are the same per person
+check_flatine returns the maximum number of times the most common value occurs per row
+missing values can be replaced with one of the mean,mode,min,max per variable
 }
