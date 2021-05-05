@@ -1,5 +1,5 @@
-#' check_flatine returns the maximum number of times the most common value occurs per row
-#' missing values can be replaced with one of the mean,mode,min,max per variable
+#' check_flatine returns the maximum number of times the most common value occurs per row.
+#' missing values can be replaced with one of the mean,mode,min,max per variable.
 
 #' @export
 #' @param df must be a data.frame of numeric variables
@@ -43,7 +43,7 @@ check_flatline <- function(df,vars,impute_type="mean"){
                          )
   
   for (i in seq_along(vars)){
-    print(df[is.na(df[,i]),i]) <- impute_values[i]
+    df[is.na(df[,i]),i] <- impute_values[i]
   }
   
   if (sum(is.na(df))){
