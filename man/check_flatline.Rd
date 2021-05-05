@@ -2,21 +2,30 @@
 % Please edit documentation in R/check_flatline.R
 \name{check_flatline}
 \alias{check_flatline}
-\title{check_flatine returns the max percentage of responses that are the same per row.
-the closer this value is to 1, the more serious the flatline problem is for that row.
-missing values can be replaced with one of the mean,mode,min,max per variable.}
+\title{check_flatine returns the max percentage of responses that are the same per row.}
 \usage{
 check_flatline(df, vars, impute_type = "mean")
 }
 \arguments{
-\item{df}{must be a data.frame of numeric variables}
+\item{df}{must be a data.frame}
 
-\item{vars}{must be a string of variable names to operate on}
+\item{vars}{must be a string of variable names to operate on.
+These variables must be numeric}
 
 \item{impute_type}{must be a string of one of "mean","min","max"}
 }
 \description{
-check_flatine returns the max percentage of responses that are the same per row.
-the closer this value is to 1, the more serious the flatline problem is for that row.
-missing values can be replaced with one of the mean,mode,min,max per variable.
+The closer this return value is to 1, the more serious the flatline problem is for that row.
+}
+\details{
+per variable, missing values can be replaced with one of the following:
+\enumerate{
+\item mean
+\item min
+\item max
+}
+}
+\examples{
+mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
+check_flatline(df = mydf, vars = c("col1","col2","col3"), impute_type = "mean")
 }
