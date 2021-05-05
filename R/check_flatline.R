@@ -1,4 +1,4 @@
-#' check_flatine returns the max percentage of responses that are the same per row.
+#' check_flatline returns the max percentage of responses that are the same per row.
 #' 
 #' The closer this return value is to 1, the more serious the flatline problem is for that row.
 #' 
