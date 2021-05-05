@@ -15,3 +15,26 @@ check_all_na <- function(df){
 check_all_numeric <- function(df){
   return(!all(apply(df,2,is.numeric)))
 }
+
+# basic imputation using one of the min, max or mean
+impute_values <- function(df,impute_type){
+  apply(df,2,
+        function(x){
+          if (impute_type=="mode"){
+            mode_fn(x)
+          } else if (impute_type=="mean"){
+            mean(x,na.rm = TRUE)
+          } else if (impute_type=="max"){
+            max(x,na.rm = TRUE)
+          } else if (impute_type=="mind"){
+            min(x,na.rm = TRUE)
+          }
+        })  
+}
+  
+mode_fn <- function(df) {
+  apply(df,2,function(x){
+    uniqv <- unique(x)
+    uniqv[which.max(tabulate(match(x, uniqv)))]  
+  })
+}

@@ -4,11 +4,20 @@
 \alias{reverse_scale}
 \title{reverses the coding of the numeric variables provided.}
 \usage{
-reverse_scale(df)
+reverse_scale(df, vars, impute_type = "mode")
 }
 \arguments{
-\item{df}{should be a dataframe of numeric variables}
+\item{df}{must be a data.frame}
+
+\item{vars}{must be a string of variable names to operate on.
+These variables must be numeric}
+
+\item{impute_type}{must be a string of one of "mode","mean","min","max"}
 }
 \description{
 reverses the coding of the numeric variables provided.
+}
+\examples{
+mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
+reverse_scale(df = mydf, vars = c("col1","col2","col3"), impute_type = "mode")
 }

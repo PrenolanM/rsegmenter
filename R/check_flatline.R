@@ -1,4 +1,4 @@
-#' check_flatine returns the max percentage of responses that are the same per row.
+#' check_flatline returns the max percentage of responses that are the same per row.
 #' 
 #' The closer this return value is to 1, the more serious the flatline problem is for that row.
 #' 
@@ -13,13 +13,13 @@
 #' @param vars must be a string of variable names to operate on.
 #' These variables must be numeric
 #' 
-#' @param impute_type must be a string of one of "mean","min","max"
+#' @param impute_type must be a string of one of "mode","mean","min","max"
 #' 
 #' @examples
 #' mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
-#' check_flatline(df = mydf, vars = c("col1","col2","col3"), impute_type = "mean")
+#' check_flatline(df = mydf, vars = c("col1","col2","col3"), impute_type = "mode")
 
-check_flatline <- function(df,vars,impute_type="mean"){
+check_flatline <- function(df,vars,impute_type="mode"){
   
   # ensuring df is provided
   if (missing(df)){
@@ -54,21 +54,8 @@ check_flatline <- function(df,vars,impute_type="mean"){
     stop("at least one of the input variables is not numeric")
   }
   
-  # basic imputation using one of the min, max or mean
-  impute_values <- apply(df,2,
-                         function(x){
-                           if (impute_type=="min"){
-                             min(x,na.rm = TRUE)  
-                             } else if (impute_type=="max"){
-                             max(x,na.rm = TRUE)
-                             } else if (impute_type=="mean"){
-                             mean(x,na.rm = TRUE)
-                             }
-                           }
-                         )
-  
   for (i in seq_along(vars)){
-    df[is.na(df[,i]),i] <- impute_values[i]
+    df[is.na(df[,i]),i] <- impute_values(df,impute_type)[i]
   }
   
   if (sum(is.na(df))){
