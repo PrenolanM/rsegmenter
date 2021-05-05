@@ -1,10 +1,12 @@
 
 #' reverses the coding of the numeric variables provided.
+
 #' @export
+
 #' @param df should be a dataframe of numeric variables
 
 
-reverse_scale <- function(df){
+reverse_scale <- function(df,vars){
   # ensure correct data type is used before being reverse scaled
   df <- as.data.frame(lapply(df,
                              function(x){

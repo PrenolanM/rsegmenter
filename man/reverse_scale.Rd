@@ -4,7 +4,7 @@
 \alias{reverse_scale}
 \title{reverses the coding of the numeric variables provided.}
 \usage{
-reverse_scale(df)
+reverse_scale(df, vars)
 }
 \arguments{
 \item{df}{should be a dataframe of numeric variables}
