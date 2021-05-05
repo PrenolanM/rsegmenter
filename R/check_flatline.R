@@ -55,7 +55,7 @@ check_flatline <- function(df,vars,impute_type="mean"){
   }
   
   for (i in seq_along(vars)){
-    df[is.na(df[,i]),i] <- impute_values(df)[i]
+    df[is.na(df[,i]),i] <- impute_values(df,impute_type)[i]
   }
   
   if (sum(is.na(df))){
