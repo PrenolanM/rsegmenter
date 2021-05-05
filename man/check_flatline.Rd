@@ -2,7 +2,8 @@
 % Please edit documentation in R/check_flatline.R
 \name{check_flatline}
 \alias{check_flatline}
-\title{check_flatine returns the maximum number of times the most common value occurs per row.
+\title{check_flatine returns the max percentage of responses that are the same per row.
+the closer this value is to 1, the more serious the flatline problem is for that row.
 missing values can be replaced with one of the mean,mode,min,max per variable.}
 \usage{
 check_flatline(df, vars, impute_type = "mean")
@@ -15,6 +16,7 @@ check_flatline(df, vars, impute_type = "mean")
 \item{impute_type}{must be a string of one of "mean","min","max"}
 }
 \description{
-check_flatine returns the maximum number of times the most common value occurs per row.
+check_flatine returns the max percentage of responses that are the same per row.
+the closer this value is to 1, the more serious the flatline problem is for that row.
 missing values can be replaced with one of the mean,mode,min,max per variable.
 }

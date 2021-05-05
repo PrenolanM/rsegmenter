@@ -1,4 +1,5 @@
-#' check_flatine returns the maximum number of times the most common value occurs per row.
+#' check_flatine returns the max percentage of responses that are the same per row.
+#' the closer this value is to 1, the more serious the flatline problem is for that row.
 #' missing values can be replaced with one of the mean,mode,min,max per variable.
 
 #' @export
@@ -29,8 +30,10 @@ check_flatline <- function(df,vars,impute_type="mean"){
     stop("df must be a data.frame of at least 1 row")
   }
   
+  df <- df[vars]
+  
   # basic imputation using one of the min, max or mean
-  impute_values <- apply(df[vars],2,
+  impute_values <- apply(df,2,
                          function(x){
                            if (impute_type=="min"){
                              min(x,na.rm = TRUE)  
@@ -52,14 +55,14 @@ check_flatline <- function(df,vars,impute_type="mean"){
     
   }
   
-  return_df <- as.data.frame(apply(df[vars],1,
+  return_df <- as.data.frame(apply(df,1,
                                    function(x){
-                                     max(table(x))
+                                     max(table(x))/length(vars)
                                      }
                                    )
                              )
   
-  colnames(return_df) <- "Number_Flatline"
+  colnames(return_df) <- "Prop_Flatline"
     
   return(return_df)
   
