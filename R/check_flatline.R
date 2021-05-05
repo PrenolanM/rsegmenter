@@ -13,11 +13,11 @@
 #' @param vars must be a string of variable names to operate on.
 #' These variables must be numeric
 #' 
-#' @param impute_type must be a string of one of "mean","min","max"
+#' @param impute_type must be a string of one of "mode","mean","min","max"
 #' 
 #' @examples
 #' mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
-#' check_flatline(df = mydf, vars = c("col1","col2","col3"), impute_type = "mean")
+#' check_flatline(df = mydf, vars = c("col1","col2","col3"), impute_type = "mode")
 
 check_flatline <- function(df,vars,impute_type="mode"){
   
