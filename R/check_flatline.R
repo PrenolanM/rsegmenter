@@ -47,7 +47,9 @@ check_flatline <- function(df,vars,impute_type="mean"){
   }
   
   if (sum(is.na(df))){
+    
     warning("there are still missing values in your data")
+    
   }
   
   return_df <- as.data.frame(apply(df[vars],1,
