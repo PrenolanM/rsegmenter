@@ -20,13 +20,21 @@ check_all_numeric <- function(df){
 impute_values <- function(df,impute_type){
   apply(df,2,
         function(x){
-          if (impute_type=="min"){
-            min(x,na.rm = TRUE)
-          } else if (impute_type=="max"){
-            max(x,na.rm = TRUE)
+          if (impute_type=="mode"){
+            mode_fn(x)
           } else if (impute_type=="mean"){
             mean(x,na.rm = TRUE)
+          } else if (impute_type=="max"){
+            max(x,na.rm = TRUE)
+          } else if (impute_type=="mind"){
+            min(x,na.rm = TRUE)
           }
         })  
 }
   
+mode_fn <- function(df) {
+  apply(df,2,function(x){
+    uniqv <- unique(x)
+    uniqv[which.max(tabulate(match(x, uniqv)))]  
+  })
+}
