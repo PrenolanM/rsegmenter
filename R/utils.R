@@ -32,7 +32,7 @@ impute_values <- function(df,impute_type){
         })  
 }
   
-mode_fn <- function(df) {
+mode_fn <- function(x) {
   
   uniqv <- unique(x)
   uniqv[which.max(tabulate(match(x, uniqv)))]
