@@ -26,15 +26,13 @@ impute_values <- function(df,impute_type){
             mean(x,na.rm = TRUE)
           } else if (impute_type=="max"){
             max(x,na.rm = TRUE)
-          } else if (impute_type=="mind"){
+          } else if (impute_type=="min"){
             min(x,na.rm = TRUE)
           }
         })  
 }
   
 mode_fn <- function(df) {
-  apply(df,2,function(x){
-    uniqv <- unique(x)
-    uniqv[which.max(tabulate(match(x, uniqv)))]  
-  })
+  uniqv <- unique(x)
+  uniqv[which.max(tabulate(match(x, uniqv)))]
 }
