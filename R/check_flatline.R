@@ -44,6 +44,16 @@ check_flatline <- function(df,vars,impute_type="mean"){
   
   df <- df[vars]
   
+  # check that we don't have variables with all NA's
+  if (check_all_na(df)){
+    stop("at least one of the input variables contain all NA's")
+  }
+  
+  # check that all variables are numeric
+  if (check_all_numeric(df)){
+    stop("at least one of the input variables is not numeric")
+  }
+  
   # basic imputation using one of the min, max or mean
   impute_values <- apply(df,2,
                          function(x){
