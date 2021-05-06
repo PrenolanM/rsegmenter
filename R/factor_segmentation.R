@@ -3,7 +3,7 @@
 #' @param df should be a dataframe of numeric variables
 #' @param num_sols should be a numeric vector specifying the minimum and maximum number of factors to extract
 
-factor_segmentation <- function(df,vars,num_sols,weight_var=NULL){
+factor_segmentation <- function(df,vars,impute_type,num_sols,weight_var=NULL){
   
   # ensuring df is provided
   if (missing(df)){
@@ -45,8 +45,10 @@ factor_segmentation <- function(df,vars,num_sols,weight_var=NULL){
   
   df <- df[vars]
   
-  for (i in seq_along(vars)){
-    df[is.na(df[,i]),i] <- impute_values(df,impute_type)[i]
+  if (impute_type!="none"){
+    for (i in seq_along(vars)){
+      df[is.na(df[,i]),i] <- impute_values(df,impute_type)[i]
+    }  
   }
   
   if (sum(is.na(df))){
