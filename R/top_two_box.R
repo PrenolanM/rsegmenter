@@ -74,12 +74,12 @@ top_two_box <- function(df,vars,impute_type="mode"){
                                     )
                              )
 
-  return_df <- as.data.frame(lapply(return_df,
-                                    function(x){
-                                      as.factor(x)
-                                      }
-                                    )
-                             )
+  # return_df <- as.data.frame(lapply(return_df,
+  #                                   function(x){
+  #                                     as.factor(x)
+  #                                     }
+  #                                   )
+  #                            )
 
   colnames(return_df) <- paste0(colnames(df),"_top_2_box")
 
