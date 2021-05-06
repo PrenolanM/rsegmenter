@@ -5,7 +5,7 @@
 \title{creates a 0,1 coded variable. The highest value becomes a 1 and the rest becomes a 0.
 The returned variables are all factors}
 \usage{
-top_box(df, vars, impute_type = "mode")
+top_box(df, vars, impute_type = "none")
 }
 \arguments{
 \item{df}{must be a data.frame}
