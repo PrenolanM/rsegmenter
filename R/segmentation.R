@@ -1,7 +1,7 @@
 
 #' runs factor analsysis and lca
 
-#' @param df should be a dataframe of numeric variables
+#' @param df should be a data.frame of numeric variables
 #' 
 #' @param vars must be a string of variable names to operate on.
 #' These variables must be numeric
@@ -16,7 +16,7 @@
  
 #' @export
 
-segmentation <- function(df, vars, impute_type="none", min_segs = 3, max_segs = 5, weight_var){
+segmentation <- function(df, vars, impute_type="none", min_segs = 3, max_segs = 5, weight_var = NULL){
 
   #dist_start <- base::Sys.time()
   #print(paste0("calculating distance matrix: ",dist_start))
