@@ -4,10 +4,10 @@
 \alias{extract_factor_segments}
 \title{extract segments from factor analysis segment solutions and stores in a dataframe}
 \usage{
-extract_factor_segments(df)
+extract_factor_segments(seglist)
 }
 \arguments{
-\item{df}{should be an output from the kantarsegmentr::segmentation() function}
+\item{seglist}{should be an output from the kantarsegmentr::segmentation() function}
 }
 \description{
 extract segments from factor analysis segment solutions and stores in a dataframe
