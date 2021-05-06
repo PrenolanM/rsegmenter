@@ -1,19 +1,72 @@
 #' runs factor analysis with varimax rotation using the psych package
-#' @export
-#' @param df should be a dataframe of numeric variables
+#' @param df should be a data.frame of numeric variables
+#' 
+#' @param vars must be a string of variable names to operate on.
+#' These variables must be numeric
+#' 
+#' @param impute_type must be a string of one of "none","mode","mean","min","max"
 #' @param num_sols should be a numeric vector specifying the minimum and maximum number of factors to extract
 
-factor_segmentation <- function(df,num_sols,weight_var=NULL){
+#' @examples
+#' mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
+#' factor_segmentation(df = mydf, vars = c("col1","col2","col3"), impute_type = "none",num_sols=c(3,5))
 
+#' @export
+
+
+factor_segmentation <- function(df,vars,impute_type,num_sols,weight_var){
+  
+  # ensuring df is provided
+  if (missing(df)){
+    stop("df is compulsory")
+  }
+  
+  # ensuring vars is provided
+  if (missing(vars)){
+    stop("vars is compulsory")
+  }
+  
+  # ensuring num_sols is provided
+  if (missing(num_sols)){
+    stop("num_sols is compulsory")
+  }
+  
   factor_segs <- vector("list",length = max(num_sols)-min(num_sols) + 1)
-
-  # ensure correct data type is used in factoring
-  df <- as.data.frame(lapply(df,
-                             function(x){
-                               as.numeric(as.character(x))
-                               }
-                             )
-                      )
+  
+  # df must be a data.frame or tibble
+  if (!(c("data.frame") %in% class(df))){
+    stop("df must be a data.frame or tibble")
+  }
+  
+  # df must have at least 1 row
+  # this implies df will have at least 1 col as well
+  if (is.null(nrow(df))){
+    stop("df must be a data.frame of at least 1 row")
+  }
+  
+  # check that we don't have variables with all NA's
+  if (check_all_na(df)){
+    stop("at least one of the input variables contain all NA's")
+  }
+  
+  # check that all variables are numeric
+  if (check_all_numeric(df)){
+    stop("at least one of the input variables is not numeric")
+  }
+  
+  df <- df[vars]
+  
+  if (impute_type!="none"){
+    for (i in seq_along(vars)){
+      df[is.na(df[,i]),i] <- impute_values(df,impute_type)[i]
+    }  
+  }
+  
+  if (sum(is.na(df))){
+    
+    warning("there are missing values in your data")
+    
+  }
 
   if (missing(weight_var)){
 

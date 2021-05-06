@@ -2,17 +2,33 @@
 % Please edit documentation in R/segmentation.R
 \name{segmentation}
 \alias{segmentation}
-\title{runs kmeans, factor analsysis, kmediods}
+\title{runs factor analsysis and lca}
 \usage{
-segmentation(df, min_segs = 3, max_segs = 5, weight_var)
+segmentation(
+  df,
+  vars,
+  impute_type = "none",
+  min_segs = 3,
+  max_segs = 5,
+  weight_var = NULL
+)
 }
 \arguments{
-\item{df}{should be a dataframe of numeric variables}
+\item{df}{should be a data.frame of numeric variables}
+
+\item{vars}{must be a string of variable names to operate on.
+These variables must be numeric}
+
+\item{impute_type}{must be a string of one of "none","mode","mean","min","max"}
 
 \item{min_segs}{should be an integer specifying the minimum number of segments to extract, defaults to 3}
 
 \item{max_segs}{should be an integer specifying the maximum number of segments to extract, defaults to 5}
 }
 \description{
-runs kmeans, factor analsysis, kmediods
+runs factor analsysis and lca
+}
+\examples{
+mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
+segmentation(df = mydf, vars = c("col1","col2","col3"), impute_type = "none",min_segs = 3, max_segs = 5)
 }

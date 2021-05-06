@@ -2,24 +2,19 @@
 #' 
 #' The closer this return value is to 1, the more serious the flatline problem is for that row.
 #' 
-#' per variable, missing values can be replaced with one of the following:
-#' 1. mean
-#' 2. min
-#' 3. max
-
 #' @export
 #' @param df must be a data.frame
 #' 
 #' @param vars must be a string of variable names to operate on.
 #' These variables must be numeric
 #' 
-#' @param impute_type must be a string of one of "mode","mean","min","max"
+#' @param impute_type must be a string of one of "none","mode","mean","min","max"
 #' 
 #' @examples
 #' mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
-#' check_flatline(df = mydf, vars = c("col1","col2","col3"), impute_type = "mode")
+#' check_flatline(df = mydf, vars = c("col1","col2","col3"), impute_type = "none")
 
-check_flatline <- function(df,vars,impute_type="mode"){
+check_flatline <- function(df,vars,impute_type="none"){
   
   # ensuring df is provided
   if (missing(df)){
@@ -54,13 +49,15 @@ check_flatline <- function(df,vars,impute_type="mode"){
     stop("at least one of the input variables is not numeric")
   }
   
-  for (i in seq_along(vars)){
-    df[is.na(df[,i]),i] <- impute_values(df,impute_type)[i]
+  if (impute_type!="none"){
+    for (i in seq_along(vars)){
+      df[is.na(df[,i]),i] <- impute_values(df,impute_type)[i]
+    }  
   }
   
   if (sum(is.na(df))){
     
-    warning("there are still missing values in your data")
+    warning("there are missing values in your data")
     
   }
   
