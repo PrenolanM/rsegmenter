@@ -85,17 +85,17 @@ lca_segmentation <- function(df,vars,impute_type="none",num_sols){
                        
                        f <- as.formula(paste(paste("cbind(",paste(vars,collapse = ","),")"),1,sep = "~"))
                        
-                       lca_soln <-   poLCA(f,                 #A formula expression of the form response ~ predictors
-                                           df,                #Data frame
-                                           nclass=x,          #Number of latent classes to assume in the model
-                                           maxiter=1000,      #The maximum number of iterations through which the estimation algorithm will cycle
-                                           graphs=FALSE,      #Should poLCA graphically display the parameter estimates at the completion of the estimation algorithm
-                                           tol=1e-10,         #A tolerance value for judging when convergence has been reached. When the one-iteration change in the estimated log-likelihood is less than tol, the estimation algorithm stops updating and considers the maximum log-likelihood to have been found
-                                           na.rm=TRUE,        #How to handle missing values, If TRUE, those cases are removed (listwise deleted) before estimating the model. If FALSE, cases with missing values are retained. Cases with missing covariates are always removed
-                                           probs.start=NULL,  #A list of matrices of class-conditional response probabilities to be used as the starting values for the estimation algorithm. NULL = producing random starting values
-                                           nrep=1,            #Number of times to estimate the model, using different values of probs.start. The default is one. Setting nrep>1 automates the search for the global---rather than just a local---maximum of the log-likelihood function. poLCA returns the parameter estimates corresponding to the model with the greatest log-likelihood
-                                           verbose=FALSE,      #To should output of the model = TRUE
-                                           calc.se=TRUE)      #Calculate the standard errors of the estimated class-conditional response probabilities and mixing proportions  
+                       lca_soln <-  poLCA::poLCA(f,                 #A formula expression of the form response ~ predictors
+                                                 df,                #Data frame
+                                                 nclass=x,          #Number of latent classes to assume in the model
+                                                 maxiter=1000,      #The maximum number of iterations through which the estimation algorithm will cycle
+                                                 graphs=FALSE,      #Should poLCA graphically display the parameter estimates at the completion of the estimation algorithm
+                                                 tol=1e-10,         #A tolerance value for judging when convergence has been reached. When the one-iteration change in the estimated log-likelihood is less than tol, the estimation algorithm stops updating and considers the maximum log-likelihood to have been found
+                                                 na.rm=TRUE,        #How to handle missing values, If TRUE, those cases are removed (listwise deleted) before estimating the model. If FALSE, cases with missing values are retained. Cases with missing covariates are always removed
+                                                 probs.start=NULL,  #A list of matrices of class-conditional response probabilities to be used as the starting values for the estimation algorithm. NULL = producing random starting values
+                                                 nrep=1,            #Number of times to estimate the model, using different values of probs.start. The default is one. Setting nrep>1 automates the search for the global---rather than just a local---maximum of the log-likelihood function. poLCA returns the parameter estimates corresponding to the model with the greatest log-likelihood
+                                                 verbose=FALSE,      #To should output of the model = TRUE
+                                                 calc.se=TRUE)      #Calculate the standard errors of the estimated class-conditional response probabilities and mixing proportions  
                      }
   )
   return(lca_segs)
