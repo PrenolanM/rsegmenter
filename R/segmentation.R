@@ -19,19 +19,19 @@ segmentation <- function(df, min_segs = 3, max_segs = 5,weight_var){
   print(paste0("starting kmeans segmentation: ",kmeans_start))
 
   # kmeans
-  segmentation_out[[1]] <- kmeans_segmentation(gower_dist,num_sols)
+  segmentation_out[["kmeans"]] <- kmeans_segmentation(gower_dist,num_sols)
 
   fac_start <- base::Sys.time()
   print(paste0("starting factor segmentation: ",fac_start))
 
   # factor analysis
-  segmentation_out[[2]] <- factor_segmentation(df,num_sols,weight_var)
+  segmentation_out[["factor_analysis"]] <- factor_segmentation(df,num_sols,weight_var)
 
   kmediods_start <- base::Sys.time()
   print(paste0("starting kmediods segmentation: ",kmediods_start))
 
   # kmediods
-  segmentation_out[[3]] <- kmediods_segmentation(gower_dist,num_sols)
+  segmentation_out[["kmediods"]] <- kmediods_segmentation(gower_dist,num_sols)
 
   timeend <- base::Sys.time()
   print(paste0("segmentation complete: ",timeend))
