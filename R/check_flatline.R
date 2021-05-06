@@ -2,11 +2,6 @@
 #' 
 #' The closer this return value is to 1, the more serious the flatline problem is for that row.
 #' 
-#' per variable, missing values can be replaced with one of the following:
-#' 1. mean
-#' 2. min
-#' 3. max
-
 #' @export
 #' @param df must be a data.frame
 #' 
