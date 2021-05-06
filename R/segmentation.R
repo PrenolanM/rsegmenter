@@ -38,6 +38,9 @@ segmentation <- function(df, vars, impute_type="none", min_segs = 3, max_segs = 
   # factor analysis
   segmentation_out[["factor_analysis"]] <- factor_segmentation(df,vars,impute_type,num_sols,weight_var)
 
+  # lca analysis
+  segmentation_out[["lca"]] <- lca_segmentation(df,vars,impute_type,num_sols)
+  
   #kmediods_start <- base::Sys.time()
   #print(paste0("starting kmediods segmentation: ",kmediods_start))
 
