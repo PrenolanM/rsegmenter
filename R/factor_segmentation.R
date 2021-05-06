@@ -11,8 +11,6 @@
 #' mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
 #' factor_segmentation(df = mydf, vars = c("col1","col2","col3"), impute_type = "none",num_sols=c(3,5))
 
-#' @export
-
 
 factor_segmentation <- function(df,vars,impute_type,num_sols,weight_var){
   

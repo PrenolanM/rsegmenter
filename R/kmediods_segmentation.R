@@ -1,5 +1,5 @@
 #' runs kmediods
-#' @export
+
 #' @param dist_mat should be a distance matrix
 #' @param num_sols should be a numeric vector specifying the minimum and maximum number of segments to extract
 
