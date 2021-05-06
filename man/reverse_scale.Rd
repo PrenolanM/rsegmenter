@@ -4,7 +4,7 @@
 \alias{reverse_scale}
 \title{reverses the coding of the numeric variables provided.}
 \usage{
-reverse_scale(df, vars, impute_type = "mode")
+reverse_scale(df, vars, impute_type = "none")
 }
 \arguments{
 \item{df}{must be a data.frame}
