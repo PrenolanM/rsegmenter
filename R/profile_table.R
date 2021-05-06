@@ -1,6 +1,6 @@
 
 #' create raw count profile tables of all specified variables by segment variable
-#' @export
+
 #' @param df should be a dataframe of numeric variables
 #' @param factor_vars a character vector of variable names
 #' @param numeric_vars a character vector of variable names
@@ -79,7 +79,7 @@ profile_table_raw <- function(df,factor_vars = NULL,numeric_vars = NULL,weight_v
 }
 
 #' create column percent profile tables of all specified variables by segment variable
-#' @export
+
 #' @param df should be a dataframe of numeric variables
 #' @param factor_vars should be a character vector of variable names
 #' @param numeric_vars should be a character vector of variable names
@@ -173,7 +173,7 @@ profile_table_col_perc <- function(df,factor_vars = NULL,numeric_vars = NULL,wei
 }
 
 #' create row percent profile tables of all specified variables by segment variable
-#' @export
+
 #' @param df should be a dataframe of numeric variables
 #' @param factor_vars should be a character vector of variable names
 #' @param numeric_vars should be a character vector of variable names
@@ -254,7 +254,7 @@ profile_table_row_perc <- function(df,factor_vars = NULL,numeric_vars = NULL,wei
 }
 
 #' create row percent profile tables of all specified variables by segment variable
-#' @export
+
 #' @param df should be a dataframe of numeric variables
 #' @param factor_vars should be a character vector of variable names
 #' @param numeric_vars should be a character vector of variable names
@@ -442,7 +442,7 @@ export_profile_tables <- function(prof_table,min_index=80,max_index=120,filename
 
 
 #' create row percent profile tables of all specified variables by segment variable
-#' @export
+
 #' @param df should be a dataframe of numeric variables
 #' @param factor_vars should be a character vector of variable names
 #' @param numeric_vars should be a character vector of variable names
