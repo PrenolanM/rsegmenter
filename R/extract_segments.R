@@ -1,11 +1,11 @@
 #' extract segments from factor analysis segment solutions and stores in a dataframe
 #' @export
-#' @param df should be an output from the kantarsegmentr::segmentation() function
+#' @param seglist should be an output from the kantarsegmentr::segmentation() function
 
-extract_factor_segments <- function(df){
-  return_df <- as.data.frame(lapply(seq(1,length(df[[2]])),
+extract_factor_segments <- function(seglist){
+  return_df <- as.data.frame(lapply(seq(1,length(seglist[["factor_analysis"]])),
                                     function(x){
-                                      df[[2]][[x]][[2]]
+                                      seglist[["factor_analysis"]][[x]][[2]]
                                       }
                                     )
                              )
