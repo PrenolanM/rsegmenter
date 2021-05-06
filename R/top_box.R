@@ -14,7 +14,7 @@
 
 #' @export
 
-top_box <- function(df,vars,impute_type="mode"){
+top_box <- function(df,vars,impute_type="none"){
 
   # ensuring df is provided
   if (missing(df)){
