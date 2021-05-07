@@ -51,6 +51,8 @@ lca_segmentation <- function(df,vars,impute_type="none",num_sols){
     stop("at least one of the input variables is not numeric")
   }
   
+  df <- df[vars]
+  
   # vars can't have 0's
   # we check for this and if present, we increment the whole variable by the second highest value
   col_with_zero <- apply(df,2,
@@ -69,8 +71,6 @@ lca_segmentation <- function(df,vars,impute_type="none",num_sols){
                                        )
     }
   
-  
-  df <- df[vars]
   
   if (impute_type!="none"){
     for (i in seq_along(vars)){
