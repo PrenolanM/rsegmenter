@@ -22,6 +22,29 @@ extract_factor_segments <- function(seglist){
   return(return_df)
 }
 
+#' extract segments from lca segment solutions and stores in a dataframe
+#' @export
+#' @param seglist should be an output from the kantarsegmentr::segmentation() function
+
+extract_lca_segments <- function(seglist){
+  return_df <- as.data.frame(lapply(seq(1,length(seglist[["lca_analysis"]])),
+                                    function(x){
+                                      seglist[["lca_analysis"]][[x]][["predclass"]]
+                                    }
+  )
+  )
+  
+  return_df <- as.data.frame(lapply(return_df,
+                                    function(x){
+                                      as.factor(x)
+                                    }
+  )
+  )
+  
+  colnames(return_df) <- paste0("LCA_Cluster_Soln_",seq(1,ncol(return_df)))
+  
+  return(return_df)
+}
 
 #' extract segments from kmeans segment solutions and stores in a dataframe
 #' @export
