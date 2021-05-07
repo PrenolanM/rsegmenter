@@ -19,7 +19,7 @@ profile_table_raw <- function(df,factor_vars = NULL,numeric_vars = NULL,weight_v
     temp_fac <- df %>%
       tidyr::pivot_longer(cols = all_of(factor_vars),
                           names_to = "Variable_Name",
-                          values_to = "Variable_Code") %>%
+                          values_to = "Value_Code") %>%
       dplyr::group_by(Variable_Name,Variable_Code,!!(segment_var)) %>%
       dplyr::summarise(mycount = sum(!!(weight_var))) %>%
       ungroup() %>%
@@ -42,7 +42,7 @@ profile_table_raw <- function(df,factor_vars = NULL,numeric_vars = NULL,weight_v
     temp_num <- df %>%
       tidyr::pivot_longer(cols = all_of(numeric_vars),
                           names_to = "Variable_Name",
-                          values_to = "Variable_Code") %>%
+                          values_to = "Value_Code") %>%
       dplyr::group_by(Variable_Name,Variable_Code,!!(segment_var)) %>%
       dplyr::summarise(mycount = weighted.mean(!!(weight_var))) %>%
       ungroup() %>%
@@ -105,7 +105,7 @@ profile_table_col_perc <- function(df,factor_vars = NULL,numeric_vars = NULL,wei
     temp_fac <- df %>%
       tidyr::pivot_longer(cols = all_of(factor_vars),
                           names_to = "Variable_Name",
-                          values_to = "Variable_Code") %>%
+                          values_to = "Value_Code") %>%
       dplyr::group_by(Variable_Name,Variable_Code,!!(segment_var)) %>%
       dplyr::summarise(mycount = sum(!!(weight_var))) %>%
       ungroup() %>%
@@ -137,7 +137,7 @@ profile_table_col_perc <- function(df,factor_vars = NULL,numeric_vars = NULL,wei
     temp_num <- df %>%
       tidyr::pivot_longer(cols = all_of(numeric_vars),
                           names_to = "Variable_Name",
-                          values_to = "Variable_Code") %>%
+                          values_to = "Value_Code") %>%
       dplyr::group_by(Variable_Name,Variable_Code,!!(segment_var)) %>%
       dplyr::summarise(mycount = weighted.mean(!!(weight_var))) %>%
       ungroup() %>%
@@ -191,7 +191,7 @@ profile_table_row_perc <- function(df,factor_vars = NULL,numeric_vars = NULL,wei
     temp_fac <- df %>%
       tidyr::pivot_longer(cols = all_of(factor_vars),
                           names_to = "Variable_Name",
-                          values_to = "Variable_Code") %>%
+                          values_to = "Value_Code") %>%
       dplyr::group_by(Variable_Name,Variable_Code,!!(segment_var)) %>%
       dplyr::summarise(mycount = sum(!!(weight_var))) %>%
       ungroup() %>%
@@ -219,7 +219,7 @@ profile_table_row_perc <- function(df,factor_vars = NULL,numeric_vars = NULL,wei
     temp_num <- df %>%
       tidyr::pivot_longer(cols = all_of(numeric_vars),
                           names_to = "Variable_Name",
-                          values_to = "Variable_Code") %>%
+                          values_to = "Value_Code") %>%
       dplyr::group_by(Variable_Name,Variable_Code,!!(segment_var)) %>%
       dplyr::summarise(mycount = weighted.mean(!!(weight_var))) %>%
       ungroup() %>%
@@ -280,7 +280,7 @@ profile_table_col_index <- function(df,factor_vars = NULL,numeric_vars = NULL,we
     temp_fac <- df %>%
       tidyr::pivot_longer(cols = all_of(factor_vars),
                           names_to = "Variable_Name",
-                          values_to = "Variable_Code") %>%
+                          values_to = "Value_Code") %>%
       dplyr::group_by(Variable_Name,Variable_Code,!!(segment_var)) %>%
       dplyr::summarise(mycount = sum(!!(weight_var))) %>%
       ungroup() %>%
@@ -313,7 +313,7 @@ profile_table_col_index <- function(df,factor_vars = NULL,numeric_vars = NULL,we
     temp_num <- df %>%
       tidyr::pivot_longer(cols = all_of(numeric_vars),
                           names_to = "Variable_Name",
-                          values_to = "Variable_Code") %>%
+                          values_to = "Value_Code") %>%
       dplyr::group_by(Variable_Name,Variable_Code,!!(segment_var)) %>%
       dplyr::summarise(mycount = weighted.mean(!!(weight_var))) %>%
       ungroup() %>%
@@ -369,25 +369,25 @@ profile_table <- function(df,factor_vars = NULL,numeric_vars = NULL,weight_var,t
 
 
     df1 <- df1 %>%
-      dplyr::left_join(table_labels,by=c("Variable_Name","Variable_Code")) %>%
+      dplyr::left_join(table_labels,by=c("Variable_Name","Value_Code")) %>%
       dplyr::select(Variable_Name,Variable_Label,everything(),-Variable_Code) %>%
       dplyr::arrange(Variable_Order) %>%
       dplyr::select(-Variable_Order)
 
     df2 <- df2 %>%
-      dplyr::left_join(table_labels,by=c("Variable_Name","Variable_Code")) %>%
+      dplyr::left_join(table_labels,by=c("Variable_Name","Value_Code")) %>%
       dplyr::select(Variable_Name,Variable_Label,everything(),-Variable_Code) %>%
       dplyr::arrange(Variable_Order) %>%
       dplyr::select(-Variable_Order)
 
     df3 <- df3 %>%
-      dplyr::left_join(table_labels,by=c("Variable_Name","Variable_Code")) %>%
+      dplyr::left_join(table_labels,by=c("Variable_Name","Value_Code")) %>%
       dplyr::select(Variable_Name,Variable_Label,everything(),-Variable_Code) %>%
       dplyr::arrange(Variable_Order) %>%
       dplyr::select(-Variable_Order)
 
     df4 <- df4 %>%
-      dplyr::left_join(table_labels,by=c("Variable_Name","Variable_Code")) %>%
+      dplyr::left_join(table_labels,by=c("Variable_Name","Value_Code")) %>%
       dplyr::select(Variable_Name,Variable_Label,everything(),-Variable_Code) %>%
       dplyr::arrange(Variable_Order) %>%
       dplyr::select(-Variable_Order)
@@ -449,5 +449,5 @@ export_profile_tables <- function(prof_table,min_index=80,max_index=120,filename
 #' @param ... segment variables
 
 add_table_labels <- function(prof_table,table_labels){
-  return(dplyr::left_join(prof_table,prof_table,by=c("Variable_Name","Variable_Code")))
+  return(dplyr::left_join(prof_table,prof_table,by=c("Variable_Name","Value_Code")))
 }

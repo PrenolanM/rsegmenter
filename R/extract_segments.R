@@ -1,6 +1,6 @@
 #' extract segments from factor analysis segment solutions and stores in a dataframe
 #' @export
-#' @param seglist should be an output from the kantarsegmentr::segmentation() function
+#' @param seglist must be an output from the kantarsegmentr::segmentation() function
 
 extract_factor_segments <- function(seglist){
   return_df <- as.data.frame(lapply(seq(1,length(seglist[["factor_analysis"]])),
@@ -22,9 +22,33 @@ extract_factor_segments <- function(seglist){
   return(return_df)
 }
 
+#' extract rotated components from factor analysis
+#' @export
+#' @param seglist must be an output from the kantarsegmentr::segmentation() function
+#' @param var_labels must be a data.frame. 
+#' First column must be names of the variables run in the factor analysis.
+#' Second column must be the corresponding label
+
+extract_rotated_components <- function(seglist,var_labels){
+  
+  return_list <- vector(mode="list",length(seglist[["factor_analysis"]]))
+  
+  return_list <- lapply(seq(1,length(seglist[["factor_analysis"]])),
+                        function(x){
+                          rc <- seglist[["factor_analysis"]][[x]][[1]]
+                          rownames(rc) <- var_labels[rownames(rc),2]
+                          return(rc)
+                          }
+                        )
+                             
+  
+  return(return_list)
+  
+}
+
 #' extract segments from lca segment solutions and stores in a dataframe
 #' @export
-#' @param seglist should be an output from the kantarsegmentr::segmentation() function
+#' @param seglist must be an output from the kantarsegmentr::segmentation() function
 
 extract_lca_segments <- function(seglist){
   return_df <- as.data.frame(lapply(seq(1,length(seglist[["lca"]])),

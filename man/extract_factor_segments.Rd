@@ -7,7 +7,7 @@
 extract_factor_segments(seglist)
 }
 \arguments{
-\item{seglist}{should be an output from the kantarsegmentr::segmentation() function}
+\item{seglist}{must be an output from the kantarsegmentr::segmentation() function}
 }
 \description{
 extract segments from factor analysis segment solutions and stores in a dataframe
