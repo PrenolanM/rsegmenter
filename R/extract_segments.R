@@ -27,19 +27,19 @@ extract_factor_segments <- function(seglist){
 #' @param seglist should be an output from the kantarsegmentr::segmentation() function
 
 extract_lca_segments <- function(seglist){
-  return_df <- as.data.frame(lapply(seq(1,length(seglist[["lca_analysis"]])),
+  return_df <- as.data.frame(lapply(seq(1,length(seglist[["lca"]])),
                                     function(x){
-                                      seglist[["lca_analysis"]][[x]][["predclass"]]
-                                    }
-  )
-  )
+                                      seglist[["lca"]][[x]][["predclass"]]
+                                      }
+                                    )
+                             )
   
   return_df <- as.data.frame(lapply(return_df,
                                     function(x){
                                       as.factor(x)
-                                    }
-  )
-  )
+                                      }
+                                    )
+                             )
   
   colnames(return_df) <- paste0("LCA_Cluster_Soln_",seq(1,ncol(return_df)))
   
