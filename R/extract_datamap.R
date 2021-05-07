@@ -26,7 +26,9 @@ extract_datamap <- function(df){
                           }
   )
   
-  data_map_list <- data_map_list[lengths(data_map_list) != 2]
+  vars_to_keep <- unlist(lapply(data_map_list,function(x)dim(x)[2]))
+  
+  data_map_list <- data_map_list[vars_to_keep==4]
   
   data_map_df <- do.call("rbind.data.frame",data_map_list)
   
