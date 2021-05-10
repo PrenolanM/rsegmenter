@@ -43,7 +43,7 @@ extract_rotated_components <- function(seglist,var_labels){
   return_list <- lapply(seq(1,length(seglist[["factor_analysis"]])),
                         function(x){
                           rc <- seglist[["factor_analysis"]][[x]][[1]]
-                          rownames(rc) <- var_labels[match(var_labels[["Variable_Name"]],rownames(return_list[[1]])),2]
+                          rownames(rc) <- var_labels[match(var_labels[["Variable_Name"]],rownames(rc)),2]
                           return(rc)
                           }
                         )
