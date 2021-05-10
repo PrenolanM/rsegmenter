@@ -370,25 +370,25 @@ profile_table <- function(df,factor_vars = NULL,numeric_vars = NULL,weight_var,t
 
     df1 <- df1 %>%
       dplyr::left_join(table_labels,by=c("Variable_Name","Value_Code")) %>%
-      dplyr::select(Variable_Name,Variable_Label,everything(),-Value_Code) %>%
+      dplyr::select(Variable_Name,Value_Label,everything(),-Variable_Label,-Value_Code) %>%
       dplyr::arrange(Variable_Order) %>%
       dplyr::select(-Variable_Order)
 
     df2 <- df2 %>%
       dplyr::left_join(table_labels,by=c("Variable_Name","Value_Code")) %>%
-      dplyr::select(Variable_Name,Variable_Label,everything(),-Value_Code) %>%
+      dplyr::select(Variable_Name,Value_Label,everything(),-Variable_Label,-Value_Code) %>%
       dplyr::arrange(Variable_Order) %>%
       dplyr::select(-Variable_Order)
 
     df3 <- df3 %>%
       dplyr::left_join(table_labels,by=c("Variable_Name","Value_Code")) %>%
-      dplyr::select(Variable_Name,Variable_Label,everything(),-Value_Code) %>%
+      dplyr::select(Variable_Name,Value_Label,everything(),-Variable_Label,-Value_Code) %>%
       dplyr::arrange(Variable_Order) %>%
       dplyr::select(-Variable_Order)
 
     df4 <- df4 %>%
       dplyr::left_join(table_labels,by=c("Variable_Name","Value_Code")) %>%
-      dplyr::select(Variable_Name,Variable_Label,everything(),-Value_Code) %>%
+      dplyr::select(Variable_Name,Value_Label,everything(),-Variable_Label,-Value_Code) %>%
       dplyr::arrange(Variable_Order) %>%
       dplyr::select(-Variable_Order)
 
