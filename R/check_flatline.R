@@ -1,8 +1,8 @@
-#' check_flatline returns the max percentage of responses that are the same per row.
+#' Returns the max percentage of responses that are the same per row.
 #' 
+#' Returns the max percentage of responses that are the same per row.
 #' The closer this return value is to 1, the more serious the flatline problem is for that row.
 #' 
-#' @export
 #' @param df must be a data.frame
 #' 
 #' @param vars must be a string of variable names to operate on.
@@ -13,6 +13,7 @@
 #' @examples
 #' mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
 #' check_flatline(df = mydf, vars = c("col1","col2","col3"), impute_type = "none")
+#' @export
 
 check_flatline <- function(df,vars,impute_type="none"){
   

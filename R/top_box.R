@@ -1,6 +1,5 @@
-#' creates a 0,1 coded variable. The highest value becomes a 1 and the rest becomes a 0.
-#' The returned variables are all factors
-
+#' Creates a 0,1 coded variable. The highest value becomes a 1 and the rest becomes a 0.
+#'
 #' @param df must be a data.frame
 #' 
 #' @param vars must be a string of variable names to operate on.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/check_flatline.R
 \name{check_flatline}
 \alias{check_flatline}
-\title{check_flatline returns the max percentage of responses that are the same per row.}
+\title{Returns the max percentage of responses that are the same per row.}
 \usage{
 check_flatline(df, vars, impute_type = "none")
 }
@@ -15,6 +15,7 @@ These variables must be numeric}
 \item{impute_type}{must be a string of one of "none","mode","mean","min","max"}
 }
 \description{
+Returns the max percentage of responses that are the same per row.
 The closer this return value is to 1, the more serious the flatline problem is for that row.
 }
 \examples{
