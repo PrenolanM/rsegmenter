@@ -2,7 +2,7 @@
 % Please edit documentation in R/reverse_scale.R
 \name{reverse_scale}
 \alias{reverse_scale}
-\title{reverses the coding of the numeric variables provided.}
+\title{Reverses the coding of provided variables.}
 \usage{
 reverse_scale(df, vars, impute_type = "none")
 }
@@ -15,7 +15,7 @@ These variables must be numeric}
 \item{impute_type}{must be a string of one of "none","mode","mean","min","max"}
 }
 \description{
-reverses the coding of the numeric variables provided.
+Reverses the coding of provided variables.
 }
 \examples{
 mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))

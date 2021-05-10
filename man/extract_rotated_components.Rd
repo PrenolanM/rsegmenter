@@ -2,17 +2,22 @@
 % Please edit documentation in R/extract_segments.R
 \name{extract_rotated_components}
 \alias{extract_rotated_components}
-\title{extract rotated components from factor analysis}
+\title{Extract rotated components from factor analysis.}
 \usage{
 extract_rotated_components(seglist, var_labels)
 }
 \arguments{
-\item{seglist}{must be an output from the kantarsegmentr::segmentation() function}
+\item{seglist}{must be an output from the rsegmenter::segmentation() function}
 
 \item{var_labels}{must be a data.frame.
 First column must be names of the variables run in the factor analysis.
-Second column must be the corresponding label}
+Second column must be the corresponding labels}
 }
 \description{
-extract rotated components from factor analysis
+Extract rotated components from factor analysis.
+}
+\examples{
+mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
+segment_solutions <- segmentation(mydf,c("Col1","Col2"))
+extract_rotated_components(segment_solutions,var_labels)
 }
