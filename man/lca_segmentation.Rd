@@ -7,7 +7,7 @@
 lca_segmentation(df, vars, impute_type = "none", num_sols)
 }
 \arguments{
-\item{df}{should be a data.frame of numeric variables}
+\item{df}{must be a data.frame of numeric variables}
 
 \item{vars}{must be a string of variable names to operate on.
 These variables must be numeric}
