@@ -6,7 +6,7 @@
 #' extract_factor_segments(segment_solutions)
 #' @export
 extract_factor_segments <- function(seglist){
-  return_df <- as.data.frame(lapply(seq(1,length(seglist[["factor_analysis"]])),
+  return_df <- as.data.frame(lapply(seq_along(seglist[["factor_analysis"]]),
                                     function(x){
                                       seglist[["factor_analysis"]][[x]][[2]]
                                       }
@@ -20,7 +20,7 @@ extract_factor_segments <- function(seglist){
                                     )
                              )
 
-  colnames(return_df) <- paste0("Factor_Cluster_Soln_",seq(1,ncol(return_df)))
+  colnames(return_df) <- paste0("Factor_Cluster_Soln_",seq_along(return_df))
 
   return(return_df)
 }
@@ -40,7 +40,7 @@ extract_rotated_components <- function(seglist,var_labels){
   
   return_list <- vector(mode="list",length(seglist[["factor_analysis"]]))
   
-  return_list <- lapply(seq(1,length(seglist[["factor_analysis"]])),
+  return_list <- lapply(seq_along(seglist[["factor_analysis"]]),
                         function(x){
                           rc <- seglist[["factor_analysis"]][[x]][[1]]
                           rownames(rc) <- var_labels[match(var_labels[["Variable_Name"]],rownames(rc)),2]
@@ -61,7 +61,7 @@ extract_rotated_components <- function(seglist,var_labels){
 #' extract_lca_segments(segment_solutions)
 #' @export
 extract_lca_segments <- function(seglist){
-  return_df <- as.data.frame(lapply(seq(1,length(seglist[["lca"]])),
+  return_df <- as.data.frame(lapply(seq_along(seglist[["lca"]]),
                                     function(x){
                                       seglist[["lca"]][[x]][["predclass"]]
                                       }
@@ -75,7 +75,7 @@ extract_lca_segments <- function(seglist){
                                     )
                              )
   
-  colnames(return_df) <- paste0("LCA_Cluster_Soln_",seq(1,ncol(return_df)))
+  colnames(return_df) <- paste0("LCA_Cluster_Soln_",seq_along(return_df))
   
   return(return_df)
 }
