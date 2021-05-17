@@ -38,7 +38,7 @@ check_flatline <- function(df,vars,impute_type="none"){
     stop("df must be a data.frame of at least 1 row")
   }
   
-  df <- df[vars]
+  df <- df[,vars,drop=FALSE]
   
   # check that we don't have variables with all NA's
   if (check_all_na(df)){
