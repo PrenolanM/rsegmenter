@@ -51,8 +51,9 @@ check_flatline <- function(df,vars,impute_type="none"){
   }
   
   if (impute_type!="none"){
+    imputed_values <- impute_values(df,impute_type)
     for (i in seq_along(vars)){
-      df[is.na(df[,i]),i] <- impute_values(df,impute_type)[i]
+      df[is.na(df[,i]),i] <- imputed_values[i]
     }  
   }
   
