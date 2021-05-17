@@ -1,5 +1,5 @@
 #' runs lca using the polca package
-#' @param df should be a data.frame of numeric variables
+#' @param df must be a data.frame of numeric variables
 #' 
 #' @param vars must be a string of variable names to operate on.
 #' These variables must be numeric
@@ -52,7 +52,7 @@ lca_segmentation <- function(df,vars,impute_type="none",num_sols){
     stop("at least one of the input variables is not numeric")
   }
   
-  df <- df[vars]
+  df <- df[,vars,drop=FALSE]
   
   # vars can't have 0's
   # we check for this and if present, we increment the whole variable by the second highest value
@@ -64,12 +64,13 @@ lca_segmentation <- function(df,vars,impute_type="none",num_sols){
   
   
   if (any(col_with_zero)){
-    df[col_with_zero] <- as.data.frame(apply(df[col_with_zero],2,
-                                             function(x){
-                                               x + 1
-                                               }
-                                             )
-                                       )
+    df[,col_with_zero,drop=FALSE] <- as.data.frame(
+      apply(df[,col_with_zero,drop=FALSE],2,
+            function(x){
+              x + 1
+              }
+            )
+      )
     }
   
   
