@@ -1,8 +1,7 @@
 #' runs factor analysis with varimax rotation using the psych package
-#' @param df should be a data.frame of numeric variables
+#' @param df must be a data.frame of numeric variables
 #' 
 #' @param vars must be a string of variable names to operate on.
-#' These variables must be numeric
 #' 
 #' @param impute_type must be a string of one of "none","mode","mean","min","max"
 #' @param num_sols should be a numeric vector specifying the minimum and maximum number of factors to extract
@@ -52,7 +51,7 @@ factor_segmentation <- function(df,vars,impute_type,num_sols,weight_var){
     stop("at least one of the input variables is not numeric")
   }
   
-  df <- df[vars]
+  df <- df[,vars,drop=FALSE]
   
   if (impute_type!="none"){
     for (i in seq_along(vars)){
@@ -104,7 +103,7 @@ factor_segmentation <- function(df,vars,impute_type,num_sols,weight_var){
 
                         max_loading <- ifelse(max_loading==0,0,row(max_loading))
 
-                        rowmeans_df <- as.data.frame(lapply(seq(1,ncol(max_loading)),
+                        rowmeans_df <- as.data.frame(lapply(seq_along(max_loading),
                                                             function(x){
                                                               if(sum(max_loading[,x]>0)<2){
                                                                 df[,max_loading[,x]>0]
