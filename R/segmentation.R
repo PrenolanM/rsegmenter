@@ -14,7 +14,7 @@
  
 #' @export
 
-segmentation <- function(df, vars, impute_type="none", min_segs = 3, max_segs = 5, weight_var = NULL){
+segmentation <- function(df, vars, min_segs = 3, max_segs = 5, weight_var = NULL){
 
   #dist_start <- base::Sys.time()
   #print(paste0("calculating distance matrix: ",dist_start))
