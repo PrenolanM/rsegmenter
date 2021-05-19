@@ -10,3 +10,15 @@ test_that("rescale works no matter the values present in each variable",{
                data.frame(x_reverse_scale=c(3,2,1),
                           y_reverse_scale=c(4,2,0)))
 })
+
+test_that("return type is a data.frame when one column is passed",{
+  expect_equal(class(reverse_scale(data.frame(x=c(1,2,1)),"x")),
+               "data.frame")
+})
+
+test_that("return type is a data.frame when two or more columns are passed",{
+  expect_equal(class(reverse_scale(data.frame(x=c(1,2,1),
+                                              y=c(1,2,1)),
+                                   c("x","y"))),
+               "data.frame")
+})
