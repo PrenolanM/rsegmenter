@@ -2,7 +2,7 @@
 % Please edit documentation in R/reverse_scale.R
 \name{reverse_scale}
 \alias{reverse_scale}
-\title{Reverses the coding of provided variables.}
+\title{Reverses the coding of each input variable.}
 \usage{
 reverse_scale(df, vars)
 }
@@ -10,10 +10,10 @@ reverse_scale(df, vars)
 \item{df}{must be a data.frame}
 
 \item{vars}{must be a string of variable names to operate on.
-These variables must be numeric}
+Variables must be numeric}
 }
 \description{
-Reverses the coding of provided variables.
+Reverses the coding of each input variable.
 }
 \examples{
 mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
