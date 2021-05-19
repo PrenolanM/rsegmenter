@@ -2,16 +2,14 @@
 #' @param df must be a data.frame of numeric variables
 #' 
 #' @param vars must be a string of variable names to operate on.
-#' 
-#' @param impute_type must be a string of one of "none","mode","mean","min","max"
 #' @param num_sols should be a numeric vector specifying the minimum and maximum number of factors to extract
 
 #' @examples
 #' mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
-#' factor_segmentation(df = mydf, vars = c("col1","col2","col3"), impute_type = "none",num_sols=c(3,5))
+#' factor_segmentation(df = mydf, vars = c("col1","col2","col3"),num_sols=c(3,5))
 
 
-factor_segmentation <- function(df,vars,impute_type,num_sols,weight_var){
+factor_segmentation <- function(df,vars,num_sols,weight_var){
   
   # ensuring df is provided
   if (missing(df)){
@@ -52,12 +50,6 @@ factor_segmentation <- function(df,vars,impute_type,num_sols,weight_var){
   }
   
   df <- df[,vars,drop=FALSE]
-  
-  if (impute_type!="none"){
-    for (i in seq_along(vars)){
-      df[is.na(df[,i]),i] <- impute_values(df,impute_type)[i]
-    }  
-  }
   
   if (sum(is.na(df))){
     
