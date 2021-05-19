@@ -14,6 +14,6 @@ extract segments from factor analysis segment solutions and stores in a datafram
 }
 \examples{
 mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
-segment_solutions <- segmentation(mydf,c("Col1","Col2"))
+segment_solutions <- segmentation(mydf,c("col1","col2","col3"))
 extract_factor_segments(segment_solutions)
 }

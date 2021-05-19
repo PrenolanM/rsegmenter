@@ -3,7 +3,6 @@
 #' 
 #' @param vars must be a string of variable names to operate on.
 #' @param num_sols should be a numeric vector specifying the minimum and maximum number of factors to extract
-
 #' @examples
 #' mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
 #' factor_segmentation(df = mydf, vars = c("col1","col2","col3"),num_sols=c(3,5))
@@ -57,7 +56,7 @@ factor_segmentation <- function(df,vars,num_sols,weight_var){
     
   }
 
-  if (missing(weight_var)){
+  if (is.null(weight_var)){
 
     resp_weight <- rep(1,nrow(df))
 
@@ -93,7 +92,7 @@ factor_segmentation <- function(df,vars,num_sols,weight_var){
                                           )
                                         )
 
-                        max_loading <- ifelse(max_loading==0,0,row(max_loading))
+                        max_loading <- as.data.frame(ifelse(max_loading==0,0,row(max_loading)))
 
                         rowmeans_df <- as.data.frame(lapply(seq_along(max_loading),
                                                             function(x){

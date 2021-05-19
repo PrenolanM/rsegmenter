@@ -2,7 +2,7 @@
 #' @param seglist must be an output from the rsegmenter::segmentation() function
 #' @examples 
 #' mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
-#' segment_solutions <- segmentation(mydf,c("Col1","Col2"))
+#' segment_solutions <- segmentation(mydf,c("col1","col2","col3"))
 #' extract_factor_segments(segment_solutions)
 #' @export
 extract_factor_segments <- function(seglist){
@@ -13,14 +13,16 @@ extract_factor_segments <- function(seglist){
                                     )
                              )
 
-  return_df <- as.data.frame(lapply(return_df,
-                                    function(x){
-                                      as.factor(x)
-                                    }
-                                    )
-                             )
-
-  colnames(return_df) <- paste0("Factor_Cluster_Soln_",seq_along(return_df))
+  # return_df <- as.data.frame(lapply(return_df,
+  #                                   function(x){
+  #                                     as.factor(x)
+  #                                   }
+  #                                   )
+  #                            )
+  
+  min_sol_num <- max(return_df[,1])
+  max_sol_num <- max(return_df)
+  colnames(return_df) <- paste0("Factor_Cluster_Soln_",seq(min_sol_num,max_sol_num))
 
   return(return_df)
 }
@@ -68,14 +70,16 @@ extract_lca_segments <- function(seglist){
                                     )
                              )
   
-  return_df <- as.data.frame(lapply(return_df,
-                                    function(x){
-                                      as.factor(x)
-                                      }
-                                    )
-                             )
-  
-  colnames(return_df) <- paste0("LCA_Cluster_Soln_",seq_along(return_df))
+  # return_df <- as.data.frame(lapply(return_df,
+  #                                   function(x){
+  #                                     as.factor(x)
+  #                                     }
+  #                                   )
+  #                            )
+
+  min_sol_num <- max(return_df[,1])
+  max_sol_num <- max(return_df)  
+  colnames(return_df) <- paste0("LCA_Cluster_Soln_",seq(min_sol_num,max_sol_num))
   
   return(return_df)
 }
