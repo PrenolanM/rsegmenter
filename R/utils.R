@@ -18,18 +18,36 @@ check_all_numeric <- function(df){
 
 # basic imputation using one of the min, max or mean
 impute_values <- function(df,impute_type){
-  apply(df,2,
-        function(x){
-          if (impute_type=="mode"){
-            mode_fn(x)
-          } else if (impute_type=="mean"){
-            mean(x,na.rm = TRUE)
-          } else if (impute_type=="max"){
-            max(x,na.rm = TRUE)
-          } else if (impute_type=="min"){
-            min(x,na.rm = TRUE)
-          }
-        })  
+  if (impute_type=="mode"){
+    apply(df,2,function(x){
+      mode_fn(x)
+    })
+  } else if (impute_type=="mean"){
+    apply(df,2,function(x){
+      mean(x,na.rm = TRUE)
+    })
+  } else if (impute_type=="max"){
+    apply(df,2,function(x){
+      max(x,na.rm = TRUE)
+    })
+  } else if (impute_type=="min"){
+    apply(df,2,function(x){
+      min(x,na.rm = TRUE)
+    })
+  }
+  
+  # apply(df,2,
+  #       function(x){
+  #         if (impute_type=="mode"){
+  #           mode_fn(x)
+  #         } else if (impute_type=="mean"){
+  #           mean(x,na.rm = TRUE)
+  #         } else if (impute_type=="max"){
+  #           max(x,na.rm = TRUE)
+  #         } else if (impute_type=="min"){
+  #           min(x,na.rm = TRUE)
+  #         }
+  #       })  
 }
   
 mode_fn <- function(x) {

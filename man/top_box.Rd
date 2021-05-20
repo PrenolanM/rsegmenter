@@ -4,20 +4,18 @@
 \alias{top_box}
 \title{Creates a 0,1 coded variable. The highest value becomes a 1 and the rest becomes a 0.}
 \usage{
-top_box(df, vars, impute_type = "none")
+top_box(df, vars)
 }
 \arguments{
 \item{df}{must be a data.frame}
 
 \item{vars}{must be a string of variable names to operate on.
 These variables must be numeric}
-
-\item{impute_type}{must be a string of one of "none","mode","mean","min","max"}
 }
 \description{
 Creates a 0,1 coded variable. The highest value becomes a 1 and the rest becomes a 0.
 }
 \examples{
 mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
-top_box(df = mydf, vars = c("col1","col2","col3"), impute_type = "none")
+top_box(df = mydf, vars = c("col1","col2","col3"))
 }

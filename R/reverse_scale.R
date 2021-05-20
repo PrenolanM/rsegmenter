@@ -1,17 +1,15 @@
-#' Reverses the coding of provided variables.
+#' Reverses the coding of each input variable.
 #' @param df must be a data.frame
 #' 
 #' @param vars must be a string of variable names to operate on.
-#' These variables must be numeric
-#' 
-#' @param impute_type must be a string of one of "none","mode","mean","min","max"
+#' Variables must be numeric
 #' 
 #' @examples
 #' mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
-#' reverse_scale(df = mydf, vars = c("col1","col2","col3"), impute_type = "none")
+#' reverse_scale(df = mydf, vars = c("col1","col2","col3"))
 #' @export
 
-reverse_scale <- function(df,vars,impute_type="none"){
+reverse_scale <- function(df,vars){
   
   # ensuring df is provided
   if (missing(df)){
@@ -34,7 +32,7 @@ reverse_scale <- function(df,vars,impute_type="none"){
     stop("df must be a data.frame of at least 1 row")
   }
   
-  df <- df[vars]
+  df <- df[,vars,drop=FALSE]
   
   # check that we don't have variables with all NA's
   if (check_all_na(df)){
@@ -44,12 +42,6 @@ reverse_scale <- function(df,vars,impute_type="none"){
   # check that all variables are numeric
   if (check_all_numeric(df)){
     stop("at least one of the input variables is not numeric")
-  }
-  
-  if (impute_type!="none"){
-    for (i in seq_along(vars)){
-      df[is.na(df[,i]),i] <- impute_values(df,impute_type)[i]
-    }  
   }
   
   if (sum(is.na(df))){
@@ -63,8 +55,8 @@ reverse_scale <- function(df,vars,impute_type="none"){
                                       {
                                       if (min(unique(x))==0){
                                         return(abs(x - max(x)))
-                                        } else if (min(unique(x))==1){
-                                          return(abs(x - max(x)) + 1)
+                                        } else if (min(unique(x))>=1){
+                                          return(abs(x - max(x)) + min(x))
                                         }
                                       }
                                     )

@@ -1,18 +1,14 @@
 #' runs factor analysis with varimax rotation using the psych package
-#' @param df should be a data.frame of numeric variables
+#' @param df must be a data.frame of numeric variables
 #' 
 #' @param vars must be a string of variable names to operate on.
-#' These variables must be numeric
-#' 
-#' @param impute_type must be a string of one of "none","mode","mean","min","max"
 #' @param num_sols should be a numeric vector specifying the minimum and maximum number of factors to extract
-
 #' @examples
 #' mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
-#' factor_segmentation(df = mydf, vars = c("col1","col2","col3"), impute_type = "none",num_sols=c(3,5))
+#' factor_segmentation(df = mydf, vars = c("col1","col2","col3"),num_sols=c(3,5))
 
 
-factor_segmentation <- function(df,vars,impute_type,num_sols,weight_var){
+factor_segmentation <- function(df,vars,num_sols,weight_var){
   
   # ensuring df is provided
   if (missing(df)){
@@ -52,13 +48,7 @@ factor_segmentation <- function(df,vars,impute_type,num_sols,weight_var){
     stop("at least one of the input variables is not numeric")
   }
   
-  df <- df[vars]
-  
-  if (impute_type!="none"){
-    for (i in seq_along(vars)){
-      df[is.na(df[,i]),i] <- impute_values(df,impute_type)[i]
-    }  
-  }
+  df <- df[,vars,drop=FALSE]
   
   if (sum(is.na(df))){
     
@@ -66,7 +56,7 @@ factor_segmentation <- function(df,vars,impute_type,num_sols,weight_var){
     
   }
 
-  if (missing(weight_var)){
+  if (is.null(weight_var)){
 
     resp_weight <- rep(1,nrow(df))
 
@@ -102,9 +92,9 @@ factor_segmentation <- function(df,vars,impute_type,num_sols,weight_var){
                                           )
                                         )
 
-                        max_loading <- ifelse(max_loading==0,0,row(max_loading))
+                        max_loading <- as.data.frame(ifelse(max_loading==0,0,row(max_loading)))
 
-                        rowmeans_df <- as.data.frame(lapply(seq(1,ncol(max_loading)),
+                        rowmeans_df <- as.data.frame(lapply(seq_along(max_loading),
                                                             function(x){
                                                               if(sum(max_loading[,x]>0)<2){
                                                                 df[,max_loading[,x]>0]

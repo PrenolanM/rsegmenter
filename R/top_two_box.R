@@ -5,11 +5,9 @@
 #' @param vars must be a string of variable names to operate on.
 #' These variables must be numeric
 #' 
-#' @param impute_type must be a string of one of "none","mode","mean","min","max"
-#' 
 #' @examples
 #' mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
-#' top_box(df = mydf, vars = c("col1","col2","col3"), impute_type = "none")
+#' top_box(df = mydf, vars = c("col1","col2","col3"))
 
 #' @export
 
@@ -47,12 +45,6 @@ top_two_box <- function(df,vars,impute_type="none"){
   # check that all variables are numeric
   if (check_all_numeric(df)){
     stop("at least one of the input variables is not numeric")
-  }
-  
-  if (impute_type!="none"){
-    for (i in seq_along(vars)){
-      df[is.na(df[,i]),i] <- impute_values(df,impute_type)[i]
-    }  
   }
   
   if (sum(is.na(df))){

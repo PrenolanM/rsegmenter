@@ -4,15 +4,12 @@
 \alias{factor_segmentation}
 \title{runs factor analysis with varimax rotation using the psych package}
 \usage{
-factor_segmentation(df, vars, impute_type, num_sols, weight_var)
+factor_segmentation(df, vars, num_sols, weight_var)
 }
 \arguments{
-\item{df}{should be a data.frame of numeric variables}
+\item{df}{must be a data.frame of numeric variables}
 
-\item{vars}{must be a string of variable names to operate on.
-These variables must be numeric}
-
-\item{impute_type}{must be a string of one of "none","mode","mean","min","max"}
+\item{vars}{must be a string of variable names to operate on.}
 
 \item{num_sols}{should be a numeric vector specifying the minimum and maximum number of factors to extract}
 }
@@ -21,5 +18,5 @@ runs factor analysis with varimax rotation using the psych package
 }
 \examples{
 mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
-factor_segmentation(df = mydf, vars = c("col1","col2","col3"), impute_type = "none",num_sols=c(3,5))
+factor_segmentation(df = mydf, vars = c("col1","col2","col3"),num_sols=c(3,5))
 }

@@ -5,18 +5,15 @@
 #' 
 #' @param vars must be a string of variable names to operate on.
 #' These variables must be numeric
-#' 
-#' @param impute_type must be a string of one of "none","mode","mean","min","max"
 #' @param min_segs should be an integer specifying the minimum number of segments to extract, defaults to 3
 #' @param max_segs should be an integer specifying the maximum number of segments to extract, defaults to 5
 
 #' @examples
 #' mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
-#' segmentation(df = mydf, vars = c("col1","col2","col3"), impute_type = "none",min_segs = 3, max_segs = 5)
- 
+#' segmentation(df = mydf, vars = c("col1","col2","col3"),min_segs = 3, max_segs = 5)
 #' @export
 
-segmentation <- function(df, vars, impute_type="none", min_segs = 3, max_segs = 5, weight_var = NULL){
+segmentation <- function(df, vars, min_segs = 3, max_segs = 5, weight_var = NULL){
 
   #dist_start <- base::Sys.time()
   #print(paste0("calculating distance matrix: ",dist_start))
@@ -36,10 +33,10 @@ segmentation <- function(df, vars, impute_type="none", min_segs = 3, max_segs = 
   #print(paste0("starting factor segmentation: ",fac_start))
 
   # factor analysis
-  segmentation_out[["factor_analysis"]] <- factor_segmentation(df,vars,impute_type,num_sols,weight_var)
+  segmentation_out[["factor_analysis"]] <- factor_segmentation(df,vars,num_sols,weight_var)
 
   # lca analysis
-  segmentation_out[["lca"]] <- lca_segmentation(df,vars,impute_type,num_sols)
+  segmentation_out[["lca"]] <- lca_segmentation(df,vars,num_sols)
   
   #kmediods_start <- base::Sys.time()
   #print(paste0("starting kmediods segmentation: ",kmediods_start))

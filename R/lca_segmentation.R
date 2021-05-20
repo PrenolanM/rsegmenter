@@ -1,18 +1,16 @@
 #' runs lca using the polca package
-#' @param df should be a data.frame of numeric variables
+#' @param df must be a data.frame of numeric variables
 #' 
 #' @param vars must be a string of variable names to operate on.
 #' These variables must be numeric
-#' 
-#' @param impute_type must be a string of one of "none","mode","mean","min","max"
 #' @param num_sols should be a numeric vector specifying the minimum and maximum number of factors to extract
-
+#'
 #' @examples
 #' mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
-#' lca_segmentation(df = mydf, vars = c("col1","col2","col3"), impute_type = "none",num_sols=c(3,5))
+#' lca_segmentation(df = mydf, vars = c("col1","col2","col3"),num_sols=c(3,5))
+#' @importFrom MASS ginv
 
-
-lca_segmentation <- function(df,vars,impute_type="none",num_sols){
+lca_segmentation <- function(df,vars,num_sols){
   
   # ensuring df is provided
   if (missing(df)){
@@ -52,7 +50,7 @@ lca_segmentation <- function(df,vars,impute_type="none",num_sols){
     stop("at least one of the input variables is not numeric")
   }
   
-  df <- df[vars]
+  df <- df[,vars,drop=FALSE]
   
   # vars can't have 0's
   # we check for this and if present, we increment the whole variable by the second highest value
@@ -64,20 +62,14 @@ lca_segmentation <- function(df,vars,impute_type="none",num_sols){
   
   
   if (any(col_with_zero)){
-    df[col_with_zero] <- as.data.frame(apply(df[col_with_zero],2,
-                                             function(x){
-                                               x + 1
-                                               }
-                                             )
-                                       )
+    df[,col_with_zero,drop=FALSE] <- as.data.frame(
+      apply(df[,col_with_zero,drop=FALSE],2,
+            function(x){
+              x + 1
+              }
+            )
+      )
     }
-  
-  
-  if (impute_type!="none"){
-    for (i in seq_along(vars)){
-      df[is.na(df[,i]),i] <- impute_values(df,impute_type)[i]
-    }  
-  }
   
   if (sum(is.na(df))){
     

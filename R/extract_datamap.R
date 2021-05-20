@@ -1,6 +1,8 @@
 #' extract_datamap returns a dataframe containing a mapping between variables, value codes and value labels.
 #' 
-#' @param df must be a data.frame that is read in using haven::read_sav
+#' @param df must be a .sav file stored as data.frame. 
+#' Importing the .sav file using haven::read_sav or 
+#' rsegmenter::read_data is the preferred methods 
 #' @export
 
 extract_datamap <- function(df){

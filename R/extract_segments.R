@@ -2,25 +2,27 @@
 #' @param seglist must be an output from the rsegmenter::segmentation() function
 #' @examples 
 #' mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
-#' segment_solutions <- segmentation(mydf,c("Col1","Col2"))
+#' segment_solutions <- segmentation(mydf,c("col1","col2","col3"))
 #' extract_factor_segments(segment_solutions)
 #' @export
 extract_factor_segments <- function(seglist){
-  return_df <- as.data.frame(lapply(seq(1,length(seglist[["factor_analysis"]])),
+  return_df <- as.data.frame(lapply(seq_along(seglist[["factor_analysis"]]),
                                     function(x){
                                       seglist[["factor_analysis"]][[x]][[2]]
                                       }
                                     )
                              )
 
-  return_df <- as.data.frame(lapply(return_df,
-                                    function(x){
-                                      as.factor(x)
-                                    }
-                                    )
-                             )
-
-  colnames(return_df) <- paste0("Factor_Cluster_Soln_",seq(1,ncol(return_df)))
+  # return_df <- as.data.frame(lapply(return_df,
+  #                                   function(x){
+  #                                     as.factor(x)
+  #                                   }
+  #                                   )
+  #                            )
+  
+  min_sol_num <- max(return_df[,1])
+  max_sol_num <- max(return_df)
+  colnames(return_df) <- paste0("Factor_Cluster_Soln_",seq(min_sol_num,max_sol_num))
 
   return(return_df)
 }
@@ -40,7 +42,7 @@ extract_rotated_components <- function(seglist,var_labels){
   
   return_list <- vector(mode="list",length(seglist[["factor_analysis"]]))
   
-  return_list <- lapply(seq(1,length(seglist[["factor_analysis"]])),
+  return_list <- lapply(seq_along(seglist[["factor_analysis"]]),
                         function(x){
                           rc <- seglist[["factor_analysis"]][[x]][[1]]
                           rownames(rc) <- var_labels[match(var_labels[["Variable_Name"]],rownames(rc)),2]
@@ -61,21 +63,23 @@ extract_rotated_components <- function(seglist,var_labels){
 #' extract_lca_segments(segment_solutions)
 #' @export
 extract_lca_segments <- function(seglist){
-  return_df <- as.data.frame(lapply(seq(1,length(seglist[["lca"]])),
+  return_df <- as.data.frame(lapply(seq_along(seglist[["lca"]]),
                                     function(x){
                                       seglist[["lca"]][[x]][["predclass"]]
                                       }
                                     )
                              )
   
-  return_df <- as.data.frame(lapply(return_df,
-                                    function(x){
-                                      as.factor(x)
-                                      }
-                                    )
-                             )
-  
-  colnames(return_df) <- paste0("LCA_Cluster_Soln_",seq(1,ncol(return_df)))
+  # return_df <- as.data.frame(lapply(return_df,
+  #                                   function(x){
+  #                                     as.factor(x)
+  #                                     }
+  #                                   )
+  #                            )
+
+  min_sol_num <- max(return_df[,1])
+  max_sol_num <- max(return_df)  
+  colnames(return_df) <- paste0("LCA_Cluster_Soln_",seq(min_sol_num,max_sol_num))
   
   return(return_df)
 }
