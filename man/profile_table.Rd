@@ -2,16 +2,10 @@
 % Please edit documentation in R/profile_table.R
 \name{profile_table}
 \alias{profile_table}
-\title{create profile raw count, col \%, row \%, col \% index tables of all specified variables by segment variable}
+\title{create profile raw count, col %, row %, col % index tables of all specified variables by segment variable}
 \usage{
-profile_table(
-  df,
-  factor_vars = NULL,
-  numeric_vars = NULL,
-  weight_var,
-  table_labels,
-  ...
-)
+profile_table(df, factor_vars = NULL, numeric_vars = NULL, weight_var,
+  table_labels, ...)
 }
 \arguments{
 \item{df}{must be a dataframe of numeric variables}
@@ -25,5 +19,5 @@ profile_table(
 \item{...}{segment variables}
 }
 \description{
-create profile raw count, col \%, row \%, col \% index tables of all specified variables by segment variable
+create profile raw count, col %, row %, col % index tables of all specified variables by segment variable
 }

@@ -4,7 +4,8 @@
 \alias{export_profile_tables}
 \title{create row percent profile tables of all specified variables by segment variable}
 \usage{
-export_profile_tables(prof_table, min_index = 80, max_index = 120, filename)
+export_profile_tables(prof_table, min_index = 80, max_index = 120,
+  filename)
 }
 \arguments{
 \item{df}{should be a dataframe of numeric variables}

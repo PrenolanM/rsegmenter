@@ -4,18 +4,15 @@
 \alias{reverse_scale}
 \title{Reverses the coding of each input variable.}
 \usage{
-reverse_scale(df, vars)
+reverse_scale(myvar)
 }
 \arguments{
-\item{df}{must be a data.frame}
-
-\item{vars}{must be a string of variable names to operate on.
-Variables must be numeric}
+\item{myvar}{must be a numeric vector to operate on.}
 }
 \description{
 Reverses the coding of each input variable.
 }
 \examples{
 mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
-reverse_scale(df = mydf, vars = c("col1","col2","col3"))
+reverse_scale(mydf$col1)
 }

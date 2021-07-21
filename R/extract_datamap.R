@@ -28,18 +28,31 @@ extract_datamap <- function(df){
                           }
   )
   
-  vars_to_keep <- unlist(lapply(data_map_list,function(x)dim(x)[2]))
+  vars_to_keep <- unlist(lapply(data_map_list,
+                                function(x){
+                                  dim(x)[2]
+                                  }
+                                )
+                         )
   
   data_map_list <- data_map_list[vars_to_keep==4]
   
-  data_map_df <- do.call("rbind.data.frame",data_map_list)
+  data_map_df <- do.call("rbind.data.frame",
+                         data_map_list)
   
   rownames(data_map_df) <- NULL
-  colnames(data_map_df) <- c("Variable_Name","Variable_Label","Value_Code","Value_Label")
+  colnames(data_map_df) <- c("Variable_Name",
+                             "Variable_Label",
+                             "Value_Code","Value_Label")
   
   data_map_df[["Value_Code"]] <- as.numeric(as.character(data_map_df[["Value_Code"]]))
   
   data_map_df[["Variable_Order"]] <- seq_along(data_map_df[["Variable_Name"]])
   
-  return(data_map_df[c("Variable_Order","Variable_Name","Variable_Label","Value_Code","Value_Label")])
+  return(data_map_df[c("Variable_Order",
+                       "Variable_Name",
+                       "Variable_Label",
+                       "Value_Code","Value_Label")
+                     ]
+         )
 }

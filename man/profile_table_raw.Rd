@@ -4,13 +4,8 @@
 \alias{profile_table_raw}
 \title{create raw count profile tables of all specified variables by segment variable}
 \usage{
-profile_table_raw(
-  df,
-  factor_vars = NULL,
-  numeric_vars = NULL,
-  weight_var,
-  segment_var
-)
+profile_table_raw(df, factor_vars = NULL, numeric_vars = NULL,
+  weight_var, segment_var)
 }
 \arguments{
 \item{df}{should be a dataframe of numeric variables}

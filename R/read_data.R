@@ -26,7 +26,7 @@ read_data <- function(infile){
 
   if (tools::file_ext(infile) == "csv"){
 
-    return(vroom::vroom(infile))
+    return(readr::read_csv(infile))
 
   } else if (tools::file_ext(infile) == "sav"){
 
