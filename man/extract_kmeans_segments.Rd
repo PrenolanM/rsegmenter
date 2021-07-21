@@ -10,8 +10,6 @@ extract_kmeans_segments(df)
 }
 \arguments{
 \item{df}{should be an output from the kantarsegmentr::segmentation() function}
-
-\item{df}{should be an output from the kantarsegmentr::segmentation() function}
 }
 \description{
 extract segments from kmeans segment solutions and stores in a dataframe

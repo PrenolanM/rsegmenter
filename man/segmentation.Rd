@@ -4,8 +4,14 @@
 \alias{segmentation}
 \title{runs factor analsysis and lca}
 \usage{
-segmentation(df, vars, min_segs = 3, max_segs = 5, weight_var = NULL,
-  method = c("factor"))
+segmentation(
+  df,
+  vars,
+  min_segs = 3,
+  max_segs = 5,
+  weight_var = NULL,
+  method = c("factor")
+)
 }
 \arguments{
 \item{df}{should be a data.frame of numeric variables}
