@@ -4,21 +4,35 @@
 \alias{factor_segmentation}
 \title{runs factor analysis with varimax rotation using the psych package}
 \usage{
-factor_segmentation(df, ..., num_sols, weight_var)
+factor_segmentation(
+  df,
+  ...,
+  weight_var,
+  num_sols,
+  rotate = "varimax",
+  scores = FALSE,
+  fac_assign = "avg_loading"
+)
 }
 \arguments{
 \item{df}{data.frame of numeric variables}
 
 \item{...}{variables for the factor analysis}
 
+\item{weight_var}{numeric vector of row weights}
+
 \item{num_sols}{numeric vector specifying the minimum and maximum number of factors to extract}
 
-\item{weight_var}{numeric vector of row weights}
+\item{rotate}{method of rotation for factor analysis. Options are the same as psych::principal()}
+
+\item{scores}{TRUE/FALSE to include scores in the output or not. if fac_assign="max_score", scores must be set to TRUE}
+
+\item{fac_assign}{method to use to assign segments to rows. options are one of c("avg_loading","max_score")}
 }
 \description{
 runs factor analysis with varimax rotation using the psych package
 }
 \examples{
 mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1),myweight=c(1,2,1))
-factor_segmentation(df = mydf,col1,col2,col3,num_sols=c(3,5),myweight)
+factor_segmentation(df = mydf,col1,col2,col3,myweight,num_sols=c(3,5),rotate="varimax",scores=FALSE,fac_assign="avg_loading")
 }

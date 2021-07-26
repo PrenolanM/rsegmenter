@@ -1,15 +1,31 @@
 #' runs factor analysis with varimax rotation using the psych package
 #' @param df data.frame of numeric variables
 #' @param ... variables for the factor analysis
+#' @param weight_var numeric vector of row weights
 #' @param num_sols numeric vector specifying the minimum and maximum number of factors to extract
-#' @param weight_var numeric vector of row weights 
+#' @param rotate method of rotation for factor analysis. Options are the same as psych::principal()
+#' @param scores TRUE/FALSE to include scores in the output or not. if fac_assign="max_score", scores must be set to TRUE
+#' @param fac_assign method to use to assign segments to rows. options are one of c("avg_loading","max_score")
 #' @examples
 #' mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1),myweight=c(1,2,1))
-#' factor_segmentation(df = mydf,col1,col2,col3,num_sols=c(3,5),myweight)
+#' factor_segmentation(df = mydf,col1,col2,col3,myweight,num_sols=c(3,5),rotate="varimax",scores=FALSE,fac_assign="avg_loading")
 #' @export
 #' @importFrom magrittr %>%
-factor_segmentation <- function(df,...,num_sols,weight_var){
+#' 
+factor_segmentation <- function(df,
+                                ...,
+                                weight_var,
+                                num_sols,
+                                rotate="varimax",
+                                scores=FALSE,
+                                fac_assign="avg_loading"
+                                ){
 
+  # ensure if fac_assign = "max_score" then scores=TRUE
+  if (fac_assign=="max_score" & !scores){
+    stop("If fac_assign=max_score, scores must be TRUE")
+  }
+  
   factor_segs <- vector("list",length = max(num_sols)-min(num_sols) + 1)
 
   if (missing(weight_var)){
@@ -35,43 +51,35 @@ factor_segmentation <- function(df,...,num_sols,weight_var){
 
                         factor_soln <- psych::principal(df,
                                                         nfactors = x,
-                                                        rotate = "varimax",
-                                                        scores = FALSE,
+                                                        rotate = rotate,
+                                                        scores = scores,
                                                         weight = resp_weight)
 
-                        rcloadings <- as.data.frame(unclass(factor_soln$loadings))
+                        rcloadings <- as.data.frame(unclass(factor_soln[["loadings"]]))
 
-                        # getting the variables per factor that load highest on the factor
-                        # this will be used to work out respondent row level means using the set of variables
-                        max_loading <- (t(apply(rcloadings,1,
-                                                function(x){
-                                                  ifelse(max(x)==x,1,0)
-                                                  }
-                                                )
-                                          )
-                                        )
-
-                        max_loading <- as.data.frame(ifelse(max_loading==0,0,row(max_loading)))
-
-                        rowmeans_df <- as.data.frame(lapply(seq_along(max_loading),
-                                                            function(x){
-                                                              if(sum(max_loading[,x]>0)<2){
-                                                                df[,max_loading[,x]>0]
-                                                                } else {
-                                                                  rowMeans(df[,max_loading[,x]>0])
-                                                                }
-                                                              }
-                                                            )
-                                                     )
-
-                        #assigned_segment <- apply(rowmeans_df,1,which.max)
-
-                        assigned_segment <- max.col(rowmeans_df)
+                        if (fac_assign=="avg_loading"){
+                          
+                          assigned_segment <- avg_loading(rcloadings)
+                          
+                        } else {
+                          
+                          assigned_segment <- max_score(rcloadings)
+                          
+                        }
                         
-                        return(list(assigned_segment,rowmeans_df,rcloadings))
+                        if (!scores){
+                          
+                          return(list(assigned_segment,rcloadings))
+                          
+                        } else if (scores){
+                          
+                          rcscores <- as.data.frame(factor_soln[["scores"]])
+                          
+                        }
+                        
                         }
                       )
-
+  
   return(factor_segs)
 
 }
