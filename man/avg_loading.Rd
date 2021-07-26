@@ -6,6 +6,9 @@
 \usage{
 avg_loading(myloadings)
 }
+\arguments{
+\item{myloadings}{factor loadings}
+}
 \description{
 assigns segments based on average factor loading
 }

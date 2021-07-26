@@ -19,4 +19,5 @@ Suggests:
 Config/testthat/edition: 3
 Imports: 
     MASS (>= 7.0.0),
-    psych (>= 2.0.0)
+    psych (>= 2.0.0),
+    magrittr

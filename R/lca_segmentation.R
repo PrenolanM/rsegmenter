@@ -1,25 +1,40 @@
-#' runs lca using the polca package
+#' runs lca using the poLCA package
 #' @param df must be a data.frame of numeric variables
-#' 
-#' @param vars must be a string of variable names to operate on.
-#' These variables must be numeric
+#' @param ... must be a string of variable names to operate on. Data must be numeric.
 #' @param num_sols should be a numeric vector specifying the minimum and maximum number of factors to extract
-#'
+#' @param maxiter The maximum number of iterations through which the estimation algorithm will cycle
+#' @param tol A tolerance value for judging when convergence has been reached. When the one-iteration change in the estimated 
+#' log-likelihood is less than tol, the estimation algorithm stops updating and considers the maximum log-likelihood to have been 
+#' found
+#' @param na.rm Logical, for how poLCA handles cases with missing values on the manifest variables. If TRUE, those cases are 
+#' removed (listwise deleted) before estimating the model. If FALSE, cases with missing values are retained. 
+#' Cases with missing covariates are always removed. The default is TRUE.
+#' @param nrep Number of times to estimate the model, using different values of probs.start. The default is one. 
+#' Setting nrep>1 automates the search for the global—rather than just a local—maximum of the log-likelihood function. 
+#' poLCA returns the parameter estimates corresponding to the model with the greatest log-likelihood.
 #' @examples
 #' mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
-#' lca_segmentation(df = mydf, vars = c("col1","col2","col3"),num_sols=c(3,5))
+#' lca_segmentation(df = mydf, col1,col2,col3, num_sols=c(3,5), maxiter=1000, tol=1e-10, na.rm=TRUE, nrep=1)
 #' @importFrom MASS ginv
-
-lca_segmentation <- function(df,vars,num_sols){
+#' @export
+#' 
+lca_segmentation <- function(df,
+                             ...,
+                             num_sols,
+                             maxiter=1000,
+                             tol=1e-10,
+                             na.rm=TRUE,
+                             nrep=1){
   
   # ensuring df is provided
   if (missing(df)){
     stop("df is compulsory")
   }
   
-  # ensuring vars is provided
-  if (missing(vars)){
-    stop("vars is compulsory")
+  # ensuring variables to run lca on is provided
+  myvars <- list(...)
+  if(length(myvars)==0){
+    stop("numeric variable to factor must be provided")
   }
   
   # ensuring num_sols is provided
@@ -34,15 +49,14 @@ lca_segmentation <- function(df,vars,num_sols){
     stop("df must be a data.frame or tibble")
   }
   
+  
+  df <- df %>% 
+    select(...)
+  
   # df must have at least 1 row
   # this implies df will have at least 1 col as well
   if (is.null(nrow(df))){
     stop("df must be a data.frame of at least 1 row")
-  }
-  
-  # check that we don't have variables with all NA's
-  if (check_all_na(df)){
-    stop("at least one of the input variables contain all NA's")
   }
   
   # check that all variables are numeric
@@ -50,65 +64,52 @@ lca_segmentation <- function(df,vars,num_sols){
     stop("at least one of the input variables is not numeric")
   }
   
-  df <- df[,vars,drop=FALSE]
-  
-  # vars can't have 0's
-  # we check for this and if present, we increment the whole variable by the second highest value
-  col_with_zero <- apply(df,2,
-                         function(x){
-                           any(x==0)
-                           }
-                         )
-  
-  
-  if (any(col_with_zero)){
-    df[,col_with_zero,drop=FALSE] <- as.data.frame(
-      apply(df[,col_with_zero,drop=FALSE],2,
-            function(x){
-              x + 1
-              }
-            )
-      )
-    }
-  
-  if (sum(is.na(df))){
-    
-    warning("there are missing values in your data")
-    
+  # check that there are no missing values
+  if (sum(is.na(df))>0){
+    stop("data has NA's. please address these before segmenting")
   }
   
-  # if (missing(weight_var)){
-  #   
-  #   resp_weight <- rep(1,nrow(df))
-  #   
-  # } else{
-  #   
-  #   resp_weight <- df[[weight_var]]
-  #   df[[weight_var]] <- NULL
-  #   
-  # }
-  
+  # cannot have 0's in our data for this algorithm
+  # if 0's are present, increment the affected variable by 1
+  df <- df %>% 
+    mutate(across(where(~ min(.)==0), ~ . + 1))
   
   # this will run all factor solutions in order to get the loadings and factor scores
   lca_segs <- lapply(num_sols,
                      function(x){
                        
-                       set.seed(12345)
+                       set.seed(123456)
                        
-                       f <- as.formula(paste(paste("cbind(",paste(vars,collapse = ","),")"),1,sep = "~"))
+                       # building the formula to pass through to poLCA
+                       f <- as.formula(
+                         paste(paste("cbind(",
+                                     paste(...,collapse = ","),
+                                     ")"
+                                     ),
+                               1,
+                               sep = "~")
+                         )
                        
                        lca_soln <-  poLCA::poLCA(f,                 #A formula expression of the form response ~ predictors
                                                  df,                #Data frame
                                                  nclass=x,          #Number of latent classes to assume in the model
-                                                 maxiter=1000,      #The maximum number of iterations through which the estimation algorithm will cycle
+                                                 maxiter=maxiter,   #The maximum number of iterations through which the estimation algorithm will cycle
                                                  graphs=FALSE,      #Should poLCA graphically display the parameter estimates at the completion of the estimation algorithm
-                                                 tol=1e-10,         #A tolerance value for judging when convergence has been reached. When the one-iteration change in the estimated log-likelihood is less than tol, the estimation algorithm stops updating and considers the maximum log-likelihood to have been found
-                                                 na.rm=TRUE,        #How to handle missing values, If TRUE, those cases are removed (listwise deleted) before estimating the model. If FALSE, cases with missing values are retained. Cases with missing covariates are always removed
+                                                 tol=tol,           #A tolerance value for judging when convergence has been reached. When the one-iteration change in the estimated log-likelihood is less than tol, the estimation algorithm stops updating and considers the maximum log-likelihood to have been found
+                                                 na.rm=na.rm,       #How to handle missing values, If TRUE, those cases are removed (listwise deleted) before estimating the model. If FALSE, cases with missing values are retained. Cases with missing covariates are always removed
                                                  probs.start=NULL,  #A list of matrices of class-conditional response probabilities to be used as the starting values for the estimation algorithm. NULL = producing random starting values
-                                                 nrep=1,            #Number of times to estimate the model, using different values of probs.start. The default is one. Setting nrep>1 automates the search for the global---rather than just a local---maximum of the log-likelihood function. poLCA returns the parameter estimates corresponding to the model with the greatest log-likelihood
-                                                 verbose=FALSE,      #To should output of the model = TRUE
-                                                 calc.se=TRUE)      #Calculate the standard errors of the estimated class-conditional response probabilities and mixing proportions  
+                                                 nrep=nrep,         #Number of times to estimate the model, using different values of probs.start. The default is one. Setting nrep>1 automates the search for the global---rather than just a local---maximum of the log-likelihood function. poLCA returns the parameter estimates corresponding to the model with the greatest log-likelihood
+                                                 verbose=FALSE,     #To should output of the model = TRUE
+                                                 calc.se=TRUE)      #Calculate the standard errors of the estimated class-conditional response probabilities and mixing proportions
+                       
+                       return(list(segments = lca_soln[["predclass"]],
+                                   posterior_probs = lca_soln[["posterior"]],
+                                   conditional_probs = lca_soln[["probs"]]
+                                   )
+                              )
                      }
   )
+  
   return(lca_segs)
+  
 }

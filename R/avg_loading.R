@@ -1,5 +1,6 @@
 #' assigns segments based on average factor loading
-#'
+#' @param myloadings factor loadings
+#' 
 avg_loading <- function(myloadings){
   
   # getting the factor that each variable loads highest on

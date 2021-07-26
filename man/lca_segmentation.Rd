@@ -2,22 +2,43 @@
 % Please edit documentation in R/lca_segmentation.R
 \name{lca_segmentation}
 \alias{lca_segmentation}
-\title{runs lca using the polca package}
+\title{runs lca using the poLCA package}
 \usage{
-lca_segmentation(df, vars, num_sols)
+lca_segmentation(
+  df,
+  ...,
+  num_sols,
+  maxiter = 1000,
+  tol = 1e-10,
+  na.rm = TRUE,
+  nrep = 1
+)
 }
 \arguments{
 \item{df}{must be a data.frame of numeric variables}
 
-\item{vars}{must be a string of variable names to operate on.
-These variables must be numeric}
+\item{...}{must be a string of variable names to operate on. Data must be numeric.}
 
 \item{num_sols}{should be a numeric vector specifying the minimum and maximum number of factors to extract}
+
+\item{maxiter}{The maximum number of iterations through which the estimation algorithm will cycle}
+
+\item{tol}{A tolerance value for judging when convergence has been reached. When the one-iteration change in the estimated
+log-likelihood is less than tol, the estimation algorithm stops updating and considers the maximum log-likelihood to have been
+found}
+
+\item{na.rm}{Logical, for how poLCA handles cases with missing values on the manifest variables. If TRUE, those cases are
+removed (listwise deleted) before estimating the model. If FALSE, cases with missing values are retained.
+Cases with missing covariates are always removed. The default is TRUE.}
+
+\item{nrep}{Number of times to estimate the model, using different values of probs.start. The default is one.
+Setting nrep>1 automates the search for the global—rather than just a local—maximum of the log-likelihood function.
+poLCA returns the parameter estimates corresponding to the model with the greatest log-likelihood.}
 }
 \description{
-runs lca using the polca package
+runs lca using the poLCA package
 }
 \examples{
 mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
-lca_segmentation(df = mydf, vars = c("col1","col2","col3"),num_sols=c(3,5))
+lca_segmentation(df = mydf, col1,col2,col3, num_sols=c(3,5), maxiter=1000, tol=1e-10, na.rm=TRUE, nrep=1)
 }

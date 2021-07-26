@@ -10,7 +10,6 @@
 #' mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1),myweight=c(1,2,1))
 #' factor_segmentation(df = mydf,col1,col2,col3,myweight,num_sols=c(3,5),rotate="varimax",scores=FALSE,fac_assign="avg_loading")
 #' @export
-#' @importFrom magrittr %>%
 #' 
 factor_segmentation <- function(df,
                                 ...,
@@ -18,9 +17,19 @@ factor_segmentation <- function(df,
                                 num_sols,
                                 rotate="varimax",
                                 scores=FALSE,
-                                fac_assign="avg_loading"
-                                ){
-
+                                fac_assign="avg_loading"){
+  
+  # ensuring df is provided
+  if (missing(df)){
+    stop("df is compulsory")
+  }
+  
+  # ensuring variables to factor analyse is provided
+  myvars <- list(...)
+  if(length(myvars)==0){
+    stop("numeric variables to factor must be provided")
+  }
+  
   # ensure if fac_assign = "max_score" then scores=TRUE
   if (fac_assign=="max_score" & !scores){
     stop("If fac_assign=max_score, scores must be TRUE")
@@ -35,13 +44,18 @@ factor_segmentation <- function(df,
   } else{
 
     resp_weight <- df %>% 
-      select({{weight_var}}) %>% 
-      unlist()
+     select({{weight_var}}) %>% 
+     unlist()
     
   }
 
   df <- df %>% 
-    select(...)
+   select(...)
+  
+  # check that there are no missing values
+  if (sum(is.na(df))>0){
+    stop("data has NA's. please address these before segmenting")
+  }
   
   # this will run all factor solutions in order to get the loadings and factor scores
   factor_segs <- lapply(num_sols,
@@ -69,11 +83,15 @@ factor_segmentation <- function(df,
                         
                         if (!scores){
                           
-                          return(list(assigned_segment,rcloadings))
+                          return(list(segments=assigned_segment,
+                                      loadings=rcloadings))
                           
                         } else if (scores){
                           
                           rcscores <- as.data.frame(factor_soln[["scores"]])
+                          return(list(segments=assigned_segment,
+                                      loadings=rcloadings,
+                                      scores=rcscores))
                           
                         }
                         
