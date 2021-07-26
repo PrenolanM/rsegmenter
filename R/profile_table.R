@@ -7,11 +7,14 @@
 #' @param weight_var name of weight variable
 #' @param segment_var a character vector of segment variable name
 
-profile_table_raw <- function(df,factor_vars = NULL,numeric_vars = NULL,weight_var,segment_var){
+profile_table_raw <- function(df,
+                              factor_vars = NULL,
+                              numeric_vars = NULL,
+                              weight_var,
+                              segment_var){
 
-  segment_var <- dplyr::enquo(segment_var)
-
-  weight_var <- dplyr::enquo(weight_var)
+  # determine which are factors
+  # determine which are numeric
 
   if (!is.null(factor_vars)){
 
@@ -20,11 +23,11 @@ profile_table_raw <- function(df,factor_vars = NULL,numeric_vars = NULL,weight_v
       tidyr::pivot_longer(cols = all_of(factor_vars),
                           names_to = "Variable_Name",
                           values_to = "Value_Code") %>%
-      dplyr::group_by(Variable_Name,Value_Code,!!(segment_var)) %>%
-      dplyr::summarise(mycount = sum(!!(weight_var))) %>%
+      dplyr::group_by(Variable_Name,Value_Code,{{segment_var}}) %>%
+      dplyr::summarise(mycount = sum({{weight_var}})) %>%
       ungroup() %>%
-      arrange(!!(segment_var)) %>%
-      tidyr::pivot_wider(names_from = !!(segment_var),
+      arrange({{segment_var}}) %>%
+      tidyr::pivot_wider(names_from = {{segment_var}},
                          names_prefix = "Cluster_",
                          values_from = mycount)
 
@@ -43,11 +46,11 @@ profile_table_raw <- function(df,factor_vars = NULL,numeric_vars = NULL,weight_v
       tidyr::pivot_longer(cols = all_of(numeric_vars),
                           names_to = "Variable_Name",
                           values_to = "Value_Code") %>%
-      dplyr::group_by(Variable_Name,Value_Code,!!(segment_var)) %>%
-      dplyr::summarise(mycount = weighted.mean(!!(weight_var))) %>%
+      dplyr::group_by(Variable_Name,Value_Code,{{segment_var}}) %>%
+      dplyr::summarise(mycount = weighted.mean({{weight_var}})) %>%
       ungroup() %>%
-      arrange(!!(segment_var)) %>%
-      tidyr::pivot_wider(names_from = !!(segment_var),
+      arrange({{segment_var}}) %>%
+      tidyr::pivot_wider(names_from = {{segment_var}},
                          names_prefix = "Cluster_",
                          values_from = mycount)
 
@@ -85,19 +88,19 @@ profile_table_raw <- function(df,factor_vars = NULL,numeric_vars = NULL,weight_v
 #' @param numeric_vars should be a character vector of variable names
 #' @param segment_var should be a character vector of segment variable name
 
-profile_table_col_perc <- function(df,factor_vars = NULL,numeric_vars = NULL,weight_var,segment_var){
-
-  segment_var <- dplyr::enquo(segment_var)
-
-  weight_var <- dplyr::enquo(weight_var)
+profile_table_col_perc <- function(df,
+                                   factor_vars = NULL,
+                                   numeric_vars = NULL,
+                                   weight_var,
+                                   segment_var){
 
   # get base sizes of each segment
   segment_size <- df %>%
-    select(!!segment_var,!!weight_var) %>%
-    group_by(!!segment_var) %>%
-    summarise(mycount = sum(!!(weight_var))) %>%
+    select({{segment_var}},{{weight_var}}) %>%
+    group_by({{segment_var}}) %>%
+    summarise(mycount = sum({{weight_var}})) %>%
     ungroup() %>%
-    arrange(!!(segment_var))
+    arrange({{segment_var}})
 
   if (!is.null(factor_vars)){
 
@@ -106,11 +109,11 @@ profile_table_col_perc <- function(df,factor_vars = NULL,numeric_vars = NULL,wei
       tidyr::pivot_longer(cols = all_of(factor_vars),
                           names_to = "Variable_Name",
                           values_to = "Value_Code") %>%
-      dplyr::group_by(Variable_Name,Value_Code,!!(segment_var)) %>%
-      dplyr::summarise(mycount = sum(!!(weight_var))) %>%
+      dplyr::group_by(Variable_Name,Value_Code,{{segment_var}}) %>%
+      dplyr::summarise(mycount = sum({{weight_var}})) %>%
       ungroup() %>%
-      arrange(!!(segment_var)) %>%
-      tidyr::pivot_wider(names_from = !!(segment_var),
+      arrange({{segment_var}}) %>%
+      tidyr::pivot_wider(names_from = {{segment_var}},
                          names_prefix = "Cluster_",
                          values_from = mycount)
 
@@ -138,11 +141,11 @@ profile_table_col_perc <- function(df,factor_vars = NULL,numeric_vars = NULL,wei
       tidyr::pivot_longer(cols = all_of(numeric_vars),
                           names_to = "Variable_Name",
                           values_to = "Value_Code") %>%
-      dplyr::group_by(Variable_Name,Value_Code,!!(segment_var)) %>%
-      dplyr::summarise(mycount = weighted.mean(!!(weight_var))) %>%
+      dplyr::group_by(Variable_Name,Value_Code,{{segment_var}}) %>%
+      dplyr::summarise(mycount = weighted.mean({{weight_var}})) %>%
       ungroup() %>%
-      arrange(!!(segment_var)) %>%
-      tidyr::pivot_wider(names_from = !!(segment_var),
+      arrange({{segment_var}}) %>%
+      tidyr::pivot_wider(names_from = {{segment_var}},
                          names_prefix = "Cluster_",
                          values_from = mycount)
 
@@ -179,11 +182,11 @@ profile_table_col_perc <- function(df,factor_vars = NULL,numeric_vars = NULL,wei
 #' @param numeric_vars should be a character vector of variable names
 #' @param segment_var should be a character vector of segment variable name
 
-profile_table_row_perc <- function(df,factor_vars = NULL,numeric_vars = NULL,weight_var,segment_var){
-
-  segment_var <- dplyr::enquo(segment_var)
-
-  weight_var <- dplyr::enquo(weight_var)
+profile_table_row_perc <- function(df,
+                                   factor_vars = NULL,
+                                   numeric_vars = NULL,
+                                   weight_var,
+                                   segment_var){
 
   if (!is.null(factor_vars)){
 
@@ -192,11 +195,11 @@ profile_table_row_perc <- function(df,factor_vars = NULL,numeric_vars = NULL,wei
       tidyr::pivot_longer(cols = all_of(factor_vars),
                           names_to = "Variable_Name",
                           values_to = "Value_Code") %>%
-      dplyr::group_by(Variable_Name,Value_Code,!!(segment_var)) %>%
-      dplyr::summarise(mycount = sum(!!(weight_var))) %>%
+      dplyr::group_by(Variable_Name,Value_Code,{{segment_var}}) %>%
+      dplyr::summarise(mycount = sum({{weight_var}})) %>%
       ungroup() %>%
-      arrange(!!(segment_var)) %>%
-      tidyr::pivot_wider(names_from = !!(segment_var),
+      arrange({{segment_var}}) %>%
+      tidyr::pivot_wider(names_from = {{segment_var}},
                          names_prefix = "Cluster_",
                          values_from = mycount)
 
@@ -220,11 +223,11 @@ profile_table_row_perc <- function(df,factor_vars = NULL,numeric_vars = NULL,wei
       tidyr::pivot_longer(cols = all_of(numeric_vars),
                           names_to = "Variable_Name",
                           values_to = "Value_Code") %>%
-      dplyr::group_by(Variable_Name,Value_Code,!!(segment_var)) %>%
-      dplyr::summarise(mycount = weighted.mean(!!(weight_var))) %>%
+      dplyr::group_by(Variable_Name,Value_Code,{{segment_var}}) %>%
+      dplyr::summarise(mycount = weighted.mean({{weight_var}})) %>%
       ungroup() %>%
-      arrange(!!(segment_var)) %>%
-      tidyr::pivot_wider(names_from = !!(segment_var),
+      arrange({{segment_var}}) %>%
+      tidyr::pivot_wider(names_from = {{segment_var}},
                          names_prefix = "Cluster_",
                          values_from = mycount)
 
@@ -260,19 +263,19 @@ profile_table_row_perc <- function(df,factor_vars = NULL,numeric_vars = NULL,wei
 #' @param numeric_vars should be a character vector of variable names
 #' @param segment_var should be a character vector of segment variable name
 #'
-profile_table_col_index <- function(df,factor_vars = NULL,numeric_vars = NULL,weight_var,segment_var){
-
-  segment_var <- dplyr::enquo(segment_var)
-
-  weight_var <- dplyr::enquo(weight_var)
+profile_table_col_index <- function(df,
+                                    factor_vars = NULL,
+                                    numeric_vars = NULL,
+                                    weight_var,
+                                    segment_var){
 
   # get base sizes of each segment
   segment_size <- df %>%
-    select(!!segment_var,!!weight_var) %>%
-    group_by(!!segment_var) %>%
-    summarise(mycount = sum(!!(weight_var))) %>%
+    select({{segment_var}},{{weight_var}}) %>%
+    group_by({{segment_var}}) %>%
+    summarise(mycount = sum({{weight_var}})) %>%
     ungroup() %>%
-    arrange(!!(segment_var))
+    arrange({{segment_var}})
 
   if (!is.null(factor_vars)){
 
@@ -281,11 +284,11 @@ profile_table_col_index <- function(df,factor_vars = NULL,numeric_vars = NULL,we
       tidyr::pivot_longer(cols = all_of(factor_vars),
                           names_to = "Variable_Name",
                           values_to = "Value_Code") %>%
-      dplyr::group_by(Variable_Name,Value_Code,!!(segment_var)) %>%
-      dplyr::summarise(mycount = sum(!!(weight_var))) %>%
+      dplyr::group_by(Variable_Name,Value_Code,{{segment_var}}) %>%
+      dplyr::summarise(mycount = sum({{weight_var}})) %>%
       ungroup() %>%
-      arrange(!!(segment_var)) %>%
-      tidyr::pivot_wider(names_from = !!(segment_var),
+      arrange({{segment_var}}) %>%
+      tidyr::pivot_wider(names_from = {{segment_var}},
                          names_prefix = "Cluster_",
                          values_from = mycount)
 
@@ -314,11 +317,11 @@ profile_table_col_index <- function(df,factor_vars = NULL,numeric_vars = NULL,we
       tidyr::pivot_longer(cols = all_of(numeric_vars),
                           names_to = "Variable_Name",
                           values_to = "Value_Code") %>%
-      dplyr::group_by(Variable_Name,Value_Code,!!(segment_var)) %>%
-      dplyr::summarise(mycount = weighted.mean(!!(weight_var))) %>%
+      dplyr::group_by(Variable_Name,Value_Code,{{segment_var}}) %>%
+      dplyr::summarise(mycount = weighted.mean({{weight_var}})) %>%
       ungroup() %>%
-      arrange(!!(segment_var)) %>%
-      tidyr::pivot_wider(names_from = !!(segment_var),
+      arrange({{segment_var}}) %>%
+      tidyr::pivot_wider(names_from = {{segment_var}},
                          names_prefix = "Cluster_",
                          values_from = mycount)
 
@@ -354,7 +357,12 @@ profile_table_col_index <- function(df,factor_vars = NULL,numeric_vars = NULL,we
 #' @param weight_var must be a numeric vector of row weights. if data is unweighted, specify a vector of 1's with length equal to number of rows of df
 #' @param ... segment variables
 
-profile_table <- function(df,factor_vars = NULL,numeric_vars = NULL,weight_var,table_labels,...){
+profile_table <- function(df,
+                          factor_vars = NULL,
+                          numeric_vars = NULL,
+                          weight_var,
+                          table_labels,
+                          ...){
 
   weight_var <- dplyr::enquo(weight_var)
 

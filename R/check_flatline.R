@@ -3,67 +3,35 @@
 #' Returns the max percentage of responses that are the same per row.
 #' The closer this return value is to 1, the more serious the flatline problem 
 #' is for that row.
-#' 
-#' @param df must be a data.frame
-#' 
-#' @param vars must be a string of variable names to operate on.
-#' These variables must be numeric
+#' @param myvar must be a numeric vector to operate on.
 #' 
 #' @examples
 #' mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
-#' check_flatline(df = mydf, vars = c("col1","col2","col3"))
+#' check_flatline(mydf$col1)
 #' @export
 
-check_flatline <- function(df,vars){
+check_flatline <- function(myvar){
   
-  # ensuring df is provided
-  if (missing(df)){
-    stop("df is compulsory")
-  }
-  
-  # ensuring vars is provided
-  if (missing(vars)){
-    stop("vars is compulsory")
-  }
-  
-  # df must be a data.frame or tibble
-  if (!(c("data.frame") %in% class(df))){
-    stop("df must be a data.frame or tibble")
-  }
-  
-  # df must have at least 1 row
-  # this implies df will have at least 1 col as well
-  if (is.null(nrow(df))){
-    stop("df must be a data.frame of at least 1 row")
-  }
-  
-  df <- df[,vars,drop=FALSE]
-  
-  # check that we don't have variables with all NA's
-  if (check_all_na(df)){
-    stop("at least one of the input variables contain all NA's")
-  }
-  
-  # check that all variables are numeric
-  if (check_all_numeric(df)){
-    stop("at least one of the input variables is not numeric")
-  }
-  
-  if (sum(is.na(df))){
+  # ensuring myvar is provided
+  if (missing(myvar)){
     
-    warning("there are missing values in your data")
+    stop("myvar is compulsory")
     
   }
   
-  return_df <- as.data.frame(apply(df,1,
-                                   function(x){
-                                     max(table(x))/length(vars)
-                                     }
-                                   )
-                             )
-  
-  colnames(return_df) <- "Prop_Flatline"
+  # check that variable is numeric
+  if (!is.numeric(myvar)){
     
-  return(return_df)
+    stop("non numeric variable supplied")
+    
+  }
+  
+  if (sum(is.na(myvar))){
+    
+    stop("there are missing values in your data")
+    
+  }
+  
+  max(table(myvar))/length(myvar)
   
 }

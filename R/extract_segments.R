@@ -6,9 +6,9 @@
 #' extract_factor_segments(segment_solutions)
 #' @export
 extract_factor_segments <- function(seglist){
-  return_df <- as.data.frame(lapply(seq_along(seglist[["factor_analysis"]]),
+  return_df <- as.data.frame(lapply(seq_along(seglist),
                                     function(x){
-                                      seglist[["factor_analysis"]][[x]][[2]]
+                                      seglist[[x]][[1]]
                                       }
                                     )
                              )

@@ -15,16 +15,3 @@ test_that("proportion for 3 variables",{
                                          z=c(1,2,3)),c("x","y","z")),
                data.frame(Prop_Flatline=c(2/3,1,1/3)))
 })
-
-test_that("return type is a data.frame when one column is passed",{
-  expect_equal(class(check_flatline(data.frame(x=c(1,2,1)),"x")),
-               "data.frame")
-})
-
-test_that("return type is a data.frame when two or more columns are passed",{
-  expect_equal(class(check_flatline(data.frame(x=c(1,2,1),
-                                               y=c(1,2,1)),
-                                    c("x","y"))),
-               "data.frame")
-})
-

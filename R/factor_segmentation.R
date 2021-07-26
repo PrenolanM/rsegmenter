@@ -1,78 +1,37 @@
 #' runs factor analysis with varimax rotation using the psych package
-#' @param df must be a data.frame of numeric variables
-#' 
-#' @param vars must be a string of variable names to operate on.
-#' @param num_sols should be a numeric vector specifying the minimum and maximum number of factors to extract
+#' @param df data.frame of numeric variables
+#' @param ... variables for the factor analysis
+#' @param num_sols numeric vector specifying the minimum and maximum number of factors to extract
+#' @param weight_var numeric vector of row weights 
 #' @examples
-#' mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
-#' factor_segmentation(df = mydf, vars = c("col1","col2","col3"),num_sols=c(3,5))
+#' mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1),myweight=c(1,2,1))
+#' factor_segmentation(df = mydf,col1,col2,col3,num_sols=c(3,5),myweight)
+#' @export
+#' @importFrom magrittr %>%
+factor_segmentation <- function(df,...,num_sols,weight_var){
 
-
-factor_segmentation <- function(df,vars,num_sols,weight_var){
-  
-  # ensuring df is provided
-  if (missing(df)){
-    stop("df is compulsory")
-  }
-  
-  # ensuring vars is provided
-  if (missing(vars)){
-    stop("vars is compulsory")
-  }
-  
-  # ensuring num_sols is provided
-  if (missing(num_sols)){
-    stop("num_sols is compulsory")
-  }
-  
   factor_segs <- vector("list",length = max(num_sols)-min(num_sols) + 1)
-  
-  # df must be a data.frame or tibble
-  if (!(c("data.frame") %in% class(df))){
-    stop("df must be a data.frame or tibble")
-  }
-  
-  # df must have at least 1 row
-  # this implies df will have at least 1 col as well
-  if (is.null(nrow(df))){
-    stop("df must be a data.frame of at least 1 row")
-  }
-  
-  # check that we don't have variables with all NA's
-  if (check_all_na(df)){
-    stop("at least one of the input variables contain all NA's")
-  }
-  
-  # check that all variables are numeric
-  if (check_all_numeric(df)){
-    stop("at least one of the input variables is not numeric")
-  }
-  
-  df <- df[,vars,drop=FALSE]
-  
-  if (sum(is.na(df))){
-    
-    warning("there are missing values in your data")
-    
-  }
 
-  if (is.null(weight_var)){
+  if (missing(weight_var)){
 
     resp_weight <- rep(1,nrow(df))
 
   } else{
 
-    resp_weight <- df[[weight_var]]
-    df[[weight_var]] <- NULL
-
+    resp_weight <- df %>% 
+      select({{weight_var}}) %>% 
+      unlist()
+    
   }
 
-
+  df <- df %>% 
+    select(...)
+  
   # this will run all factor solutions in order to get the loadings and factor scores
   factor_segs <- lapply(num_sols,
                       function(x){
 
-                        set.seed(12345)
+                        set.seed(123456)
 
                         factor_soln <- psych::principal(df,
                                                         nfactors = x,
@@ -105,9 +64,11 @@ factor_segmentation <- function(df,vars,num_sols,weight_var){
                                                             )
                                                      )
 
-                        assigned_segment <- apply(rowmeans_df,1,which.max)
+                        #assigned_segment <- apply(rowmeans_df,1,which.max)
 
-                        return(list(rcloadings,assigned_segment))
+                        assigned_segment <- max.col(rowmeans_df)
+                        
+                        return(list(assigned_segment,rowmeans_df,rcloadings))
                         }
                       )
 
