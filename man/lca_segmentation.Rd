@@ -15,11 +15,11 @@ lca_segmentation(
 )
 }
 \arguments{
-\item{df}{must be a data.frame of numeric variables}
+\item{df}{data.frame of numeric variables}
 
-\item{vars}{must be a string of variable names to operate on. Data must be numeric.}
+\item{vars}{character vector of variable names}
 
-\item{num_sols}{should be a numeric vector specifying the minimum and maximum number of factors to extract}
+\item{num_sols}{numeric vector specifying the minimum and maximum number of factors to extract}
 
 \item{maxiter}{The maximum number of iterations through which the estimation algorithm will cycle}
 
@@ -40,5 +40,5 @@ runs lca using the poLCA package
 }
 \examples{
 mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
-lca_segmentation(df = mydf, col1,col2,col3, num_sols=c(3,5), maxiter=1000, tol=1e-10, na.rm=TRUE, nrep=1)
+lca_segmentation(df = mydf, vars = c("col1","col2","col3"), num_sols=c(3,5), maxiter=1000, tol=1e-10, na.rm=TRUE, nrep=1)
 }

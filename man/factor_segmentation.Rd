@@ -17,7 +17,7 @@ factor_segmentation(
 \arguments{
 \item{df}{data.frame of numeric variables}
 
-\item{vars}{variables for the factor analysis}
+\item{vars}{character vector of variable names}
 
 \item{weight_var}{numeric vector of row weights}
 

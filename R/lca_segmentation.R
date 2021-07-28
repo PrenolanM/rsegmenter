@@ -1,7 +1,7 @@
 #' runs lca using the poLCA package
-#' @param df must be a data.frame of numeric variables
-#' @param vars must be a string of variable names to operate on. Data must be numeric.
-#' @param num_sols should be a numeric vector specifying the minimum and maximum number of factors to extract
+#' @param df data.frame of numeric variables
+#' @param vars character vector of variable names
+#' @param num_sols numeric vector specifying the minimum and maximum number of factors to extract
 #' @param maxiter The maximum number of iterations through which the estimation algorithm will cycle
 #' @param tol A tolerance value for judging when convergence has been reached. When the one-iteration change in the estimated 
 #' log-likelihood is less than tol, the estimation algorithm stops updating and considers the maximum log-likelihood to have been 
@@ -14,7 +14,7 @@
 #' poLCA returns the parameter estimates corresponding to the model with the greatest log-likelihood.
 #' @examples
 #' mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
-#' lca_segmentation(df = mydf, col1,col2,col3, num_sols=c(3,5), maxiter=1000, tol=1e-10, na.rm=TRUE, nrep=1)
+#' lca_segmentation(df = mydf, vars = c("col1","col2","col3"), num_sols=c(3,5), maxiter=1000, tol=1e-10, na.rm=TRUE, nrep=1)
 #' @importFrom MASS ginv
 #' @export
 #' 

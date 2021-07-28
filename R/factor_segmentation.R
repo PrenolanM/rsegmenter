@@ -1,6 +1,6 @@
 #' runs factor analysis with varimax rotation using the psych package
 #' @param df data.frame of numeric variables
-#' @param vars variables for the factor analysis
+#' @param vars character vector of variable names
 #' @param weight_var numeric vector of row weights
 #' @param num_sols numeric vector specifying the minimum and maximum number of factors to extract
 #' @param rotate method of rotation for factor analysis. Options are the same as psych::principal()
