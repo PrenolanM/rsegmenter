@@ -2,19 +2,25 @@
 % Please edit documentation in R/profile_table.R
 \name{export_profile_tables}
 \alias{export_profile_tables}
-\title{create row percent profile tables of all specified variables by segment variable}
+\title{Exports cross tables to .xlsx format.}
 \usage{
 export_profile_tables(prof_table, min_index = 80, max_index = 120, filename)
 }
 \arguments{
-\item{df}{should be a dataframe of numeric variables}
+\item{prof_table}{should be the output from rsegmenter::profile_table}
 
-\item{factor_vars}{should be a character vector of variable names}
+\item{min_index}{numeric value for highlighting under-indexing}
 
-\item{numeric_vars}{should be a character vector of variable names}
+\item{max_index}{numeric value for highlighting over-indexing}
 
-\item{...}{segment variables}
+\item{filename}{character string naming a file}
 }
 \description{
-create row percent profile tables of all specified variables by segment variable
+Exports cross tables to .xlsx format.
+}
+\examples{
+df <- data.frame(var1=c(1,2,3),var2=c(2,1,3),var3=c(3,2,1))
+segments <- factor_segmentation(df,c(2:3))
+profile_table <- profile_table(df,factor_vars = c("var1","var2","var3"),numeric_vars = NULL,segment_vars,table_labels)
+export_profile_tables(profile_table,min_index=80,max_index=120,"profile_tables.xlsx")
 }

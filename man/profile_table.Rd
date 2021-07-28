@@ -2,7 +2,7 @@
 % Please edit documentation in R/profile_table.R
 \name{profile_table}
 \alias{profile_table}
-\title{create profile raw count, col \%, row \%, col \% index tables of all specified variables by segment variable}
+\title{Creates a data.frame of 4 sets of cross tables. These are raw count, col \%, row \% and col \% index tables}
 \usage{
 profile_table(
   df,
@@ -14,16 +14,19 @@ profile_table(
 )
 }
 \arguments{
-\item{df}{must be a dataframe of numeric variables}
+\item{df}{data.frame of input variables}
 
-\item{factor_vars}{must be a character vector of variable names}
+\item{factor_vars}{character vector of variable names that are to be treated as factor.
+Factor variables will have counts shown for each level of each variable.}
 
-\item{numeric_vars}{must be a character vector of variable names}
+\item{numeric_vars}{character vector of variable names that are to be treated as numeric.
+Numeric variables will have means shown for variable.}
 
-\item{weight_var}{must be a numeric vector of row weights. if data is unweighted, specify a vector of 1's with length equal to number of rows of df}
+\item{weight_var}{name of the variable holding case/row weights.
+If data is un-weighted, specify a vector of 1's with length equal to number of rows of df}
 
-\item{...}{segment variables}
+\item{segment_vars}{character vector segment variables to profile by}
 }
 \description{
-create profile raw count, col \%, row \%, col \% index tables of all specified variables by segment variable
+Creates a data.frame of 4 sets of cross tables. These are raw count, col \%, row \% and col \% index tables
 }

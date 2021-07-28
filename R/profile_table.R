@@ -1,29 +1,37 @@
 
-#' create raw count profile tables of all specified variables by segment variable
-
-#' @param df should be a dataframe of numeric variables
-#' @param factor_vars a character vector of variable names
-#' @param numeric_vars a character vector of variable names
-#' @param weight_var name of weight variable
-#' @param segment_var a character vector of segment variable name
+#' create raw count profile tables of all specified variables by segment variable.
+#' @param df data.frame of input variables
+#' @param factor_vars character vector of variable names that are to be treated as factor.
+#' Factor variables will have counts shown for each level of each variable.
+#' @param numeric_vars character vector of variable names that are to be treated as numeric.
+#' Numeric variables will have means shown for variable.
+#' @param weight_var name of the variable holding case/row weights.
+#' If data is un-weighted, leave as NULL
+#' @param segment_var name of the variable holding the segment variable
 
 profile_table_raw <- function(df,
                               factor_vars = NULL,
                               numeric_vars = NULL,
-                              weight_var,
+                              weight_var = NULL,
                               segment_var){
 
+  # if weight is NULL, create a variable of all 1's and use this
+  if (is.null(weight_var)){
+    df[["weight_var"]] <- rep(1,nrow(df))
+    weight_var <- "weight_var"
+  }
+  
   if (!is.null(factor_vars)){
 
     # factor variables will have weighted counts
     temp_fac <- df %>%
-      tidyr::pivot_longer(cols = all_of(factor_vars),
+      tidyr::pivot_longer(cols = dplyr::all_of(factor_vars),
                           names_to = "Variable_Name",
                           values_to = "Value_Code") %>%
       dplyr::group_by(Variable_Name,Value_Code,.data[[segment_var]]) %>%
       dplyr::summarise(mycount = sum(.data[[weight_var]])) %>%
-      ungroup() %>%
-      arrange(.data[[segment_var]]) %>%
+      dplyr::ungroup() %>%
+      dplyr::arrange(.data[[segment_var]]) %>%
       tidyr::pivot_wider(names_from = .data[[segment_var]],
                          names_prefix = "Cluster_",
                          values_from = mycount)
@@ -38,16 +46,19 @@ profile_table_raw <- function(df,
 
     # numeric variables will have weighted means
     temp_num <- df %>%
-      tidyr::pivot_longer(cols = all_of(numeric_vars),
+      group_by(.data[[segment_var]]) %>%
+      summarise(across(all_of(numeric_vars),
+                       ~ weighted.mean(.x,.data[[weight_var]])
+                       )
+                ) %>% 
+      dplyr::ungroup() %>%
+      dplyr::arrange(.data[[segment_var]]) %>%
+      tidyr::pivot_longer(cols = dplyr::all_of(numeric_vars),
                           names_to = "Variable_Name",
-                          values_to = "Value_Code") %>%
-      dplyr::group_by(Variable_Name,Value_Code,.data[[segment_var]]) %>%
-      dplyr::summarise(mycount = weighted.mean(.data[[weight_var]])) %>%
-      ungroup() %>%
-      arrange(.data[[segment_var]]) %>%
+                          values_to = "Value_Code") %>% 
       tidyr::pivot_wider(names_from = .data[[segment_var]],
                          names_prefix = "Cluster_",
-                         values_from = mycount)
+                         values_from = Value_Code)
 
     temp_num[is.na(temp_num)] <- 0
 
@@ -56,28 +67,31 @@ profile_table_raw <- function(df,
   }
 
   # need to add a total column for numeric variables -
-  if (is.null(numeric_vars)){
+  if (!is.null(numeric_vars) & !is.null(factor_vars)){
+    
+    return(dplyr::bind_rows(temp_fac,temp_num))
+    
+  } else if (is.null(numeric_vars) & !is.null(factor_vars)){
 
     return(dplyr::bind_rows(temp_fac))
 
-  } else if (is.null(factor_vars)){
+  } else if (!is.null(numeric_vars) & is.null(factor_vars)){
 
     return(dplyr::bind_rows(temp_num))
-
-  } else{
-
-    return(dplyr::bind_rows(temp_fac,temp_num))
 
   }
 
 }
 
-#' create column percent profile tables of all specified variables by segment variable
-
-#' @param df should be a dataframe of numeric variables
-#' @param factor_vars should be a character vector of variable names
-#' @param numeric_vars should be a character vector of variable names
-#' @param segment_var should be a character vector of segment variable name
+#' create col % profile tables of all specified variables by segment variable.
+#' @param df data.frame of input variables
+#' @param factor_vars character vector of variable names that are to be treated as factor.
+#' Factor variables will have counts shown for each level of each variable.
+#' @param numeric_vars character vector of variable names that are to be treated as numeric.
+#' Numeric variables will have means shown for variable.
+#' @param weight_var name of the variable holding case/row weights.
+#' If data is un-weighted, leave as NULL
+#' @param segment_var name of the variable holding the segment variable
 
 profile_table_col_perc <- function(df,
                                    factor_vars = NULL,
@@ -90,20 +104,20 @@ profile_table_col_perc <- function(df,
     select(.data[[segment_var]],.data[[weight_var]]) %>%
     group_by(.data[[segment_var]]) %>%
     summarise(mycount = sum(.data[[weight_var]])) %>%
-    ungroup() %>%
-    arrange(.data[[segment_var]])
-
+    dplyr::ungroup() %>%
+    dplyr::arrange(.data[[segment_var]])
+  
   if (!is.null(factor_vars)){
 
     # factor variables will have weighted counts
     temp_fac <- df %>%
-      tidyr::pivot_longer(cols = all_of(factor_vars),
+      tidyr::pivot_longer(cols = dplyr::all_of(factor_vars),
                           names_to = "Variable_Name",
                           values_to = "Value_Code") %>%
       dplyr::group_by(Variable_Name,Value_Code,.data[[segment_var]]) %>%
       dplyr::summarise(mycount = sum(.data[[weight_var]])) %>%
-      ungroup() %>%
-      arrange(.data[[segment_var]]) %>%
+      dplyr::ungroup() %>%
+      dplyr::arrange(.data[[segment_var]]) %>%
       tidyr::pivot_wider(names_from = .data[[segment_var]],
                          names_prefix = "Cluster_",
                          values_from = mycount)
@@ -124,49 +138,55 @@ profile_table_col_perc <- function(df,
   }
 
   if (!is.null(numeric_vars)){
-
+    
     # numeric variables will have weighted means
     temp_num <- df %>%
-      tidyr::pivot_longer(cols = all_of(numeric_vars),
+      group_by(.data[[segment_var]]) %>%
+      summarise(across(all_of(numeric_vars),
+                       ~ weighted.mean(.x,.data[[weight_var]])
+                       )
+                ) %>% 
+      dplyr::ungroup() %>%
+      dplyr::arrange(.data[[segment_var]]) %>%
+      tidyr::pivot_longer(cols = dplyr::all_of(numeric_vars),
                           names_to = "Variable_Name",
-                          values_to = "Value_Code") %>%
-      dplyr::group_by(Variable_Name,Value_Code,.data[[segment_var]]) %>%
-      dplyr::summarise(mycount = weighted.mean(.data[[weight_var]])) %>%
-      ungroup() %>%
-      arrange(.data[[segment_var]]) %>%
+                          values_to = "Value_Code") %>% 
       tidyr::pivot_wider(names_from = .data[[segment_var]],
                          names_prefix = "Cluster_",
-                         values_from = mycount)
-
+                         values_from = Value_Code)
+    
     temp_num[is.na(temp_num)] <- 0
-
+    
     temp_num[["Total"]] <- 1
-
+    
   }
 
   # need to add a total column for numeric variables -
-  if (is.null(numeric_vars)){
-
-    return(dplyr::bind_rows(temp_fac_col_perc))
-
-  } else if (is.null(factor_vars)){
-
-    return(dplyr::bind_rows(temp_num))
-
-  } else{
-
+  if (!is.null(numeric_vars) & !is.null(factor_vars)){
+    
     return(dplyr::bind_rows(temp_fac_col_perc,temp_num))
-
+    
+  } else if (is.null(numeric_vars) & !is.null(factor_vars)){
+    
+    return(dplyr::bind_rows(temp_fac_col_perc))
+    
+  } else if (!is.null(numeric_vars) & is.null(factor_vars)){
+    
+    return(dplyr::bind_rows(temp_num))
+    
   }
 
 }
 
-#' create row percent profile tables of all specified variables by segment variable
-
-#' @param df should be a dataframe of numeric variables
-#' @param factor_vars should be a character vector of variable names
-#' @param numeric_vars should be a character vector of variable names
-#' @param segment_var should be a character vector of segment variable name
+#' create row % profile tables of all specified variables by segment variable.
+#' @param df data.frame of input variables
+#' @param factor_vars character vector of variable names that are to be treated as factor.
+#' Factor variables will have counts shown for each level of each variable.
+#' @param numeric_vars character vector of variable names that are to be treated as numeric.
+#' Numeric variables will have means shown for variable.
+#' @param weight_var name of the variable holding case/row weights.
+#' If data is un-weighted, leave as NULL
+#' @param segment_var name of the variable holding the segment variable
 
 profile_table_row_perc <- function(df,
                                    factor_vars = NULL,
@@ -178,13 +198,13 @@ profile_table_row_perc <- function(df,
 
     # factor variables will have weighted counts
     temp_fac <- df %>%
-      tidyr::pivot_longer(cols = all_of(factor_vars),
+      tidyr::pivot_longer(cols = dplyr::all_of(factor_vars),
                           names_to = "Variable_Name",
                           values_to = "Value_Code") %>%
       dplyr::group_by(Variable_Name,Value_Code,.data[[segment_var]]) %>%
       dplyr::summarise(mycount = sum(.data[[weight_var]])) %>%
-      ungroup() %>%
-      arrange(.data[[segment_var]]) %>%
+      dplyr::ungroup() %>%
+      dplyr::arrange(.data[[segment_var]]) %>%
       tidyr::pivot_wider(names_from = .data[[segment_var]],
                          names_prefix = "Cluster_",
                          values_from = mycount)
@@ -202,52 +222,56 @@ profile_table_row_perc <- function(df,
   }
 
   if (!is.null(numeric_vars)){
-
+    
     # numeric variables will have weighted means
     temp_num <- df %>%
-      tidyr::pivot_longer(cols = all_of(numeric_vars),
+      group_by(.data[[segment_var]]) %>%
+      summarise(across(all_of(numeric_vars),
+                       ~ weighted.mean(.x,.data[[weight_var]])
+                       )
+                ) %>% 
+      dplyr::ungroup() %>%
+      dplyr::arrange(.data[[segment_var]]) %>%
+      tidyr::pivot_longer(cols = dplyr::all_of(numeric_vars),
                           names_to = "Variable_Name",
-                          values_to = "Value_Code") %>%
-      dplyr::group_by(Variable_Name,Value_Code,.data[[segment_var]]) %>%
-      dplyr::summarise(mycount = weighted.mean(.data[[weight_var]])) %>%
-      ungroup() %>%
-      arrange(.data[[segment_var]]) %>%
+                          values_to = "Value_Code") %>% 
       tidyr::pivot_wider(names_from = .data[[segment_var]],
                          names_prefix = "Cluster_",
-                         values_from = mycount)
-
+                         values_from = Value_Code)
+    
     temp_num[is.na(temp_num)] <- 0
-
-    temp_num[["Total"]] <- 1
-
+    
+    #temp_num[["Total"]] <- 1
+    
   }
 
-
-
   # need to add a total column for numeric variables -
-  if (is.null(numeric_vars)){
-
-    return(dplyr::bind_rows(temp_fac_row_perc))
-
-  } else if (is.null(factor_vars)){
-
-    return(dplyr::bind_rows(temp_num))
-
-  } else{
-
+  if (!is.null(numeric_vars) & !is.null(factor_vars)){
+    
     return(dplyr::bind_rows(temp_fac_row_perc,temp_num))
-
+    
+  } else if (is.null(numeric_vars) & !is.null(factor_vars)){
+    
+    return(dplyr::bind_rows(temp_fac_row_perc))
+    
+  } else if (!is.null(numeric_vars) & is.null(factor_vars)){
+    
+    return(dplyr::bind_rows(temp_num))
+    
   }
 
 }
 
-#' create row percent profile tables of all specified variables by segment variable
-
-#' @param df should be a dataframe of numeric variables
-#' @param factor_vars should be a character vector of variable names
-#' @param numeric_vars should be a character vector of variable names
-#' @param segment_var should be a character vector of segment variable name
-#'
+#' create col % index profile tables of all specified variables by segment variable.
+#' @param df data.frame of input variables
+#' @param factor_vars character vector of variable names that are to be treated as factor.
+#' Factor variables will have counts shown for each level of each variable.
+#' @param numeric_vars character vector of variable names that are to be treated as numeric.
+#' Numeric variables will have means shown for variable.
+#' @param weight_var name of the variable holding case/row weights.
+#' If data is un-weighted, leave as NULL
+#' @param segment_var name of the variable holding the segment variable
+#' 
 profile_table_col_index <- function(df,
                                     factor_vars = NULL,
                                     numeric_vars = NULL,
@@ -259,20 +283,20 @@ profile_table_col_index <- function(df,
     select(.data[[segment_var]],.data[[weight_var]]) %>%
     group_by(.data[[segment_var]]) %>%
     summarise(mycount = sum(.data[[weight_var]])) %>%
-    ungroup() %>%
-    arrange(.data[[segment_var]])
+    dplyr::ungroup() %>%
+    dplyr::arrange(.data[[segment_var]])
 
   if (!is.null(factor_vars)){
 
     # factor variables will have weighted counts
     temp_fac <- df %>%
-      tidyr::pivot_longer(cols = all_of(factor_vars),
+      tidyr::pivot_longer(cols = dplyr::all_of(factor_vars),
                           names_to = "Variable_Name",
                           values_to = "Value_Code") %>%
       dplyr::group_by(Variable_Name,Value_Code,.data[[segment_var]]) %>%
       dplyr::summarise(mycount = sum(.data[[weight_var]])) %>%
-      ungroup() %>%
-      arrange(.data[[segment_var]]) %>%
+      dplyr::ungroup() %>%
+      dplyr::arrange(.data[[segment_var]]) %>%
       tidyr::pivot_wider(names_from = .data[[segment_var]],
                          names_prefix = "Cluster_",
                          values_from = mycount)
@@ -296,51 +320,57 @@ profile_table_col_index <- function(df,
   }
 
   if (!is.null(numeric_vars)){
-
+    
     # numeric variables will have weighted means
     temp_num <- df %>%
-      tidyr::pivot_longer(cols = all_of(numeric_vars),
+      group_by(.data[[segment_var]]) %>%
+      summarise(across(all_of(numeric_vars),
+                       ~ weighted.mean(.x,.data[[weight_var]])
+                       )
+                ) %>% 
+      dplyr::ungroup() %>%
+      dplyr::arrange(.data[[segment_var]]) %>%
+      tidyr::pivot_longer(cols = dplyr::all_of(numeric_vars),
                           names_to = "Variable_Name",
-                          values_to = "Value_Code") %>%
-      dplyr::group_by(Variable_Name,Value_Code,.data[[segment_var]]) %>%
-      dplyr::summarise(mycount = weighted.mean(.data[[weight_var]])) %>%
-      ungroup() %>%
-      arrange(.data[[segment_var]]) %>%
+                          values_to = "Value_Code") %>% 
       tidyr::pivot_wider(names_from = .data[[segment_var]],
                          names_prefix = "Cluster_",
-                         values_from = mycount)
-
-    temp_num[["Total"]] <- 1
-
+                         values_from = Value_Code)
+    
+    temp_num[is.na(temp_num)] <- 0
+    
+    #temp_num[["Total"]] <- 1
+    
   }
 
-
-
   # need to add a total column for numeric variables -
-  if (is.null(numeric_vars)){
-
-    return(dplyr::bind_rows(temp_fac_col_perc))
-
-  } else if (is.null(factor_vars)){
-
-    return(dplyr::bind_rows(temp_num))
-
-  } else{
-
+  if (!is.null(numeric_vars) & !is.null(factor_vars)){
+    
     return(dplyr::bind_rows(temp_fac_col_perc,temp_num))
-
+    
+  } else if (is.null(numeric_vars) & !is.null(factor_vars)){
+    
+    return(dplyr::bind_rows(temp_fac_col_perc))
+    
+  } else if (!is.null(numeric_vars) & is.null(factor_vars)){
+    
+    return(dplyr::bind_rows(temp_num))
+    
   }
 
 }
 
-#' create profile raw count, col %, row %, col % index tables of all specified variables by segment variable
+#' Creates a data.frame of 4 sets of cross tables. These are raw count, col %, row % and col % index tables
+#' @param df data.frame of input variables
+#' @param factor_vars character vector of variable names that are to be treated as factor.
+#' Factor variables will have counts shown for each level of each variable.
+#' @param numeric_vars character vector of variable names that are to be treated as numeric.
+#' Numeric variables will have means shown for variable.
+#' @param weight_var name of the variable holding case/row weights.
+#' If data is un-weighted, specify a vector of 1's with length equal to number of rows of df
+#' @param segment_vars character vector segment variables to profile by
 #' @export
-#' @param df must be a dataframe of numeric variables
-#' @param factor_vars must be a character vector of variable names
-#' @param numeric_vars must be a character vector of variable names
-#' @param weight_var must be a numeric vector of row weights. if data is unweighted, specify a vector of 1's with length equal to number of rows of df
-#' @param ... segment variables
-
+#' 
 profile_table <- function(df,
                           factor_vars = NULL,
                           numeric_vars = NULL,
@@ -392,13 +422,18 @@ profile_table <- function(df,
   return(segment_vars_2)
 }
 
-#' create row percent profile tables of all specified variables by segment variable
+#' Exports cross tables to .xlsx format.
+#' @param prof_table should be the output from rsegmenter::profile_table
+#' @param min_index numeric value for highlighting under-indexing
+#' @param max_index numeric value for highlighting over-indexing
+#' @param filename character string naming a file
+#' @examples 
+#' df <- data.frame(var1=c(1,2,3),var2=c(2,1,3),var3=c(3,2,1))
+#' segments <- factor_segmentation(df,c(2:3))
+#' profile_table <- profile_table(df,factor_vars = c("var1","var2","var3"),numeric_vars = NULL,segment_vars,table_labels)
+#' export_profile_tables(profile_table,min_index=80,max_index=120,"profile_tables.xlsx")
 #' @export
-#' @param df should be a dataframe of numeric variables
-#' @param factor_vars should be a character vector of variable names
-#' @param numeric_vars should be a character vector of variable names
-#' @param ... segment variables
-
+#' 
 export_profile_tables <- function(prof_table,
                                   min_index=80,
                                   max_index=120,
@@ -412,7 +447,12 @@ export_profile_tables <- function(prof_table,
 
     openxlsx::addWorksheet(wb, paste0("Solution_",x))
 
-    openxlsx::writeData(wb, paste0("Solution_",x),prof_table[[x]], colNames = TRUE, startCol = 1, startRow = 1)
+    openxlsx::writeData(wb, 
+                        paste0("Solution_",x),
+                        prof_table[[x]],
+                        colNames = TRUE,
+                        startCol = 1,
+                        startRow = 1)
     # openxlsx::conditionalFormatting(wb,
     #                                 paste0("Solution_",x),
     #                                 cols = (ncol(prof_table[[x]])-1):ncol(prof_table[[x]]),
@@ -442,5 +482,7 @@ export_profile_tables <- function(prof_table,
 #' @param ... segment variables
 
 add_table_labels <- function(prof_table,table_labels){
-  return(dplyr::left_join(prof_table,prof_table,by=c("Variable_Name","Value_Code")))
+  return(dplyr::left_join(prof_table,
+                          prof_table,
+                          by=c("Variable_Name","Value_Code")))
 }
