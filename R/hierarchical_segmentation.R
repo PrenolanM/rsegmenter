@@ -16,7 +16,7 @@ hierarchical_segmentation <- function(df,
   df <- df[,vars,drop=FALSE]
   
   # Dissimilarity matrix
-  dist_mat <- dist(df, method = dist_metric)
+  dist_mat <- dist(t(df), method = dist_metric)
   
   # Hierarchical clustering using Complete Linkage
   hierarchical_segs <- hclust(dist_mat, method = linkage)

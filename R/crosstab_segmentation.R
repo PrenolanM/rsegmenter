@@ -28,7 +28,8 @@ crosstab_segmentation <- function(df,...){
     mutate(segment = row_number())
   
   return(df %>% 
-    left_join(segment_map)
+           left_join(segment_map) %>% 
+           select(segment)
     )
   
 }
