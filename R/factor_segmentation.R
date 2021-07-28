@@ -1,6 +1,6 @@
 #' runs factor analysis with varimax rotation using the psych package
 #' @param df data.frame of numeric variables
-#' @param ... variables for the factor analysis
+#' @param vars variables for the factor analysis
 #' @param weight_var numeric vector of row weights
 #' @param num_sols numeric vector specifying the minimum and maximum number of factors to extract
 #' @param rotate method of rotation for factor analysis. Options are the same as psych::principal()
@@ -12,7 +12,7 @@
 #' @export
 #' 
 factor_segmentation <- function(df,
-                                ...,
+                                vars,
                                 weight_var,
                                 num_sols,
                                 rotate="varimax",
@@ -25,8 +25,7 @@ factor_segmentation <- function(df,
   }
   
   # ensuring variables to factor analyse is provided
-  myvars <- list(...)
-  if(length(myvars)==0){
+  if(length(vars)==0){
     stop("numeric variables to factor must be provided")
   }
   
@@ -43,14 +42,11 @@ factor_segmentation <- function(df,
 
   } else{
 
-    resp_weight <- df %>% 
-     select({{weight_var}}) %>% 
-     unlist()
+    resp_weight <- df[[weight_var]]
     
   }
 
-  df <- df %>% 
-   select(...)
+  df <- df[,vars,drop=FALSE]
   
   # check that there are no missing values
   if (sum(is.na(df))>0){
@@ -73,7 +69,7 @@ factor_segmentation <- function(df,
 
                         if (fac_assign=="avg_loading"){
                           
-                          assigned_segment <- avg_loading(rcloadings)
+                          assigned_segment <- avg_loading(df,rcloadings)
                           
                         } else {
                           

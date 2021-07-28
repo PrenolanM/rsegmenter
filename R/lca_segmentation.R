@@ -1,6 +1,6 @@
 #' runs lca using the poLCA package
 #' @param df must be a data.frame of numeric variables
-#' @param ... must be a string of variable names to operate on. Data must be numeric.
+#' @param vars must be a string of variable names to operate on. Data must be numeric.
 #' @param num_sols should be a numeric vector specifying the minimum and maximum number of factors to extract
 #' @param maxiter The maximum number of iterations through which the estimation algorithm will cycle
 #' @param tol A tolerance value for judging when convergence has been reached. When the one-iteration change in the estimated 
@@ -19,7 +19,7 @@
 #' @export
 #' 
 lca_segmentation <- function(df,
-                             ...,
+                             vars,
                              num_sols,
                              maxiter=1000,
                              tol=1e-10,
@@ -32,8 +32,7 @@ lca_segmentation <- function(df,
   }
   
   # ensuring variables to run lca on is provided
-  myvars <- list(...)
-  if(length(myvars)==0){
+  if(length(vars)==0){
     stop("numeric variable to factor must be provided")
   }
   
@@ -50,8 +49,7 @@ lca_segmentation <- function(df,
   }
   
   
-  df <- df %>% 
-    select(...)
+  df <- df[,vars,drop=FALSE]
   
   # df must have at least 1 row
   # this implies df will have at least 1 col as well
@@ -83,7 +81,7 @@ lca_segmentation <- function(df,
                        # building the formula to pass through to poLCA
                        f <- as.formula(
                          paste(paste("cbind(",
-                                     paste(...,collapse = ","),
+                                     paste(vars,collapse = ","),
                                      ")"
                                      ),
                                1,

@@ -6,25 +6,51 @@
 #' extract_factor_segments(segment_solutions)
 #' @export
 extract_factor_segments <- function(seglist){
+  
   return_df <- as.data.frame(lapply(seq_along(seglist),
                                     function(x){
-                                      seglist[[x]][[1]]
+                                      seglist[[x]][["segments"]]
                                       }
                                     )
                              )
 
-  # return_df <- as.data.frame(lapply(return_df,
-  #                                   function(x){
-  #                                     as.factor(x)
-  #                                   }
-  #                                   )
-  #                            )
   
   min_sol_num <- max(return_df[,1])
   max_sol_num <- max(return_df)
   colnames(return_df) <- paste0("Factor_Cluster_Soln_",seq(min_sol_num,max_sol_num))
 
   return(return_df)
+  
+}
+
+#' extract factor scores segments from factor analysis segment solutions and stores in a dataframe
+#' @param seglist must be an output from the rsegmenter::segmentation() function
+#' @examples 
+#' mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
+#' segment_solutions <- segmentation(mydf,c("col1","col2","col3"))
+#' extract_factor_scores(segment_solutions)
+#' @export
+extract_factor_scores <- function(seglist){
+  
+  return_list <- (lapply(seq_along(seglist),
+                         function(x){
+                           scores <- seglist[[x]][["scores"]]
+                           colnames(scores) <- paste0("Factor_Cluster_Soln_",
+                                                      ncol(scores),
+                                                      "_Scores_",
+                                                      seq(1,ncol(scores))) 
+                           return(scores)
+                           }
+                         )
+                  )
+  
+  min_sol_num <- ncol(return_list[[1]])
+  max_sol_num <- ncol(return_list[[length(return_list)]])
+  names(return_list) <- paste0("Factor_Cluster_Soln_",
+                               seq(min_sol_num,max_sol_num))
+  
+  return(return_list)
+  
 }
 
 #' Extract rotated components from factor analysis.
@@ -63,19 +89,12 @@ extract_rotated_components <- function(seglist,var_labels){
 #' extract_lca_segments(segment_solutions)
 #' @export
 extract_lca_segments <- function(seglist){
-  return_df <- as.data.frame(lapply(seq_along(seglist[["lca"]]),
+  return_df <- as.data.frame(lapply(seq_along(seglist),
                                     function(x){
-                                      seglist[["lca"]][[x]][["predclass"]]
+                                      seglist[[x]][["segments"]]
                                       }
                                     )
                              )
-  
-  # return_df <- as.data.frame(lapply(return_df,
-  #                                   function(x){
-  #                                     as.factor(x)
-  #                                     }
-  #                                   )
-  #                            )
 
   min_sol_num <- max(return_df[,1])
   max_sol_num <- max(return_df)  

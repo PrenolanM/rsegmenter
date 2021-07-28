@@ -6,7 +6,7 @@
 \usage{
 lca_segmentation(
   df,
-  ...,
+  vars,
   num_sols,
   maxiter = 1000,
   tol = 1e-10,
@@ -17,7 +17,7 @@ lca_segmentation(
 \arguments{
 \item{df}{must be a data.frame of numeric variables}
 
-\item{...}{must be a string of variable names to operate on. Data must be numeric.}
+\item{vars}{must be a string of variable names to operate on. Data must be numeric.}
 
 \item{num_sols}{should be a numeric vector specifying the minimum and maximum number of factors to extract}
 

@@ -6,7 +6,7 @@
 \usage{
 factor_segmentation(
   df,
-  ...,
+  vars,
   weight_var,
   num_sols,
   rotate = "varimax",
@@ -17,7 +17,7 @@ factor_segmentation(
 \arguments{
 \item{df}{data.frame of numeric variables}
 
-\item{...}{variables for the factor analysis}
+\item{vars}{variables for the factor analysis}
 
 \item{weight_var}{numeric vector of row weights}
 

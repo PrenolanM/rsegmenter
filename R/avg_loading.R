@@ -1,7 +1,7 @@
 #' assigns segments based on average factor loading
 #' @param myloadings factor loadings
 #' 
-avg_loading <- function(myloadings){
+avg_loading <- function(df,myloadings){
   
   # getting the factor that each variable loads highest on
   max_loading <- t(apply(myloadings,1,
@@ -10,6 +10,7 @@ avg_loading <- function(myloadings){
                            }
                          )
                    )
+  
   
   # assigning the variable number to the factor it loads highest on
   # variables are in the order in which they were entered into the factoring

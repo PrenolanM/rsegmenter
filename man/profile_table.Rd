@@ -9,8 +9,8 @@ profile_table(
   factor_vars = NULL,
   numeric_vars = NULL,
   weight_var,
-  table_labels,
-  ...
+  segment_vars,
+  table_labels
 )
 }
 \arguments{

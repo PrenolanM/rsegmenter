@@ -4,7 +4,7 @@
 \alias{avg_loading}
 \title{assigns segments based on average factor loading}
 \usage{
-avg_loading(myloadings)
+avg_loading(df, myloadings)
 }
 \arguments{
 \item{myloadings}{factor loadings}
