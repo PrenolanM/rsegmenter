@@ -2,15 +2,28 @@
 % Please edit documentation in R/kmeans_segmentation.R
 \name{kmeans_segmentation}
 \alias{kmeans_segmentation}
-\title{runs kmeans}
+\title{runs kmeans using the stats package}
 \usage{
-kmeans_segmentation(dist_mat, num_sols)
+kmeans_segmentation(
+  df,
+  vars,
+  num_sols,
+  iter.max = 10,
+  nstart = 1,
+  algorithm = c("Hartigan-Wong", "Lloyd", "Forgy", "MacQueen")
+)
 }
 \arguments{
-\item{dist_mat}{should be a distance matrix}
+\item{df}{data.frame of numeric variables}
 
-\item{num_sols}{should be a numeric vector specifying the minimum and maximum number of factors to extract}
+\item{vars}{character vector of variable names}
+
+\item{num_sols}{numeric vector specifying the minimum and maximum number of segments to extract}
 }
 \description{
-runs kmeans
+runs kmeans using the stats package
+}
+\examples{
+mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
+kmeans_segmentation(df = mydf, vars = c("col1","col2","col3"), num_sols = c(2,3))
 }
