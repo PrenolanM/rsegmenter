@@ -2,7 +2,7 @@
 % Please edit documentation in R/profile_table.R
 \name{profile_table_col_perc}
 \alias{profile_table_col_perc}
-\title{create column percent profile tables of all specified variables by segment variable}
+\title{create col \% profile tables of all specified variables by segment variable.}
 \usage{
 profile_table_col_perc(
   df,
@@ -13,14 +13,19 @@ profile_table_col_perc(
 )
 }
 \arguments{
-\item{df}{should be a dataframe of numeric variables}
+\item{df}{data.frame of input variables}
 
-\item{factor_vars}{should be a character vector of variable names}
+\item{factor_vars}{character vector of variable names that are to be treated as factor.
+Factor variables will have counts shown for each level of each variable.}
 
-\item{numeric_vars}{should be a character vector of variable names}
+\item{numeric_vars}{character vector of variable names that are to be treated as numeric.
+Numeric variables will have means shown for variable.}
 
-\item{segment_var}{should be a character vector of segment variable name}
+\item{weight_var}{name of the variable holding case/row weights.
+If data is un-weighted, leave as NULL}
+
+\item{segment_var}{name of the variable holding the segment variable}
 }
 \description{
-create column percent profile tables of all specified variables by segment variable
+create col \% profile tables of all specified variables by segment variable.
 }
