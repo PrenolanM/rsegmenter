@@ -24,7 +24,7 @@ create_algorithm <- function(df,id,vars,ldamodel){
   # writing input data with 
   openxlsx::writeData(algorithm_wb, 
                       "input_data",
-                      df,
+                      df[1,],
                       colNames = TRUE,
                       rowNames = FALSE,
                       startCol = 1,

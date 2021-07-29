@@ -1,14 +1,14 @@
 #' Runs lda from the MASS package
 #' 
-#' Returns the lda model object from the MASS package with an additional
-#' element that holds the fishers classification function coefficients
+#' Returns the lda model object from the MASS package with a additional
+#' elements that holds the fishers classification function coefficients and the 
+#' predicted outcome
 #' 
 #' @param df must be a data.frame
 #' 
 #' @param dep must be a string of the dependent variable name
 #' 
-#' @param indeps must be a string of variable names to operate on.
-#' These variables must be numeric
+#' @param indeps character vector of predictor variable names
 #' 
 #' @param prior must be a numeric vector of prior probabilities. 
 #' length(prior) must equal number of unique values in the dependent variable
@@ -95,6 +95,23 @@ lda <- function(df,dep,indeps,prior){
   rownames(class_funs) <- c("Constant",indeps)
   ldamodel$class_funs <- class_funs
   
+  # adding predicted segments
+  ldamodel$predictions <- pred_seg(df,indeps,class_funs)
+  
   return(ldamodel)
+  
+}
+
+pred_seg <- function(df,indeps,coefs){
+  
+  coefs_const <- coefs[1,]
+  coefs_vars <- coefs[2:nrow(coefs),]
+  
+  print(dim(as.matrix(df[,indeps,drop=FALSE])))
+  print(dim(coefs_vars))
+  
+  sum_prod <- as.matrix(df[,indeps,drop=FALSE]) %*% coefs_vars + coefs_const
+  final_pred <- max.col(sum_prod)
+  return (final_pred)
   
 }

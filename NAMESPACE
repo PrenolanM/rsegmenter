@@ -2,6 +2,7 @@
 
 export("%>%")
 export(check_flatline)
+export(confusion_matrix)
 export(crosstab_segmentation)
 export(export_profile_tables)
 export(extract_datamap)

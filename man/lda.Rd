@@ -11,15 +11,15 @@ lda(df, dep, indeps, prior)
 
 \item{dep}{must be a string of the dependent variable name}
 
-\item{indeps}{must be a string of variable names to operate on.
-These variables must be numeric}
+\item{indeps}{character vector of predictor variable names}
 
 \item{prior}{must be a numeric vector of prior probabilities.
 length(prior) must equal number of unique values in the dependent variable}
 }
 \description{
-Returns the lda model object from the MASS package with an additional
-element that holds the fishers classification function coefficients
+Returns the lda model object from the MASS package with a additional
+elements that holds the fishers classification function coefficients and the
+predicted outcome
 }
 \examples{
 mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
