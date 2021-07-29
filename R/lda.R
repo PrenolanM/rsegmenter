@@ -92,6 +92,7 @@ lda <- function(df,dep,indeps,prior){
     class_funs[2:(v+1) ,i] <- iV %*% (m[i,])
   }
   
+  rownames(class_funs) <- c("Constant",indeps)
   ldamodel$class_funs <- class_funs
   
   return(ldamodel)
