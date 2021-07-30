@@ -8,7 +8,8 @@
 #' @param fac_assign method to use to assign segments to rows. options are one of c("avg_loading","max_score")
 #' @examples
 #' mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1),myweight=c(1,2,1))
-#' factor_segmentation(df = mydf,col1,col2,col3,myweight,num_sols=c(3,5),rotate="varimax",scores=FALSE,fac_assign="avg_loading")
+#' factor_segmentation(df = mydf,col1,col2,col3,myweight,num_sols=c(3,5),
+#' rotate="varimax",scores=FALSE,fac_assign="avg_loading")
 #' @export
 #' 
 factor_segmentation <- function(df,
@@ -73,7 +74,7 @@ factor_segmentation <- function(df,
                           
                         } else {
                           
-                          assigned_segment <- max_score(rcloadings)
+                          #assigned_segment <- max_score(rcloadings)
                           
                         }
                         

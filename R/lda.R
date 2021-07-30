@@ -48,7 +48,7 @@ lda <- function(df,dep,indeps,prior){
   
   df <- df[,c(dep,indeps),drop=FALSE]
   
-  ldamodel <- MASS::lda(as.formula(paste('as.factor(',dep,')','~.',
+  ldamodel <- MASS::lda(stats::as.formula(paste('as.factor(',dep,')','~.',
                                          sep = '')),
                         data = df, 
                         prior = prior)

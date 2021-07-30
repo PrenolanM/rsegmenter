@@ -14,7 +14,8 @@
 #' poLCA returns the parameter estimates corresponding to the model with the greatest log-likelihood.
 #' @examples
 #' mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
-#' lca_segmentation(df = mydf, vars = c("col1","col2","col3"), num_sols=c(3,5), maxiter=1000, tol=1e-10, na.rm=TRUE, nrep=1)
+#' lca_segmentation(df = mydf, vars = c("col1","col2","col3"), num_sols=c(3,5), 
+#' maxiter=1000, tol=1e-10, na.rm=TRUE, nrep=1)
 #' @importFrom MASS ginv
 #' @export
 #' 
@@ -70,7 +71,7 @@ lca_segmentation <- function(df,
   # cannot have 0's in our data for this algorithm
   # if 0's are present, increment the affected variable by 1
   df <- df %>% 
-    mutate(across(where(~ min(.)==0), ~ . + 1))
+    dplyr::mutate(dplyr::across(dplyr::where(~ min(.)==0), ~ . + 1))
   
   # this will run all factor solutions in order to get the loadings and factor scores
   lca_segs <- lapply(num_sols,
@@ -79,7 +80,7 @@ lca_segmentation <- function(df,
                        set.seed(123456)
                        
                        # building the formula to pass through to poLCA
-                       f <- as.formula(
+                       f <- stats::as.formula(
                          paste(paste("cbind(",
                                      paste(vars,collapse = ","),
                                      ")"

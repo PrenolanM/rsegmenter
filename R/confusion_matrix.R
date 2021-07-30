@@ -10,8 +10,8 @@
 #' 
 confusion_matrix <- function(df,actual,predicted,weight_var){
   
-  conf_table_raw <- input_df %>% 
-    dplyr::select(all_of(c(actual,predicted,weight_var))) %>% 
+  conf_table_raw <- df %>% 
+    dplyr::select(dplyr::all_of(c(actual,predicted,weight_var))) %>% 
     dplyr::group_by(.data[[actual]],.data[[predicted]]) %>% 
     dplyr::summarise(mycount = sum(.data[[weight_var]])) %>% 
     dplyr::ungroup() %>% 

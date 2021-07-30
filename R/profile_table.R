@@ -46,8 +46,8 @@ profile_table_raw <- function(df,
 
     # numeric variables will have weighted means
     temp_num <- df %>%
-      group_by(.data[[segment_var]]) %>%
-      summarise(across(all_of(numeric_vars),
+      dplyr::group_by(.data[[segment_var]]) %>%
+      dplyr::summarise(dplyr::across(dplyr::all_of(numeric_vars),
                        ~ weighted.mean(.x,.data[[weight_var]])
                        )
                 ) %>% 
@@ -101,9 +101,9 @@ profile_table_col_perc <- function(df,
 
   # get base sizes of each segment
   segment_size <- df %>%
-    select(.data[[segment_var]],.data[[weight_var]]) %>%
-    group_by(.data[[segment_var]]) %>%
-    summarise(mycount = sum(.data[[weight_var]])) %>%
+    dplyr::select(.data[[segment_var]],.data[[weight_var]]) %>%
+    dplyr::group_by(.data[[segment_var]]) %>%
+    dplyr::summarise(mycount = sum(.data[[weight_var]])) %>%
     dplyr::ungroup() %>%
     dplyr::arrange(.data[[segment_var]])
   
@@ -141,8 +141,8 @@ profile_table_col_perc <- function(df,
     
     # numeric variables will have weighted means
     temp_num <- df %>%
-      group_by(.data[[segment_var]]) %>%
-      summarise(across(all_of(numeric_vars),
+      dplyr::group_by(.data[[segment_var]]) %>%
+      dplyr::summarise(dplyr::across(dplyr::all_of(numeric_vars),
                        ~ weighted.mean(.x,.data[[weight_var]])
                        )
                 ) %>% 
@@ -225,8 +225,8 @@ profile_table_row_perc <- function(df,
     
     # numeric variables will have weighted means
     temp_num <- df %>%
-      group_by(.data[[segment_var]]) %>%
-      summarise(across(all_of(numeric_vars),
+      dplyr::group_by(.data[[segment_var]]) %>%
+      dplyr::summarise(dplyr::across(dplyr::all_of(numeric_vars),
                        ~ weighted.mean(.x,.data[[weight_var]])
                        )
                 ) %>% 
@@ -280,9 +280,9 @@ profile_table_col_index <- function(df,
 
   # get base sizes of each segment
   segment_size <- df %>%
-    select(.data[[segment_var]],.data[[weight_var]]) %>%
-    group_by(.data[[segment_var]]) %>%
-    summarise(mycount = sum(.data[[weight_var]])) %>%
+    dplyr::select(.data[[segment_var]],.data[[weight_var]]) %>%
+    dplyr::group_by(.data[[segment_var]]) %>%
+    dplyr::summarise(mycount = sum(.data[[weight_var]])) %>%
     dplyr::ungroup() %>%
     dplyr::arrange(.data[[segment_var]])
 
@@ -323,8 +323,8 @@ profile_table_col_index <- function(df,
     
     # numeric variables will have weighted means
     temp_num <- df %>%
-      group_by(.data[[segment_var]]) %>%
-      summarise(across(all_of(numeric_vars),
+      dplyr::group_by(.data[[segment_var]]) %>%
+      dplyr::summarise(dplyr::across(dplyr::all_of(numeric_vars),
                        ~ weighted.mean(.x,.data[[weight_var]])
                        )
                 ) %>% 
@@ -390,29 +390,29 @@ profile_table <- function(df,
 
     df1 <- df1 %>%
       dplyr::left_join(table_labels,by=c("Variable_Name","Value_Code")) %>%
-      dplyr::select(Variable_Name,Value_Label,everything(),-Variable_Label,-Value_Code) %>%
+      dplyr::select(Variable_Name,Value_Label,dplyr::everything(),-Variable_Label,-Value_Code) %>%
       dplyr::arrange(Variable_Order) %>%
       dplyr::select(-Variable_Order)
 
     df2 <- df2 %>%
       dplyr::left_join(table_labels,by=c("Variable_Name","Value_Code")) %>%
-      dplyr::select(Variable_Name,Value_Label,everything(),-Variable_Label,-Value_Code) %>%
+      dplyr::select(Variable_Name,Value_Label,dplyr::everything(),-Variable_Label,-Value_Code) %>%
       dplyr::arrange(Variable_Order) %>%
       dplyr::select(-Variable_Order)
 
     df3 <- df3 %>%
       dplyr::left_join(table_labels,by=c("Variable_Name","Value_Code")) %>%
-      dplyr::select(Variable_Name,Value_Label,everything(),-Variable_Label,-Value_Code) %>%
+      dplyr::select(Variable_Name,Value_Label,dplyr::everything(),-Variable_Label,-Value_Code) %>%
       dplyr::arrange(Variable_Order) %>%
       dplyr::select(-Variable_Order)
 
     df4 <- df4 %>%
       dplyr::left_join(table_labels,by=c("Variable_Name","Value_Code")) %>%
-      dplyr::select(Variable_Name,Value_Label,everything(),-Variable_Label,-Value_Code) %>%
+      dplyr::select(Variable_Name,Value_Label,dplyr::everything(),-Variable_Label,-Value_Code) %>%
       dplyr::arrange(Variable_Order) %>%
       dplyr::select(-Variable_Order)
 
-    df_final <- bind_cols(df1,"",df2,"",df3,"",df4)
+    df_final <- dplyr::bind_cols(df1,"",df2,"",df3,"",df4)
 
     colnames(df_final) <- c(colnames(df1),"empty",colnames(df2),"empty",colnames(df3),"empty",colnames(df4))
 
@@ -430,7 +430,8 @@ profile_table <- function(df,
 #' @examples 
 #' df <- data.frame(var1=c(1,2,3),var2=c(2,1,3),var3=c(3,2,1))
 #' segments <- factor_segmentation(df,c(2:3))
-#' profile_table <- profile_table(df,factor_vars = c("var1","var2","var3"),numeric_vars = NULL,segment_vars,table_labels)
+#' profile_table <- profile_table(df,factor_vars = c("var1","var2","var3"),
+#' numeric_vars = NULL,segment_vars,table_labels)
 #' export_profile_tables(profile_table,min_index=80,max_index=120,"profile_tables.xlsx")
 #' @export
 #' 

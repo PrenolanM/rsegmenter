@@ -10,7 +10,7 @@
 crosstab_segmentation <- function(df,...){
   
   df <- df %>% 
-    select(...)
+    dplyr::select(...)
   
   # check that all variables are numeric
   if (check_all_numeric(df)){
@@ -23,13 +23,13 @@ crosstab_segmentation <- function(df,...){
   }
   
   segment_map <- df %>% 
-    distinct(...) %>% 
-    arrange(desc(.,FALSE)) %>% 
-    mutate(segment = row_number())
+    dplyr::distinct(...) %>% 
+    dplyr::arrange(dplyr::desc(.,FALSE)) %>% 
+    dplyr::mutate(segment = dplyr::row_number())
   
   return(df %>% 
-           left_join(segment_map) %>% 
-           select(segment)
+           dplyr::left_join(segment_map) %>% 
+           dplyr::select(segment)
     )
   
 }

@@ -40,5 +40,6 @@ runs lca using the poLCA package
 }
 \examples{
 mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
-lca_segmentation(df = mydf, vars = c("col1","col2","col3"), num_sols=c(3,5), maxiter=1000, tol=1e-10, na.rm=TRUE, nrep=1)
+lca_segmentation(df = mydf, vars = c("col1","col2","col3"), num_sols=c(3,5), 
+maxiter=1000, tol=1e-10, na.rm=TRUE, nrep=1)
 }

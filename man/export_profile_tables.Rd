@@ -21,6 +21,7 @@ Exports cross tables to .xlsx format.
 \examples{
 df <- data.frame(var1=c(1,2,3),var2=c(2,1,3),var3=c(3,2,1))
 segments <- factor_segmentation(df,c(2:3))
-profile_table <- profile_table(df,factor_vars = c("var1","var2","var3"),numeric_vars = NULL,segment_vars,table_labels)
+profile_table <- profile_table(df,factor_vars = c("var1","var2","var3"),
+numeric_vars = NULL,segment_vars,table_labels)
 export_profile_tables(profile_table,min_index=80,max_index=120,"profile_tables.xlsx")
 }
