@@ -19,4 +19,16 @@ Config/testthat/edition: 3
 Imports: 
     MASS (>= 7.0.0),
     psych (>= 2.0.0),
-    magrittr
+    magrittr,
+    cluster,
+    dplyr,
+    haven,
+    openxlsx,
+    poLCA,
+    purrr,
+    readr,
+    tidyr,
+    tidyselect,
+    rlang
+Depends: 
+    R (>= 2.10)

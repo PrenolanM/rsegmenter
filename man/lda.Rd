@@ -22,6 +22,8 @@ elements that holds the fishers classification function coefficients and the
 predicted outcome
 }
 \examples{
-mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
-lda(df = mydf, dep = "col1", indeps = c("col2","col3"), prior = rep(1/3,3))
+df <- rsegmenter::test_seg_unlabelled
+
+lda(df, dep="seg1", indeps=c("seg2","seg3","seg4"),prior=rep(1/4,4))
+
 }

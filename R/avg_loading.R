@@ -1,4 +1,5 @@
 #' assigns segments based on average factor loading
+#' @param df data.frame that was input to factor analysis
 #' @param myloadings factor loadings
 #' 
 avg_loading <- function(df,myloadings){

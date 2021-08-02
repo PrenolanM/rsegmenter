@@ -8,7 +8,7 @@ profile_table_col_perc(
   df,
   factor_vars = NULL,
   numeric_vars = NULL,
-  weight_var,
+  weight_var = NULL,
   segment_var
 )
 }

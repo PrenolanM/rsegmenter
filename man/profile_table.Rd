@@ -2,14 +2,15 @@
 % Please edit documentation in R/profile_table.R
 \name{profile_table}
 \alias{profile_table}
-\title{Creates a data.frame of 4 sets of cross tables. These are raw count, col \%, row \% and col \% index tables}
+\title{Creates a list of data.frame elements. Each data.frame consists of 4 sets of cross tables.
+These are raw count, col \%, row \% and col \% index tables. There will be as many list elements as there are banner_vars.}
 \usage{
 profile_table(
   df,
   factor_vars = NULL,
   numeric_vars = NULL,
-  weight_var,
-  segment_vars,
+  weight_var = NULL,
+  banner_vars,
   table_labels
 )
 }
@@ -25,8 +26,20 @@ Numeric variables will have means shown for variable.}
 \item{weight_var}{name of the variable holding case/row weights.
 If data is un-weighted, specify a vector of 1's with length equal to number of rows of df}
 
-\item{segment_vars}{character vector segment variables to profile by}
+\item{banner_vars}{character vector of variables to profile by.}
+
+\item{table_labels}{datamap with variable names and labels. See rsegmenter::extract_datamap}
 }
 \description{
-Creates a data.frame of 4 sets of cross tables. These are raw count, col \%, row \% and col \% index tables
+Creates a list of data.frame elements. Each data.frame consists of 4 sets of cross tables.
+These are raw count, col \%, row \% and col \% index tables. There will be as many list elements as there are banner_vars.
+}
+\examples{
+df <- rsegmenter::test_seg_unlabelled
+
+table_labels <- rsegmenter::extract_datamap(rsegmenter::test_seg_labelled)
+
+profile_table(df, factor_vars = c("demog1","demog2"), numeric_vars = NULL,
+weight_var = "weight", banner_vars = "seg1", table_labels = table_labels)
+
 }

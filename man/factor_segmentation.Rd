@@ -7,7 +7,7 @@
 factor_segmentation(
   df,
   vars,
-  weight_var,
+  weight_var = NULL,
   num_sols,
   rotate = "varimax",
   scores = FALSE,
@@ -33,7 +33,9 @@ factor_segmentation(
 runs factor analysis with varimax rotation using the psych package
 }
 \examples{
-mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1),myweight=c(1,2,1))
-factor_segmentation(df = mydf,col1,col2,col3,myweight,num_sols=c(3,5),
-rotate="varimax",scores=FALSE,fac_assign="avg_loading")
+df <- rsegmenter::test_seg_unlabelled
+segment_input_vars <- c("seg1","seg2","seg3","seg4","seg5","seg6","seg7","seg8","seg9","seg10")
+factor_segmentation(df = df, vars = segment_input_vars, weight_var = "weight", num_sols=c(2,3),
+rotate="varimax", scores=FALSE, fac_assign="avg_loading")
+
 }

@@ -13,10 +13,3 @@ in the package documentation.}
 \description{
 Extract segments from factor analysis segment solutions and stores each segment as a variable in a data.frame.
 }
-\examples{
-mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
-segment_solutions <- factor_segmentation(mydf,vars = c("col1","col2","col3"),
-weight_var = NULL, num_sols = c(2:3), rotate = "varimax",
-scores = TRUE, fac_assign = "avg_loading")
-extract_factor_segments(segment_solutions)
-}

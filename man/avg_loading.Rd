@@ -7,6 +7,8 @@
 avg_loading(df, myloadings)
 }
 \arguments{
+\item{df}{data.frame that was input to factor analysis}
+
 \item{myloadings}{factor loadings}
 }
 \description{

@@ -12,10 +12,11 @@
 #' 
 #' @param prior must be a numeric vector of prior probabilities. 
 #' length(prior) must equal number of unique values in the dependent variable
-#' 
 #' @examples
-#' mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
-#' lda(df = mydf, dep = "col1", indeps = c("col2","col3"), prior = rep(1/3,3))
+#' df <- rsegmenter::test_seg_unlabelled
+#' 
+#' lda(df, dep="seg1", indeps=c("seg2","seg3","seg4"),prior=rep(1/4,4))
+#' 
 #' @export
 #' 
 lda <- function(df,dep,indeps,prior){

@@ -3,21 +3,18 @@
 #' @param actual character vector of variable name of ground truth
 #' @param predicted character vector of variable name of predicted
 #' @param weight_var name of the variable holding case/row weights.
-#' @examples
-#' mydf <- data.frame(actual=c(1,2,3),predicted=c(1,3,2),weight=c(1,1,1))
-#' confusion_matrix(df = mydf,actual,predicted,weight)
 #' @export
 #' 
 confusion_matrix <- function(df,actual,predicted,weight_var){
   
   conf_table_raw <- df %>% 
     dplyr::select(dplyr::all_of(c(actual,predicted,weight_var))) %>% 
-    dplyr::group_by(.data[[actual]],.data[[predicted]]) %>% 
+    dplyr::group_by(dplyr::all_of(actual),dplyr::all_of(predicted)) %>% 
     dplyr::summarise(mycount = sum(.data[[weight_var]])) %>% 
     dplyr::ungroup() %>% 
     tidyr::pivot_wider(names_from = predicted,
                        names_prefix = predicted,
-                       values_from = mycount)
+                       values_from = .data[["mycount"]])
   
   conf_table_raw[is.na(conf_table_raw)] <- 0
   

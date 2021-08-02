@@ -19,11 +19,13 @@ kmeans_segmentation(
 \item{vars}{character vector of variable names}
 
 \item{num_sols}{numeric vector specifying the minimum and maximum number of segments to extract}
+
+\item{iter.max}{the maximum number of iterations allowed}
+
+\item{nstart}{if centers is a number, how many random sets should be chosen?}
+
+\item{algorithm}{character: may be abbreviated. Note that "Lloyd" and "Forgy" are alternative names for one algorithm.}
 }
 \description{
 runs kmeans using the stats package
-}
-\examples{
-mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
-kmeans_segmentation(df = mydf, vars = c("col1","col2","col3"), num_sols = c(2,3))
 }

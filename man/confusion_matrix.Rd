@@ -18,7 +18,3 @@ confusion_matrix(df, actual, predicted, weight_var)
 \description{
 creates confusion matrix
 }
-\examples{
-mydf <- data.frame(actual=c(1,2,3),predicted=c(1,3,2),weight=c(1,1,1))
-confusion_matrix(df = mydf,actual,predicted,weight)
-}

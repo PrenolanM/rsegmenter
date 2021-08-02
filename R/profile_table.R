@@ -9,6 +9,8 @@
 #' If data is un-weighted, leave as NULL
 #' @param segment_var name of the variable holding the segment variable
 
+#' @importFrom rlang .data
+#' 
 profile_table_raw <- function(df,
                               factor_vars = NULL,
                               numeric_vars = NULL,
@@ -28,13 +30,13 @@ profile_table_raw <- function(df,
       tidyr::pivot_longer(cols = dplyr::all_of(factor_vars),
                           names_to = "Variable_Name",
                           values_to = "Value_Code") %>%
-      dplyr::group_by(Variable_Name,Value_Code,.data[[segment_var]]) %>%
+      dplyr::group_by(.data[["Variable_Name"]],.data[["Value_Code"]],.data[[segment_var]]) %>%
       dplyr::summarise(mycount = sum(.data[[weight_var]])) %>%
       dplyr::ungroup() %>%
       dplyr::arrange(.data[[segment_var]]) %>%
       tidyr::pivot_wider(names_from = .data[[segment_var]],
                          names_prefix = "Cluster_",
-                         values_from = mycount)
+                         values_from = .data[["mycount"]])
 
     temp_fac[is.na(temp_fac)] <- 0
 
@@ -58,7 +60,7 @@ profile_table_raw <- function(df,
                           values_to = "Value_Code") %>% 
       tidyr::pivot_wider(names_from = .data[[segment_var]],
                          names_prefix = "Cluster_",
-                         values_from = Value_Code)
+                         values_from = .data[["Value_Code"]])
 
     temp_num[is.na(temp_num)] <- 0
 
@@ -96,9 +98,15 @@ profile_table_raw <- function(df,
 profile_table_col_perc <- function(df,
                                    factor_vars = NULL,
                                    numeric_vars = NULL,
-                                   weight_var,
+                                   weight_var = NULL,
                                    segment_var){
 
+  # if weight is NULL, create a variable of all 1's and use this
+  if (is.null(weight_var)){
+    df[["weight_var"]] <- rep(1,nrow(df))
+    weight_var <- "weight_var"
+  }
+  
   # get base sizes of each segment
   segment_size <- df %>%
     dplyr::select(.data[[segment_var]],.data[[weight_var]]) %>%
@@ -114,13 +122,13 @@ profile_table_col_perc <- function(df,
       tidyr::pivot_longer(cols = dplyr::all_of(factor_vars),
                           names_to = "Variable_Name",
                           values_to = "Value_Code") %>%
-      dplyr::group_by(Variable_Name,Value_Code,.data[[segment_var]]) %>%
+      dplyr::group_by(.data[["Variable_Name"]],.data[["Value_Code"]],.data[[segment_var]]) %>%
       dplyr::summarise(mycount = sum(.data[[weight_var]])) %>%
       dplyr::ungroup() %>%
       dplyr::arrange(.data[[segment_var]]) %>%
       tidyr::pivot_wider(names_from = .data[[segment_var]],
                          names_prefix = "Cluster_",
-                         values_from = mycount)
+                         values_from = .data[["mycount"]])
 
     temp_fac[is.na(temp_fac)] <- 0
 
@@ -153,7 +161,7 @@ profile_table_col_perc <- function(df,
                           values_to = "Value_Code") %>% 
       tidyr::pivot_wider(names_from = .data[[segment_var]],
                          names_prefix = "Cluster_",
-                         values_from = Value_Code)
+                         values_from = .data[["Value_Code"]])
     
     temp_num[is.na(temp_num)] <- 0
     
@@ -191,9 +199,15 @@ profile_table_col_perc <- function(df,
 profile_table_row_perc <- function(df,
                                    factor_vars = NULL,
                                    numeric_vars = NULL,
-                                   weight_var,
+                                   weight_var = NULL,
                                    segment_var){
 
+  # if weight is NULL, create a variable of all 1's and use this
+  if (is.null(weight_var)){
+    df[["weight_var"]] <- rep(1,nrow(df))
+    weight_var <- "weight_var"
+  }
+  
   if (!is.null(factor_vars)){
 
     # factor variables will have weighted counts
@@ -201,13 +215,13 @@ profile_table_row_perc <- function(df,
       tidyr::pivot_longer(cols = dplyr::all_of(factor_vars),
                           names_to = "Variable_Name",
                           values_to = "Value_Code") %>%
-      dplyr::group_by(Variable_Name,Value_Code,.data[[segment_var]]) %>%
+      dplyr::group_by(.data[["Variable_Name"]],.data[["Value_Code"]],.data[[segment_var]]) %>%
       dplyr::summarise(mycount = sum(.data[[weight_var]])) %>%
       dplyr::ungroup() %>%
       dplyr::arrange(.data[[segment_var]]) %>%
       tidyr::pivot_wider(names_from = .data[[segment_var]],
                          names_prefix = "Cluster_",
-                         values_from = mycount)
+                         values_from = .data[["mycount"]])
 
     temp_fac[is.na(temp_fac)] <- 0
 
@@ -237,7 +251,7 @@ profile_table_row_perc <- function(df,
                           values_to = "Value_Code") %>% 
       tidyr::pivot_wider(names_from = .data[[segment_var]],
                          names_prefix = "Cluster_",
-                         values_from = Value_Code)
+                         values_from = .data[["Value_Code"]])
     
     temp_num[is.na(temp_num)] <- 0
     
@@ -275,9 +289,15 @@ profile_table_row_perc <- function(df,
 profile_table_col_index <- function(df,
                                     factor_vars = NULL,
                                     numeric_vars = NULL,
-                                    weight_var,
+                                    weight_var = NULL,
                                     segment_var){
 
+  # if weight is NULL, create a variable of all 1's and use this
+  if (is.null(weight_var)){
+    df[["weight_var"]] <- rep(1,nrow(df))
+    weight_var <- "weight_var"
+  }
+  
   # get base sizes of each segment
   segment_size <- df %>%
     dplyr::select(.data[[segment_var]],.data[[weight_var]]) %>%
@@ -293,13 +313,13 @@ profile_table_col_index <- function(df,
       tidyr::pivot_longer(cols = dplyr::all_of(factor_vars),
                           names_to = "Variable_Name",
                           values_to = "Value_Code") %>%
-      dplyr::group_by(Variable_Name,Value_Code,.data[[segment_var]]) %>%
+      dplyr::group_by(.data[["Variable_Name"]],.data[["Value_Code"]],.data[[segment_var]]) %>%
       dplyr::summarise(mycount = sum(.data[[weight_var]])) %>%
       dplyr::ungroup() %>%
       dplyr::arrange(.data[[segment_var]]) %>%
       tidyr::pivot_wider(names_from = .data[[segment_var]],
                          names_prefix = "Cluster_",
-                         values_from = mycount)
+                         values_from = .data[["mycount"]])
 
     temp_fac[is.na(temp_fac)] <- 0
 
@@ -335,7 +355,7 @@ profile_table_col_index <- function(df,
                           values_to = "Value_Code") %>% 
       tidyr::pivot_wider(names_from = .data[[segment_var]],
                          names_prefix = "Cluster_",
-                         values_from = Value_Code)
+                         values_from = .data[["Value_Code"]])
     
     temp_num[is.na(temp_num)] <- 0
     
@@ -360,7 +380,8 @@ profile_table_col_index <- function(df,
 
 }
 
-#' Creates a data.frame of 4 sets of cross tables. These are raw count, col %, row % and col % index tables
+#' Creates a list of data.frame elements. Each data.frame consists of 4 sets of cross tables. 
+#' These are raw count, col %, row % and col % index tables. There will be as many list elements as there are banner_vars.
 #' @param df data.frame of input variables
 #' @param factor_vars character vector of variable names that are to be treated as factor.
 #' Factor variables will have counts shown for each level of each variable.
@@ -368,19 +389,29 @@ profile_table_col_index <- function(df,
 #' Numeric variables will have means shown for variable.
 #' @param weight_var name of the variable holding case/row weights.
 #' If data is un-weighted, specify a vector of 1's with length equal to number of rows of df
-#' @param segment_vars character vector segment variables to profile by
+#' @param banner_vars character vector of variables to profile by.
+#' @param table_labels datamap with variable names and labels. See rsegmenter::extract_datamap
+#' 
+#' @examples
+#' df <- rsegmenter::test_seg_unlabelled
+#' 
+#' table_labels <- rsegmenter::extract_datamap(rsegmenter::test_seg_labelled)
+#' 
+#' profile_table(df, factor_vars = c("demog1","demog2"), numeric_vars = NULL,
+#' weight_var = "weight", banner_vars = "seg1", table_labels = table_labels)
+#' 
 #' @export
 #' 
 profile_table <- function(df,
                           factor_vars = NULL,
                           numeric_vars = NULL,
-                          weight_var,
-                          segment_vars,
+                          weight_var = NULL,
+                          banner_vars,
                           table_labels){
 
-  segment_vars <- as.list(segment_vars)
+  banner_vars <- as.list(banner_vars)
   
-  segment_vars_2 <- purrr::map(segment_vars, function(var) {
+  banner_vars_2 <- purrr::map(banner_vars, function(var) {
 
     df1 <- profile_table_raw(df,factor_vars = factor_vars,numeric_vars = numeric_vars,weight_var = weight_var,var)
     df2 <- profile_table_col_perc(df,factor_vars = factor_vars,numeric_vars = numeric_vars,weight_var = weight_var,var)
@@ -390,27 +421,27 @@ profile_table <- function(df,
 
     df1 <- df1 %>%
       dplyr::left_join(table_labels,by=c("Variable_Name","Value_Code")) %>%
-      dplyr::select(Variable_Name,Value_Label,dplyr::everything(),-Variable_Label,-Value_Code) %>%
-      dplyr::arrange(Variable_Order) %>%
-      dplyr::select(-Variable_Order)
+      dplyr::select(.data[["Variable_Name"]],.data[["Value_Label"]],dplyr::everything(),-.data[["Variable_Label"]],-.data[["Value_Code"]]) %>%
+      dplyr::arrange(.data[["Variable_Order"]]) %>%
+      dplyr::select(-.data[["Variable_Order"]])
 
     df2 <- df2 %>%
       dplyr::left_join(table_labels,by=c("Variable_Name","Value_Code")) %>%
-      dplyr::select(Variable_Name,Value_Label,dplyr::everything(),-Variable_Label,-Value_Code) %>%
-      dplyr::arrange(Variable_Order) %>%
-      dplyr::select(-Variable_Order)
+      dplyr::select(.data[["Variable_Name"]],.data[["Value_Label"]],dplyr::everything(),-.data[["Variable_Label"]],-.data[["Value_Code"]]) %>%
+      dplyr::arrange(.data[["Variable_Order"]]) %>%
+      dplyr::select(-.data[["Variable_Order"]])
 
     df3 <- df3 %>%
       dplyr::left_join(table_labels,by=c("Variable_Name","Value_Code")) %>%
-      dplyr::select(Variable_Name,Value_Label,dplyr::everything(),-Variable_Label,-Value_Code) %>%
-      dplyr::arrange(Variable_Order) %>%
-      dplyr::select(-Variable_Order)
+      dplyr::select(.data[["Variable_Name"]],.data[["Value_Label"]],dplyr::everything(),-.data[["Variable_Label"]],-.data[["Value_Code"]]) %>%
+      dplyr::arrange(.data[["Variable_Order"]]) %>%
+      dplyr::select(-.data[["Variable_Order"]])
 
     df4 <- df4 %>%
       dplyr::left_join(table_labels,by=c("Variable_Name","Value_Code")) %>%
-      dplyr::select(Variable_Name,Value_Label,dplyr::everything(),-Variable_Label,-Value_Code) %>%
-      dplyr::arrange(Variable_Order) %>%
-      dplyr::select(-Variable_Order)
+      dplyr::select(.data[["Variable_Name"]],.data[["Value_Label"]],dplyr::everything(),-.data[["Variable_Label"]],-.data[["Value_Code"]]) %>%
+      dplyr::arrange(.data[["Variable_Order"]]) %>%
+      dplyr::select(-.data[["Variable_Order"]])
 
     df_final <- dplyr::bind_cols(df1,"",df2,"",df3,"",df4)
 
@@ -419,7 +450,7 @@ profile_table <- function(df,
     return(df_final)
   })
 
-  return(segment_vars_2)
+  return(banner_vars_2)
 }
 
 #' Exports cross tables to .xlsx format.
@@ -427,12 +458,16 @@ profile_table <- function(df,
 #' @param min_index numeric value for highlighting under-indexing
 #' @param max_index numeric value for highlighting over-indexing
 #' @param filename character string naming a file
-#' @examples 
-#' df <- data.frame(var1=c(1,2,3),var2=c(2,1,3),var3=c(3,2,1))
-#' segments <- factor_segmentation(df,c(2:3))
-#' profile_table <- profile_table(df,factor_vars = c("var1","var2","var3"),
-#' numeric_vars = NULL,segment_vars,table_labels)
-#' export_profile_tables(profile_table,min_index=80,max_index=120,"profile_tables.xlsx")
+#' @examples
+#' df <- rsegmenter::test_seg_unlabelled
+#' 
+#' table_labels <- rsegmenter::extract_datamap(rsegmenter::test_seg_labelled)
+#' 
+#' prof_table <- profile_table(df, factor_vars = c("demog1","demog2"), numeric_vars = NULL,
+#' weight_var = "weight", banner_vars = "seg1", table_labels = table_labels)
+#' 
+#' export_profile_tables(prof_table = prof_table, filename="profile_table.xlsx")
+#' 
 #' @export
 #' 
 export_profile_tables <- function(prof_table,
@@ -475,12 +510,9 @@ export_profile_tables <- function(prof_table,
 }
 
 
-#' create row percent profile tables of all specified variables by segment variable
-
-#' @param df should be a dataframe of numeric variables
-#' @param factor_vars should be a character vector of variable names
-#' @param numeric_vars should be a character vector of variable names
-#' @param ... segment variables
+#' Adds user friendly labels to the profile tables
+#' @param prof_table should be a dataframe of numeric variables
+#' @param table_labels should be a character vector of variable names
 
 add_table_labels <- function(prof_table,table_labels){
   return(dplyr::left_join(prof_table,

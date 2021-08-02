@@ -12,10 +12,12 @@
 #' @param nrep Number of times to estimate the model, using different values of probs.start. The default is one. 
 #' Setting nrep>1 automates the search for the global—rather than just a local—maximum of the log-likelihood function. 
 #' poLCA returns the parameter estimates corresponding to the model with the greatest log-likelihood.
-#' @examples
-#' mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
-#' lca_segmentation(df = mydf, vars = c("col1","col2","col3"), num_sols=c(3,5), 
-#' maxiter=1000, tol=1e-10, na.rm=TRUE, nrep=1)
+#' 
+#' #' @examples
+#' df <- rsegmenter::test_seg_unlabelled
+#' segment_input_vars <- c("seg1","seg2","seg3","seg4","seg5","seg6","seg7","seg8","seg9","seg10")
+#' lca_segmentation(df = df, vars = segment_input_vars, num_sols=c(2,3))
+#' 
 #' @importFrom MASS ginv
 #' @export
 #' 
@@ -71,7 +73,7 @@ lca_segmentation <- function(df,
   # cannot have 0's in our data for this algorithm
   # if 0's are present, increment the affected variable by 1
   df <- df %>% 
-    dplyr::mutate(dplyr::across(dplyr::where(~ min(.)==0), ~ . + 1))
+    dplyr::mutate(dplyr::across(tidyselect::where(~ min(.)==0), ~ . + 1))
   
   # this will run all factor solutions in order to get the loadings and factor scores
   lca_segs <- lapply(num_sols,

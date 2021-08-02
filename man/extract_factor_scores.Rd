@@ -13,10 +13,3 @@ in the package documentation.}
 \description{
 Extract factor scores for each segment solution from factor analysis stores each set of scores as a data.frame as element of a list.
 }
-\examples{
-mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
-segment_solutions <- factor_segmentation(mydf,vars = c("col1","col2","col3"),
-weight_var = NULL, num_sols = c(2:3), rotate = "varimax",
-scores = TRUE, fac_assign = "avg_loading")
-extract_factor_scores(segment_solutions)
-}

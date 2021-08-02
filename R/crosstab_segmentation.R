@@ -1,16 +1,13 @@
 #' create a segment variable by assigning a unique code to every combination of the input variables. input variables are sorting in
 #' descending order, from the left most column to the right most column
 #' @param df data.frame of numeric variables
-#' @param ... variables to be crosstabbed
-#' @examples
-#' mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1),myweight=c(1,2,1))
-#' crosstab_segmentation(df = mydf,col1,col2,col3)
+#' @param vars variables to be crosstabbed
 #' @export
 #' 
-crosstab_segmentation <- function(df,...){
+crosstab_segmentation <- function(df,vars){
   
   df <- df %>% 
-    dplyr::select(...)
+    dplyr::select(dplyr::all_of(vars))
   
   # check that all variables are numeric
   if (check_all_numeric(df)){
@@ -23,13 +20,13 @@ crosstab_segmentation <- function(df,...){
   }
   
   segment_map <- df %>% 
-    dplyr::distinct(...) %>% 
+    dplyr::distinct(dplyr::all_of(vars)) %>% 
     dplyr::arrange(dplyr::desc(.,FALSE)) %>% 
     dplyr::mutate(segment = dplyr::row_number())
   
   return(df %>% 
            dplyr::left_join(segment_map) %>% 
-           dplyr::select(segment)
+           dplyr::select(.data[["segment"]])
     )
   
 }
