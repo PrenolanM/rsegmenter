@@ -90,8 +90,6 @@ lda <- function(df,
     
     colnames(df) <- c(id,dep,indeps)
     
-    print(colnames(df))
-    
     create_algorithm(df,id,indeps,ldamodel)
     
   }
@@ -104,9 +102,6 @@ pred_seg <- function(df,indeps,coefs){
   
   coefs_const <- coefs[1,]
   coefs_vars <- coefs[2:nrow(coefs),]
-  
-  print(dim(as.matrix(df[,indeps,drop=FALSE])))
-  print(dim(coefs_vars))
   
   sum_prod <- as.matrix(df[,indeps,drop=FALSE]) %*% coefs_vars + coefs_const
   final_pred <- max.col(sum_prod)
