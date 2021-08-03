@@ -10,7 +10,7 @@
 #' removed (listwise deleted) before estimating the model. If FALSE, cases with missing values are retained. 
 #' Cases with missing covariates are always removed. The default is TRUE.
 #' @param nrep Number of times to estimate the model, using different values of probs.start. The default is one. 
-#' Setting nrep>1 automates the search for the global—rather than just a local—maximum of the log-likelihood function. 
+#' Setting nrep>1 automates the search for the global rather than just a local maximum of the log-likelihood function. 
 #' poLCA returns the parameter estimates corresponding to the model with the greatest log-likelihood.
 #' 
 #' #' @examples
@@ -52,8 +52,10 @@ lca_segmentation <- function(df,
   # check if there are any 0's or negatives in our data
   if (min(df)<=0){
     df_names <- sort(unique(names(df)[apply(df, 2, which.min)]))
-    stop(paste0(df_names,
-                " has 0's or negative values in them"))
+    stop(paste0("Your data has 0's or negative values in them:",
+                df_names
+                )
+         )
   }
   
   # df <- df %>% 
