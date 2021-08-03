@@ -693,6 +693,6 @@ export_profile_tables <- function(prof_table,
 
 add_table_labels <- function(prof_table,table_labels){
   return(dplyr::left_join(prof_table,
-                          prof_table,
+                          table_labels,
                           by=c("Variable_Name","Value_Code")))
 }
