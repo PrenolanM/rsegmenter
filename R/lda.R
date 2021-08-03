@@ -30,22 +30,8 @@ lda <- function(df,
                  )  
   }
   
-  # ensuring df is provided
-  if (missing(df)){
-    stop("df is compulsory")
-  }
-  
-  # df must be a data.frame or tibble
-  if (!(c("data.frame") %in% class(df))){
-    stop("df must be a data.frame or tibble")
-  }
-  
-  # df must have at least 1 row
-  # this implies df will have at least 1 col as well
-  if (is.null(nrow(df))){
-    stop("df must be a data.frame of at least 1 row")
-  }
-  
+  id_data <- df[,id,drop=FALSE]
+  dep_data <- df[,dep,drop=FALSE]
   df <- df[,c(dep,indeps),drop=FALSE]
   
   ldamodel <- MASS::lda(stats::as.formula(paste('as.factor(',dep,')','~.',
@@ -99,6 +85,10 @@ lda <- function(df,
   ldamodel$predictions <- pred_seg(df,indeps,class_funs)
   
   if(create_algorithm == TRUE){
+    
+    df <- cbind(id_data,dep_data,df)
+    
+    colnames(df) <- c(id,dep,indeps)
     
     create_algorithm(df,id,indeps,ldamodel)
     
