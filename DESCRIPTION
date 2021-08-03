@@ -8,8 +8,7 @@ Authors@R:
            email = "strinipmunsamy@gmail.com",
            comment = c(ORCID = "YOUR-ORCID-ID"))
 Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to
-    pick a license
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
@@ -19,4 +18,17 @@ Suggests:
 Config/testthat/edition: 3
 Imports: 
     MASS (>= 7.0.0),
-    psych (>= 2.0.0)
+    psych (>= 2.0.0),
+    magrittr,
+    cluster,
+    dplyr,
+    haven,
+    openxlsx,
+    poLCA,
+    purrr,
+    readr,
+    tidyr,
+    tidyselect,
+    rlang
+Depends: 
+    R (>= 2.10)

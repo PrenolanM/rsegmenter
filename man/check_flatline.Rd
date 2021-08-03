@@ -4,13 +4,10 @@
 \alias{check_flatline}
 \title{Returns the max percentage of responses that are the same per row.}
 \usage{
-check_flatline(df, vars)
+check_flatline(myvar)
 }
 \arguments{
-\item{df}{must be a data.frame}
-
-\item{vars}{must be a string of variable names to operate on.
-These variables must be numeric}
+\item{myvar}{must be a numeric vector to operate on.}
 }
 \description{
 Returns the max percentage of responses that are the same per row.
@@ -19,5 +16,5 @@ is for that row.
 }
 \examples{
 mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
-check_flatline(df = mydf, vars = c("col1","col2","col3"))
+check_flatline(mydf$col1)
 }

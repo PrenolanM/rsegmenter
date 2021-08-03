@@ -2,15 +2,30 @@
 % Please edit documentation in R/kmeans_segmentation.R
 \name{kmeans_segmentation}
 \alias{kmeans_segmentation}
-\title{runs kmeans}
+\title{runs kmeans using the stats package}
 \usage{
-kmeans_segmentation(dist_mat, num_sols)
+kmeans_segmentation(
+  df,
+  vars,
+  num_sols,
+  iter.max = 10,
+  nstart = 1,
+  algorithm = c("Hartigan-Wong", "Lloyd", "Forgy", "MacQueen")
+)
 }
 \arguments{
-\item{dist_mat}{should be a distance matrix}
+\item{df}{data.frame of numeric variables}
 
-\item{num_sols}{should be a numeric vector specifying the minimum and maximum number of factors to extract}
+\item{vars}{character vector of variable names}
+
+\item{num_sols}{numeric vector specifying the minimum and maximum number of segments to extract}
+
+\item{iter.max}{the maximum number of iterations allowed}
+
+\item{nstart}{if centers is a number, how many random sets should be chosen?}
+
+\item{algorithm}{character: may be abbreviated. Note that "Lloyd" and "Forgy" are alternative names for one algorithm.}
 }
 \description{
-runs kmeans
+runs kmeans using the stats package
 }

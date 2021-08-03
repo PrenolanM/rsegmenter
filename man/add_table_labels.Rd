@@ -2,19 +2,15 @@
 % Please edit documentation in R/profile_table.R
 \name{add_table_labels}
 \alias{add_table_labels}
-\title{create row percent profile tables of all specified variables by segment variable}
+\title{Adds user friendly labels to the profile tables}
 \usage{
 add_table_labels(prof_table, table_labels)
 }
 \arguments{
-\item{df}{should be a dataframe of numeric variables}
+\item{prof_table}{should be a dataframe of numeric variables}
 
-\item{factor_vars}{should be a character vector of variable names}
-
-\item{numeric_vars}{should be a character vector of variable names}
-
-\item{...}{segment variables}
+\item{table_labels}{should be a character vector of variable names}
 }
 \description{
-create row percent profile tables of all specified variables by segment variable
+Adds user friendly labels to the profile tables
 }

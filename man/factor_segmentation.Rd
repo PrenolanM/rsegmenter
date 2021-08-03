@@ -2,21 +2,41 @@
 % Please edit documentation in R/factor_segmentation.R
 \name{factor_segmentation}
 \alias{factor_segmentation}
-\title{runs factor analysis with varimax rotation using the psych package}
+\title{Runs factor analysis with varimax rotation using the psych package.}
 \usage{
-factor_segmentation(df, vars, num_sols, weight_var)
+factor_segmentation(
+  df,
+  vars,
+  weight_var = NULL,
+  num_sols,
+  rotate = "varimax",
+  scores = FALSE,
+  fac_assign = "avg_loading"
+)
 }
 \arguments{
-\item{df}{must be a data.frame of numeric variables}
+\item{df}{data.frame of numeric variables.}
 
-\item{vars}{must be a string of variable names to operate on.}
+\item{vars}{variables to be used in the factor analysis.}
 
-\item{num_sols}{should be a numeric vector specifying the minimum and maximum number of factors to extract}
+\item{weight_var}{if not NULL, a vector that contains weights for each observation. The NULL
+case is equivalent to all cases being weighted 1.}
+
+\item{num_sols}{number of segment solutions to run.}
+
+\item{rotate}{method of rotation for factor analysis. See psych::principal() for more details.}
+
+\item{scores}{TRUE/FALSE to include scores in the output or not. If fac_assign="max_score", scores must be set to TRUE.}
+
+\item{fac_assign}{method to use to assign segments to rows. Options are one of c("avg_loading","max_score").}
 }
 \description{
-runs factor analysis with varimax rotation using the psych package
+Runs factor analysis with varimax rotation using the psych package.
 }
 \examples{
-mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
-factor_segmentation(df = mydf, vars = c("col1","col2","col3"),num_sols=c(3,5))
+df <- rsegmenter::test_seg_unlabelled
+segment_input_vars <- c("seg1","seg2","seg3","seg4","seg5","seg6","seg7","seg8","seg9","seg10")
+factor_segmentation(df = df, vars = segment_input_vars, weight_var = "weight", num_sols=c(2:3),
+rotate="varimax", scores=FALSE, fac_assign="avg_loading")
+
 }

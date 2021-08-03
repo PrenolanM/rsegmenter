@@ -2,28 +2,46 @@
 % Please edit documentation in R/profile_table.R
 \name{profile_table}
 \alias{profile_table}
-\title{create profile raw count, col \%, row \%, col \% index tables of all specified variables by segment variable}
+\title{Creates a list of data.frame elements. Each data.frame consists of 4 sets of cross tables.
+These are raw count, col \%, row \% and col \% index tables. There will be as many list elements as there are banner_vars.}
 \usage{
 profile_table(
   df,
   factor_vars = NULL,
   numeric_vars = NULL,
-  weight_var,
-  table_labels,
-  ...
+  weight_var = NULL,
+  banner_vars,
+  table_labels
 )
 }
 \arguments{
-\item{df}{must be a dataframe of numeric variables}
+\item{df}{data.frame of input variables}
 
-\item{factor_vars}{must be a character vector of variable names}
+\item{factor_vars}{variables that are to be treated as factors in the table output.
+Will produce counts for each value for each variable. If weight_var is provided, will
+produce weighted counts.}
 
-\item{numeric_vars}{must be a character vector of variable names}
+\item{numeric_vars}{variables that are to be treated as numeric in the table output.
+Will produce means for each variable. if weight_var is provided, will produce weighted means.}
 
-\item{weight_var}{must be a numeric vector of row weights. if data is unweighted, specify a vector of 1's with length equal to number of rows of df}
+\item{weight_var}{if not NULL, a vector that contains weights for each observation. The NULL
+case is equivalent to all cases being weighted 1.}
 
-\item{...}{segment variables}
+\item{banner_vars}{name of the variables to appear along the top of the table. The number of cross
+tables produced is equal to the number of banner variables.}
+
+\item{table_labels}{datamap with variable names and labels. See rsegmenter::extract_datamap}
 }
 \description{
-create profile raw count, col \%, row \%, col \% index tables of all specified variables by segment variable
+Creates a list of data.frame elements. Each data.frame consists of 4 sets of cross tables.
+These are raw count, col \%, row \% and col \% index tables. There will be as many list elements as there are banner_vars.
+}
+\examples{
+df <- rsegmenter::test_seg_unlabelled
+
+table_labels <- rsegmenter::extract_datamap(rsegmenter::test_seg_labelled)
+
+profile_table(df, factor_vars = c("demog1","demog2"), numeric_vars = NULL,
+weight_var = "weight", banner_vars = "seg1", table_labels = table_labels)
+
 }

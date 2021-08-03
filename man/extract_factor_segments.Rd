@@ -2,18 +2,14 @@
 % Please edit documentation in R/extract_segments.R
 \name{extract_factor_segments}
 \alias{extract_factor_segments}
-\title{extract segments from factor analysis segment solutions and stores in a dataframe}
+\title{Extract segments from factor analysis segment solutions and stores each segment as a variable in a data.frame.}
 \usage{
 extract_factor_segments(seglist)
 }
 \arguments{
-\item{seglist}{must be an output from the rsegmenter::segmentation() function}
+\item{seglist}{an output from the rsegmenter::factor_segmentation() function. See more details about factor_segmentation()
+in the package documentation.}
 }
 \description{
-extract segments from factor analysis segment solutions and stores in a dataframe
-}
-\examples{
-mydf <- data.frame(col1=c(1,2,3),col2=c(1,3,2),col3=c(1,2,1))
-segment_solutions <- segmentation(mydf,c("col1","col2","col3"))
-extract_factor_segments(segment_solutions)
+Extract segments from factor analysis segment solutions and stores each segment as a variable in a data.frame.
 }

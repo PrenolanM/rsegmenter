@@ -1,21 +1,12 @@
-#' extract_datamap returns a dataframe containing a mapping between variables, value codes and value labels.
-#' 
-#' @param df must be a .sav file stored as data.frame. 
-#' Importing the .sav file using haven::read_sav or 
-#' rsegmenter::read_data is the preferred methods 
+#' Returns a data.frame containing a mapping between variables, value codes and value labels.
+#' @param df data.frame of numeric variables. The file must have been imported using one of haven::read_sav or 
+#' rsegmenter::read_data. See the test_datamap example that comes with the package.
 #' @export
 
 extract_datamap <- function(df){
   
-  # ensuring df is provided
-  if (missing(df)){
-    stop("df is compulsory")
-  }
-  
-  # df must be a data.frame or tibble
-  if (!(c("data.frame") %in% class(df))){
-    stop("df must be a data.frame or tibble")
-  }
+  # need to add checks to make sure df is the correct
+  # input as required
   
   mynames <- colnames(df)
   
@@ -28,18 +19,31 @@ extract_datamap <- function(df){
                           }
   )
   
-  vars_to_keep <- unlist(lapply(data_map_list,function(x)dim(x)[2]))
+  vars_to_keep <- unlist(lapply(data_map_list,
+                                function(x){
+                                  dim(x)[2]
+                                  }
+                                )
+                         )
   
   data_map_list <- data_map_list[vars_to_keep==4]
   
-  data_map_df <- do.call("rbind.data.frame",data_map_list)
+  data_map_df <- do.call("rbind.data.frame",
+                         data_map_list)
   
   rownames(data_map_df) <- NULL
-  colnames(data_map_df) <- c("Variable_Name","Variable_Label","Value_Code","Value_Label")
+  colnames(data_map_df) <- c("Variable_Name",
+                             "Variable_Label",
+                             "Value_Code","Value_Label")
   
   data_map_df[["Value_Code"]] <- as.numeric(as.character(data_map_df[["Value_Code"]]))
   
   data_map_df[["Variable_Order"]] <- seq_along(data_map_df[["Variable_Name"]])
   
-  return(data_map_df[c("Variable_Order","Variable_Name","Variable_Label","Value_Code","Value_Label")])
+  return(data_map_df[c("Variable_Order",
+                       "Variable_Name",
+                       "Variable_Label",
+                       "Value_Code","Value_Label")
+                     ]
+         )
 }
