@@ -21,6 +21,7 @@
 #' @importFrom MASS ginv
 #' @export
 #' 
+
 lca_segmentation <- function(df,
                              vars,
                              num_sols,
@@ -48,10 +49,15 @@ lca_segmentation <- function(df,
     stop("data has NA's. please address these before segmenting")
   }
   
-  # cannot have 0's in our data for this algorithm
-  # if 0's are present, increment the affected variable by 1
-  df <- df %>% 
-    dplyr::mutate(dplyr::across(tidyselect::where(~ min(.)==0), ~ . + 1))
+  # check if there are any 0's or negatives in our data
+  if (min(df)<=0){
+    df_names <- sort(unique(names(df)[apply(df, 2, which.min)]))
+    stop(paste0(df_names,
+                " has 0's or negative values in them"))
+  }
+  
+  # df <- df %>% 
+  #   dplyr::mutate(dplyr::across(where(~ min(.)==0), ~ . + 1))
   
   # this will run all factor solutions in order to get the loadings and factor scores
   lca_segs <- lapply(num_sols,
