@@ -2,17 +2,22 @@
 % Please edit documentation in R/crosstab_segmentation.R
 \name{crosstab_segmentation}
 \alias{crosstab_segmentation}
-\title{create a segment variable by assigning a unique code to every combination of the input variables. input variables are sorting in
-descending order, from the left most column to the right most column}
+\title{Create a segment variable by assigning a unique code to every combination of the input variables.
+Input variables are sorted in descending order, from the left most column to the right most column.}
 \usage{
 crosstab_segmentation(df, vars)
 }
 \arguments{
 \item{df}{data.frame of numeric variables}
 
-\item{vars}{variables to be crosstabbed}
+\item{vars}{variables to be used in the crosstab segmentation.}
 }
 \description{
-create a segment variable by assigning a unique code to every combination of the input variables. input variables are sorting in
-descending order, from the left most column to the right most column
+Create a segment variable by assigning a unique code to every combination of the input variables.
+Input variables are sorted in descending order, from the left most column to the right most column.
+}
+\examples{
+df <- rsegmenter::test_seg_unlabelled
+crosstab_segmentation(df = df, vars = c("seg1","seg2","seg3"))
+
 }

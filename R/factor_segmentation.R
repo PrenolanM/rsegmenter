@@ -24,15 +24,7 @@ factor_segmentation <- function(df,
                                 scores=FALSE,
                                 fac_assign="avg_loading"){
   
-  # ensuring df is provided
-  if (missing(df)){
-    stop("df is compulsory")
-  }
-  
-  # ensuring variables to factor analyse is provided
-  if(length(vars)==0){
-    stop("numeric variables to factor must be provided")
-  }
+  # need to check that number of vars is less than equal to max num_sols
   
   # ensure if fac_assign = "max_score" then scores=TRUE
   if (fac_assign=="max_score" & !scores){

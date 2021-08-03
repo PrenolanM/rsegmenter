@@ -2,15 +2,14 @@
 % Please edit documentation in R/extract_datamap.R
 \name{extract_datamap}
 \alias{extract_datamap}
-\title{extract_datamap returns a dataframe containing a mapping between variables, value codes and value labels.}
+\title{Returns a data.frame containing a mapping between variables, value codes and value labels.}
 \usage{
 extract_datamap(df)
 }
 \arguments{
-\item{df}{must be a .sav file stored as data.frame.
-Importing the .sav file using haven::read_sav or
-rsegmenter::read_data is the preferred methods}
+\item{df}{data.frame of numeric variables. The file must have been imported using one of haven::read_sav or
+rsegmenter::read_data. See the test_datamap example that comes with the package.}
 }
 \description{
-extract_datamap returns a dataframe containing a mapping between variables, value codes and value labels.
+Returns a data.frame containing a mapping between variables, value codes and value labels.
 }

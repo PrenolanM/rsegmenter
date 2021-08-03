@@ -5,6 +5,8 @@
 #' 
 extract_factor_segments <- function(seglist){
   
+  # need to check that seglist is not empty
+  
   return_df <- as.data.frame(lapply(seq_along(seglist),
                                     function(x){
                                       seglist[[x]][["segments"]]

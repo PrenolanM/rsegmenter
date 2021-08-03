@@ -29,21 +29,6 @@ lca_segmentation <- function(df,
                              na.rm=TRUE,
                              nrep=1){
   
-  # ensuring df is provided
-  if (missing(df)){
-    stop("df is compulsory")
-  }
-  
-  # ensuring variables to run lca on is provided
-  if(length(vars)==0){
-    stop("numeric variable to factor must be provided")
-  }
-  
-  # ensuring num_sols is provided
-  if (missing(num_sols)){
-    stop("num_sols is compulsory")
-  }
-  
   lca_segs <- vector("list",length = max(num_sols)-min(num_sols) + 1)
   
   # df must be a data.frame or tibble
@@ -51,14 +36,7 @@ lca_segmentation <- function(df,
     stop("df must be a data.frame or tibble")
   }
   
-  
   df <- df[,vars,drop=FALSE]
-  
-  # df must have at least 1 row
-  # this implies df will have at least 1 col as well
-  if (is.null(nrow(df))){
-    stop("df must be a data.frame of at least 1 row")
-  }
   
   # check that all variables are numeric
   if (check_all_numeric(df)){

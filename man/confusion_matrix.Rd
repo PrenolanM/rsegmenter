@@ -4,16 +4,17 @@
 \alias{confusion_matrix}
 \title{creates confusion matrix}
 \usage{
-confusion_matrix(df, actual, predicted, weight_var)
+confusion_matrix(df, actual, predicted, weight_var = NULL)
 }
 \arguments{
 \item{df}{data.frame of numeric variables}
 
-\item{actual}{character vector of variable name of ground truth}
+\item{actual}{ground truth data}
 
-\item{predicted}{character vector of variable name of predicted}
+\item{predicted}{predicted data}
 
-\item{weight_var}{name of the variable holding case/row weights.}
+\item{weight_var}{if not NULL, a vector that contains weights for each observation. The NULL
+case is equivalent to all cases being weighted 1.}
 }
 \description{
 creates confusion matrix

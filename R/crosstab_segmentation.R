@@ -1,13 +1,17 @@
-#' create a segment variable by assigning a unique code to every combination of the input variables. input variables are sorting in
-#' descending order, from the left most column to the right most column
+#' Create a segment variable by assigning a unique code to every combination of the input variables.
+#' Input variables are sorted in descending order, from the left most column to the right most column.
 #' @param df data.frame of numeric variables
-#' @param vars variables to be crosstabbed
+#' @param vars variables to be used in the crosstab segmentation.
+#' 
+#' @examples
+#' df <- rsegmenter::test_seg_unlabelled
+#' crosstab_segmentation(df = df, vars = c("seg1","seg2","seg3"))
+#' 
 #' @export
 #' 
 crosstab_segmentation <- function(df,vars){
   
-  df <- df %>% 
-    dplyr::select(dplyr::all_of(vars))
+  df <- df[,vars,drop=FALSE]
   
   # check that all variables are numeric
   if (check_all_numeric(df)){
@@ -20,13 +24,13 @@ crosstab_segmentation <- function(df,vars){
   }
   
   segment_map <- df %>% 
-    dplyr::distinct(dplyr::all_of(vars)) %>% 
-    dplyr::arrange(dplyr::desc(.,FALSE)) %>% 
-    dplyr::mutate(segment = dplyr::row_number())
+    dplyr::distinct() %>% 
+    dplyr::arrange(dplyr::desc(.)) %>% 
+    dplyr::mutate(Crosstab_Segment = dplyr::row_number())
   
   return(df %>% 
            dplyr::left_join(segment_map) %>% 
-           dplyr::select(.data[["segment"]])
+           dplyr::select(.data[["Crosstab_Segment"]])
     )
   
 }
