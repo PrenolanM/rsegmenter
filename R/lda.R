@@ -1,39 +1,38 @@
-#' Runs lda from the MASS package
-#' 
-#' Returns the lda model object from the MASS package with a additional
+#' Runs Linear Discriminant Analysis using the MASS package.
+#' Returns the lda model object from the MASS package with an additional
 #' elements that holds the fishers classification function coefficients and the 
-#' predicted outcome
+#' predicted outcome.
+#' @param df data.frame of numeric variables.
+#' @param id unique row identifier.
+#' @param dep target variable to be predicted.
+#' @param indeps predictor variables.
+#' @param prior numeric vector of prior probabilities. If NULL, will default
+#' to 1 divided by number of distinct categories in the dependent variable.
+#' @param create_algorithm TRUE/FALSE. If TRUE, will produce an excel file containing the prediction
+#' algorithm.
 #' 
-#' @param df must be a data.frame
-#' 
-#' @param dep must be a string of the dependent variable name
-#' 
-#' @param indeps character vector of predictor variable names
-#' 
-#' @param prior must be a numeric vector of prior probabilities. 
-#' length(prior) must equal number of unique values in the dependent variable
 #' @examples
 #' df <- rsegmenter::test_seg_unlabelled
-#' 
 #' lda(df, dep="seg1", indeps=c("seg2","seg3","seg4"),prior=rep(1/4,4))
 #' 
 #' @export
 #' 
-lda <- function(df,dep,indeps,prior){
+lda <- function(df,
+                id,
+                dep,
+                indeps,
+                prior = NULL,
+                create_algorithm = FALSE){
+  
+  if(is.null(prior)){
+    prior <- rep(1/length(unique(df[,dep,drop=TRUE])),
+                 length(unique(df[,dep,drop=TRUE]))
+                 )  
+  }
   
   # ensuring df is provided
   if (missing(df)){
     stop("df is compulsory")
-  }
-  
-  # ensuring vars is provided
-  if (missing(dep)){
-    stop("dep is compulsory")
-  }
-  
-  # ensuring vars is provided
-  if (missing(indeps)){
-    stop("indeps is compulsory")
   }
   
   # df must be a data.frame or tibble
@@ -98,6 +97,12 @@ lda <- function(df,dep,indeps,prior){
   
   # adding predicted segments
   ldamodel$predictions <- pred_seg(df,indeps,class_funs)
+  
+  if(create_algorithm == TRUE){
+    
+    create_algorithm(df,id,indeps,ldamodel)
+    
+  }
   
   return(ldamodel)
   

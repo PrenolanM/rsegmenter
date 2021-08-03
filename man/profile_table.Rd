@@ -17,18 +17,20 @@ profile_table(
 \arguments{
 \item{df}{data.frame of input variables}
 
-\item{factor_vars}{character vector of variable names that are to be treated as factor.
-Factor variables will have counts shown for each level of each variable.}
+\item{factor_vars}{variables that are to be treated as factors in the table output.
+Will produce counts for each value for each variable. If weight_var is provided, will
+produce weighted counts.}
 
-\item{numeric_vars}{character vector of variable names that are to be treated as numeric.
-Numeric variables will have means shown for variable.}
+\item{numeric_vars}{variables that are to be treated as numeric in the table output.
+Will produce means for each variable. if weight_var is provided, will produce weighted means.}
 
-\item{weight_var}{name of the variable holding case/row weights.
-If data is un-weighted, specify a vector of 1's with length equal to number of rows of df}
-
-\item{banner_vars}{character vector of variables to profile by.}
+\item{weight_var}{if not NULL, a vector that contains weights for each observation. The NULL
+case is equivalent to all cases being weighted 1.}
 
 \item{table_labels}{datamap with variable names and labels. See rsegmenter::extract_datamap}
+
+\item{banner_var}{name of the variables to appear along the top of the table. The number of cross
+tables produced is equal to the number of banner variables.}
 }
 \description{
 Creates a list of data.frame elements. Each data.frame consists of 4 sets of cross tables.

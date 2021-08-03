@@ -2,21 +2,21 @@
 % Please edit documentation in R/profile_table.R
 \name{export_profile_tables}
 \alias{export_profile_tables}
-\title{Exports cross tables to .xlsx format.}
+\title{Exports cross tables to .xlsx format. Each table will be output on a separate worksheet.}
 \usage{
 export_profile_tables(prof_table, min_index = 80, max_index = 120, filename)
 }
 \arguments{
-\item{prof_table}{should be the output from rsegmenter::profile_table}
+\item{prof_table}{output from rsegmenter::profile_table.}
 
-\item{min_index}{numeric value for highlighting under-indexing}
+\item{min_index}{numeric value for highlighting under-indexing.}
 
-\item{max_index}{numeric value for highlighting over-indexing}
+\item{max_index}{numeric value for highlighting over-indexing.}
 
-\item{filename}{character string naming a file}
+\item{filename}{file name to use when saving.}
 }
 \description{
-Exports cross tables to .xlsx format.
+Exports cross tables to .xlsx format. Each table will be output on a separate worksheet.
 }
 \examples{
 df <- rsegmenter::test_seg_unlabelled

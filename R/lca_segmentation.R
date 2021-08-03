@@ -1,11 +1,11 @@
-#' runs lca using the poLCA package
-#' @param df data.frame of numeric variables
-#' @param vars character vector of variable names
-#' @param num_sols numeric vector specifying the minimum and maximum number of factors to extract
-#' @param maxiter The maximum number of iterations through which the estimation algorithm will cycle
-#' @param tol A tolerance value for judging when convergence has been reached. When the one-iteration change in the estimated 
+#' Runs Latent Class Analysis using the poLCA package.
+#' @param df data.frame of numeric variables.
+#' @param vars variables to be used in the latent class analysis.
+#' @param num_sols number of segment solutions to run.
+#' @param maxiter maximum number of iterations through which the estimation algorithm will cycle.
+#' @param tol tolerance value for judging when convergence has been reached. When the one-iteration change in the estimated 
 #' log-likelihood is less than tol, the estimation algorithm stops updating and considers the maximum log-likelihood to have been 
-#' found
+#' found.
 #' @param na.rm Logical, for how poLCA handles cases with missing values on the manifest variables. If TRUE, those cases are 
 #' removed (listwise deleted) before estimating the model. If FALSE, cases with missing values are retained. 
 #' Cases with missing covariates are always removed. The default is TRUE.
@@ -16,7 +16,7 @@
 #' #' @examples
 #' df <- rsegmenter::test_seg_unlabelled
 #' segment_input_vars <- c("seg1","seg2","seg3","seg4","seg5","seg6","seg7","seg8","seg9","seg10")
-#' lca_segmentation(df = df, vars = segment_input_vars, num_sols=c(2,3))
+#' lca_segmentation(df = df, vars = segment_input_vars, num_sols=c(2:3))
 #' 
 #' @importFrom MASS ginv
 #' @export

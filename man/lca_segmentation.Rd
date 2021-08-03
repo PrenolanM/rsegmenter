@@ -2,7 +2,7 @@
 % Please edit documentation in R/lca_segmentation.R
 \name{lca_segmentation}
 \alias{lca_segmentation}
-\title{runs lca using the poLCA package}
+\title{Runs Latent Class Analysis using the poLCA package.}
 \usage{
 lca_segmentation(
   df,
@@ -15,17 +15,17 @@ lca_segmentation(
 )
 }
 \arguments{
-\item{df}{data.frame of numeric variables}
+\item{df}{data.frame of numeric variables.}
 
-\item{vars}{character vector of variable names}
+\item{vars}{variables to be used in the latent class analysis.}
 
-\item{num_sols}{numeric vector specifying the minimum and maximum number of factors to extract}
+\item{num_sols}{number of segment solutions to run.}
 
-\item{maxiter}{The maximum number of iterations through which the estimation algorithm will cycle}
+\item{maxiter}{maximum number of iterations through which the estimation algorithm will cycle.}
 
-\item{tol}{A tolerance value for judging when convergence has been reached. When the one-iteration change in the estimated
+\item{tol}{tolerance value for judging when convergence has been reached. When the one-iteration change in the estimated
 log-likelihood is less than tol, the estimation algorithm stops updating and considers the maximum log-likelihood to have been
-found}
+found.}
 
 \item{na.rm}{Logical, for how poLCA handles cases with missing values on the manifest variables. If TRUE, those cases are
 removed (listwise deleted) before estimating the model. If FALSE, cases with missing values are retained.
@@ -38,8 +38,8 @@ poLCA returns the parameter estimates corresponding to the model with the greate
 #' @examples
 df <- rsegmenter::test_seg_unlabelled
 segment_input_vars <- c("seg1","seg2","seg3","seg4","seg5","seg6","seg7","seg8","seg9","seg10")
-lca_segmentation(df = df, vars = segment_input_vars, num_sols=c(2,3))}
+lca_segmentation(df = df, vars = segment_input_vars, num_sols=c(2:3))}
 }
 \description{
-runs lca using the poLCA package
+Runs Latent Class Analysis using the poLCA package.
 }

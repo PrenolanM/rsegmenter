@@ -2,30 +2,31 @@
 % Please edit documentation in R/profile_table.R
 \name{profile_table_raw}
 \alias{profile_table_raw}
-\title{create raw count profile tables of all specified variables by segment variable.}
+\title{Create raw count profile tables of all specified variables by banner variable.}
 \usage{
 profile_table_raw(
   df,
   factor_vars = NULL,
   numeric_vars = NULL,
   weight_var = NULL,
-  segment_var
+  banner_var
 )
 }
 \arguments{
 \item{df}{data.frame of input variables}
 
-\item{factor_vars}{character vector of variable names that are to be treated as factor.
-Factor variables will have counts shown for each level of each variable.}
+\item{factor_vars}{variables that are to be treated as factors in the table output.
+Will produce counts for each value for each variable. If weight_var is provided, will
+produce weighted counts.}
 
-\item{numeric_vars}{character vector of variable names that are to be treated as numeric.
-Numeric variables will have means shown for variable.}
+\item{numeric_vars}{variables that are to be treated as numeric in the table output.
+Will produce means for each variable. if weight_var is provided, will produce weighted means.}
 
-\item{weight_var}{name of the variable holding case/row weights.
-If data is un-weighted, leave as NULL}
+\item{weight_var}{if not NULL, a vector that contains weights for each observation. The NULL
+case is equivalent to all cases being weighted 1.}
 
-\item{segment_var}{name of the variable holding the segment variable}
+\item{banner_var}{name of the variable to appear along the top of the table.}
 }
 \description{
-create raw count profile tables of all specified variables by segment variable.
+Create raw count profile tables of all specified variables by banner variable.
 }

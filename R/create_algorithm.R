@@ -1,6 +1,19 @@
-create_algorithm <- function(df,id,vars,ldamodel){
+#' Creates an excel workbook with two worksheets. The first sheet contains the classification 
+#' function coefficients from a model created using rsegmenter::lda. The second sheet contains the training data
+#' and excel formulae to assign the training data to a segment, using the classification function
+#' coefficients.
+#' 
+#' @param df data.frame of numeric variables.
+#' @param id unique row identifier.
+#' @param indeps predictor variables.
+#' @param ldamodel lda model object.
+
+create_algorithm <- function(df,
+                             id,
+                             indeps,
+                             ldamodel){
   
-  df <- df[,c(id,vars),drop=FALSE]
+  df <- df[,c(id,indeps),drop=FALSE]
   coefs <- ldamodel[["class_funs"]]
   
   # create new workbook
@@ -31,7 +44,7 @@ create_algorithm <- function(df,id,vars,ldamodel){
                       startRow = 1)
   
   # getting different starting columns to be used to write to excel
-  num_pred_vars <- length(vars)
+  num_pred_vars <- length(indeps)
   sum_prod_start <- num_pred_vars + 2
   sum_prod_end <- sum_prod_start + ncol(coefs)
   

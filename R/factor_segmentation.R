@@ -1,16 +1,17 @@
-#' runs factor analysis with varimax rotation using the psych package
-#' @param df data.frame of numeric variables
-#' @param vars character vector of variable names
-#' @param weight_var numeric vector of row weights
-#' @param num_sols numeric vector specifying the minimum and maximum number of factors to extract
-#' @param rotate method of rotation for factor analysis. Options are the same as psych::principal()
-#' @param scores TRUE/FALSE to include scores in the output or not. if fac_assign="max_score", scores must be set to TRUE
-#' @param fac_assign method to use to assign segments to rows. options are one of c("avg_loading","max_score")
+#' Runs factor analysis with varimax rotation using the psych package.
+#' @param df data.frame of numeric variables.
+#' @param vars variables to be used in the factor analysis.
+#' @param weight_var if not NULL, a vector that contains weights for each observation. The NULL
+#' case is equivalent to all cases being weighted 1.
+#' @param num_sols number of segment solutions to run.
+#' @param rotate method of rotation for factor analysis. See psych::principal() for more details.
+#' @param scores TRUE/FALSE to include scores in the output or not. If fac_assign="max_score", scores must be set to TRUE.
+#' @param fac_assign method to use to assign segments to rows. Options are one of c("avg_loading","max_score").
 #' 
 #' @examples
 #' df <- rsegmenter::test_seg_unlabelled
 #' segment_input_vars <- c("seg1","seg2","seg3","seg4","seg5","seg6","seg7","seg8","seg9","seg10")
-#' factor_segmentation(df = df, vars = segment_input_vars, weight_var = "weight", num_sols=c(2,3),
+#' factor_segmentation(df = df, vars = segment_input_vars, weight_var = "weight", num_sols=c(2:3),
 #' rotate="varimax", scores=FALSE, fac_assign="avg_loading")
 #' 
 #' @export

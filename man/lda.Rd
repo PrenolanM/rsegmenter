@@ -2,28 +2,36 @@
 % Please edit documentation in R/lda.R
 \name{lda}
 \alias{lda}
-\title{Runs lda from the MASS package}
+\title{Runs Linear Discriminant Analysis using the MASS package.
+Returns the lda model object from the MASS package with an additional
+elements that holds the fishers classification function coefficients and the
+predicted outcome.}
 \usage{
-lda(df, dep, indeps, prior)
+lda(df, id, dep, indeps, prior = NULL, create_algorithm = FALSE)
 }
 \arguments{
-\item{df}{must be a data.frame}
+\item{df}{data.frame of numeric variables.}
 
-\item{dep}{must be a string of the dependent variable name}
+\item{id}{unique row identifier.}
 
-\item{indeps}{character vector of predictor variable names}
+\item{dep}{target variable to be predicted.}
 
-\item{prior}{must be a numeric vector of prior probabilities.
-length(prior) must equal number of unique values in the dependent variable}
+\item{indeps}{predictor variables.}
+
+\item{prior}{numeric vector of prior probabilities. If NULL, will default
+to 1 divided by number of distinct categories in the dependent variable.}
+
+\item{create_algorithm}{TRUE/FALSE. If TRUE, will produce an excel file containing the prediction
+algorithm.}
 }
 \description{
-Returns the lda model object from the MASS package with a additional
+Runs Linear Discriminant Analysis using the MASS package.
+Returns the lda model object from the MASS package with an additional
 elements that holds the fishers classification function coefficients and the
-predicted outcome
+predicted outcome.
 }
 \examples{
 df <- rsegmenter::test_seg_unlabelled
-
 lda(df, dep="seg1", indeps=c("seg2","seg3","seg4"),prior=rep(1/4,4))
 
 }
