@@ -27,10 +27,10 @@ Will produce means for each variable. if weight_var is provided, will produce we
 \item{weight_var}{if not NULL, a vector that contains weights for each observation. The NULL
 case is equivalent to all cases being weighted 1.}
 
-\item{table_labels}{datamap with variable names and labels. See rsegmenter::extract_datamap}
-
-\item{banner_var}{name of the variables to appear along the top of the table. The number of cross
+\item{banner_vars}{name of the variables to appear along the top of the table. The number of cross
 tables produced is equal to the number of banner variables.}
+
+\item{table_labels}{datamap with variable names and labels. See rsegmenter::extract_datamap}
 }
 \description{
 Creates a list of data.frame elements. Each data.frame consists of 4 sets of cross tables.

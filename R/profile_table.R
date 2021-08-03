@@ -393,7 +393,7 @@ profile_table_col_index <- function(df,
 #' Will produce means for each variable. if weight_var is provided, will produce weighted means.
 #' @param weight_var if not NULL, a vector that contains weights for each observation. The NULL
 #' case is equivalent to all cases being weighted 1.
-#' @param banner_var name of the variables to appear along the top of the table. The number of cross
+#' @param banner_vars name of the variables to appear along the top of the table. The number of cross
 #' tables produced is equal to the number of banner variables.
 #' @param table_labels datamap with variable names and labels. See rsegmenter::extract_datamap
 #' 
