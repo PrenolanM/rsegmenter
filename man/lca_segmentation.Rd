@@ -32,7 +32,7 @@ removed (listwise deleted) before estimating the model. If FALSE, cases with mis
 Cases with missing covariates are always removed. The default is TRUE.}
 
 \item{nrep}{Number of times to estimate the model, using different values of probs.start. The default is one.
-Setting nrep>1 automates the search for the global—rather than just a local—maximum of the log-likelihood function.
+Setting nrep>1 automates the search for the global rather than just a local maximum of the log-likelihood function.
 poLCA returns the parameter estimates corresponding to the model with the greatest log-likelihood.
 
 #' @examples
