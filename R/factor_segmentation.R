@@ -25,6 +25,9 @@ factor_segmentation <- function(df,
                                 fac_assign="avg_loading"){
   
   # need to check that number of vars is less than equal to max num_sols
+  if (length(vars) < max(num_sols)){
+    stop("Number of variables is < max(num_sols)")
+  }
   
   # ensure if fac_assign = "max_score" then scores=TRUE
   if (fac_assign=="max_score" & !scores){
@@ -48,6 +51,10 @@ factor_segmentation <- function(df,
   # check that there are no missing values
   if (sum(is.na(df))>0){
     stop("data has NA's. please address these before segmenting")
+  }
+  
+  if (sum(is.na(resp_weight))>0){
+    stop("weight has NA's. please address these before segmenting")
   }
   
   # this will run all factor solutions in order to get the loadings and factor scores
