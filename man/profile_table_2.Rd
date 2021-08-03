@@ -41,7 +41,7 @@ df <- rsegmenter::test_seg_unlabelled
 
 table_labels <- rsegmenter::extract_datamap(rsegmenter::test_seg_labelled)
 
-profile_table(df, factor_vars = c("demog1","demog2"), numeric_vars = NULL,
+profile_table_2(df, factor_vars = c("demog1","demog2"), numeric_vars = NULL,
 weight_var = "weight", banner_vars = "seg1", table_labels = table_labels)
 
 }
