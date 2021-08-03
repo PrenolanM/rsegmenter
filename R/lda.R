@@ -90,6 +90,8 @@ lda <- function(df,
     
     colnames(df) <- c(id,dep,indeps)
     
+    print(colnames(df))
+    
     create_algorithm(df,id,indeps,ldamodel)
     
   }
