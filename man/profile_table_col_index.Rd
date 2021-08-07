@@ -6,7 +6,7 @@
 \usage{
 profile_table_col_index(
   df,
-  factor_vars = NULL,
+  category_vars = NULL,
   numeric_vars = NULL,
   weight_var = NULL,
   banner_var
@@ -15,7 +15,7 @@ profile_table_col_index(
 \arguments{
 \item{df}{data.frame of input variables}
 
-\item{factor_vars}{variables that are to be treated as factors in the table output.
+\item{category_vars}{variables that are to be treated as factors in the table output.
 Will produce counts for each value for each variable. If weight_var is provided, will
 produce weighted counts.}
 

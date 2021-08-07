@@ -1,6 +1,6 @@
 #' Create raw count profile tables of all specified variables by banner variable.
 #' @param df data.frame of input variables
-#' @param factor_vars variables that are to be treated as factors in the table output.
+#' @param category_vars variables that are to be treated as factors in the table output.
 #' Will produce counts for each value for each variable. If weight_var is provided, will 
 #' produce weighted counts.
 #' @param numeric_vars variables that are to be treated as numeric in the table output.
@@ -12,7 +12,7 @@
 #' @importFrom rlang .data
 #' 
 profile_table_raw <- function(df,
-                              factor_vars = NULL,
+                              category_vars = NULL,
                               numeric_vars = NULL,
                               weight_var = NULL,
                               banner_var){
@@ -23,11 +23,11 @@ profile_table_raw <- function(df,
     weight_var <- "weight_var"
   }
   
-  if (!is.null(factor_vars)){
+  if (!is.null(category_vars)){
 
     # factor variables will have weighted counts
     temp_fac <- df %>%
-      tidyr::pivot_longer(cols = dplyr::all_of(factor_vars),
+      tidyr::pivot_longer(cols = dplyr::all_of(category_vars),
                           names_to = "Variable_Name",
                           values_to = "Value_Code") %>%
       dplyr::group_by(.data[["Variable_Name"]],.data[["Value_Code"]],.data[[banner_var]]) %>%
@@ -69,15 +69,15 @@ profile_table_raw <- function(df,
   }
 
   # need to add a total column for numeric variables -
-  if (!is.null(numeric_vars) & !is.null(factor_vars)){
+  if (!is.null(numeric_vars) & !is.null(category_vars)){
     
     return(dplyr::bind_rows(temp_fac,temp_num))
     
-  } else if (is.null(numeric_vars) & !is.null(factor_vars)){
+  } else if (is.null(numeric_vars) & !is.null(category_vars)){
 
     return(dplyr::bind_rows(temp_fac))
 
-  } else if (!is.null(numeric_vars) & is.null(factor_vars)){
+  } else if (!is.null(numeric_vars) & is.null(category_vars)){
 
     return(dplyr::bind_rows(temp_num))
 
@@ -87,7 +87,7 @@ profile_table_raw <- function(df,
 
 #' Create col % profile tables of all specified variables by banner variable.
 #' @param df data.frame of input variables
-#' @param factor_vars variables that are to be treated as factors in the table output.
+#' @param category_vars variables that are to be treated as factors in the table output.
 #' Will produce counts for each value for each variable. If weight_var is provided, will 
 #' produce weighted counts.
 #' @param numeric_vars variables that are to be treated as numeric in the table output.
@@ -97,7 +97,7 @@ profile_table_raw <- function(df,
 #' @param banner_var name of the variable to appear along the top of the table.
 
 profile_table_col_perc <- function(df,
-                                   factor_vars = NULL,
+                                   category_vars = NULL,
                                    numeric_vars = NULL,
                                    weight_var = NULL,
                                    banner_var){
@@ -116,11 +116,11 @@ profile_table_col_perc <- function(df,
     dplyr::ungroup() %>%
     dplyr::arrange(.data[[banner_var]])
   
-  if (!is.null(factor_vars)){
+  if (!is.null(category_vars)){
 
     # factor variables will have weighted counts
     temp_fac <- df %>%
-      tidyr::pivot_longer(cols = dplyr::all_of(factor_vars),
+      tidyr::pivot_longer(cols = dplyr::all_of(category_vars),
                           names_to = "Variable_Name",
                           values_to = "Value_Code") %>%
       dplyr::group_by(.data[["Variable_Name"]],.data[["Value_Code"]],.data[[banner_var]]) %>%
@@ -172,15 +172,15 @@ profile_table_col_perc <- function(df,
   }
 
   # need to add a total column for numeric variables -
-  if (!is.null(numeric_vars) & !is.null(factor_vars)){
+  if (!is.null(numeric_vars) & !is.null(category_vars)){
     
     return(dplyr::bind_rows(temp_fac_col_perc,temp_num))
     
-  } else if (is.null(numeric_vars) & !is.null(factor_vars)){
+  } else if (is.null(numeric_vars) & !is.null(category_vars)){
     
     return(dplyr::bind_rows(temp_fac_col_perc))
     
-  } else if (!is.null(numeric_vars) & is.null(factor_vars)){
+  } else if (!is.null(numeric_vars) & is.null(category_vars)){
     
     return(dplyr::bind_rows(temp_num))
     
@@ -190,7 +190,7 @@ profile_table_col_perc <- function(df,
 
 #' Create row % profile tables of all specified variables by banner variable.
 #' @param df data.frame of input variables
-#' @param factor_vars variables that are to be treated as factors in the table output.
+#' @param category_vars variables that are to be treated as factors in the table output.
 #' Will produce counts for each value for each variable. If weight_var is provided, will 
 #' produce weighted counts.
 #' @param numeric_vars variables that are to be treated as numeric in the table output.
@@ -200,7 +200,7 @@ profile_table_col_perc <- function(df,
 #' @param banner_var name of the variable to appear along the top of the table.
 
 profile_table_row_perc <- function(df,
-                                   factor_vars = NULL,
+                                   category_vars = NULL,
                                    numeric_vars = NULL,
                                    weight_var = NULL,
                                    banner_var){
@@ -211,11 +211,11 @@ profile_table_row_perc <- function(df,
     weight_var <- "weight_var"
   }
   
-  if (!is.null(factor_vars)){
+  if (!is.null(category_vars)){
 
     # factor variables will have weighted counts
     temp_fac <- df %>%
-      tidyr::pivot_longer(cols = dplyr::all_of(factor_vars),
+      tidyr::pivot_longer(cols = dplyr::all_of(category_vars),
                           names_to = "Variable_Name",
                           values_to = "Value_Code") %>%
       dplyr::group_by(.data[["Variable_Name"]],.data[["Value_Code"]],.data[[banner_var]]) %>%
@@ -265,15 +265,15 @@ profile_table_row_perc <- function(df,
   }
 
   # need to add a total column for numeric variables -
-  if (!is.null(numeric_vars) & !is.null(factor_vars)){
+  if (!is.null(numeric_vars) & !is.null(category_vars)){
     
     return(dplyr::bind_rows(temp_fac_row_perc,temp_num))
     
-  } else if (is.null(numeric_vars) & !is.null(factor_vars)){
+  } else if (is.null(numeric_vars) & !is.null(category_vars)){
     
     return(dplyr::bind_rows(temp_fac_row_perc))
     
-  } else if (!is.null(numeric_vars) & is.null(factor_vars)){
+  } else if (!is.null(numeric_vars) & is.null(category_vars)){
     
     return(dplyr::bind_rows(temp_num))
     
@@ -283,7 +283,7 @@ profile_table_row_perc <- function(df,
 
 #' Create col % index profile tables of all specified variables by banner variable.
 #' @param df data.frame of input variables
-#' @param factor_vars variables that are to be treated as factors in the table output.
+#' @param category_vars variables that are to be treated as factors in the table output.
 #' Will produce counts for each value for each variable. If weight_var is provided, will 
 #' produce weighted counts.
 #' @param numeric_vars variables that are to be treated as numeric in the table output.
@@ -293,7 +293,7 @@ profile_table_row_perc <- function(df,
 #' @param banner_var name of the variable to appear along the top of the table.
 #' 
 profile_table_col_index <- function(df,
-                                    factor_vars = NULL,
+                                    category_vars = NULL,
                                     numeric_vars = NULL,
                                     weight_var = NULL,
                                     banner_var){
@@ -312,11 +312,11 @@ profile_table_col_index <- function(df,
     dplyr::ungroup() %>%
     dplyr::arrange(.data[[banner_var]])
 
-  if (!is.null(factor_vars)){
+  if (!is.null(category_vars)){
 
     # factor variables will have weighted counts
     temp_fac <- df %>%
-      tidyr::pivot_longer(cols = dplyr::all_of(factor_vars),
+      tidyr::pivot_longer(cols = dplyr::all_of(category_vars),
                           names_to = "Variable_Name",
                           values_to = "Value_Code") %>%
       dplyr::group_by(.data[["Variable_Name"]],.data[["Value_Code"]],.data[[banner_var]]) %>%
@@ -370,15 +370,15 @@ profile_table_col_index <- function(df,
   }
 
   # need to add a total column for numeric variables -
-  if (!is.null(numeric_vars) & !is.null(factor_vars)){
+  if (!is.null(numeric_vars) & !is.null(category_vars)){
     
     return(dplyr::bind_rows(temp_fac_col_perc,temp_num))
     
-  } else if (is.null(numeric_vars) & !is.null(factor_vars)){
+  } else if (is.null(numeric_vars) & !is.null(category_vars)){
     
     return(dplyr::bind_rows(temp_fac_col_perc))
     
-  } else if (!is.null(numeric_vars) & is.null(factor_vars)){
+  } else if (!is.null(numeric_vars) & is.null(category_vars)){
     
     return(dplyr::bind_rows(temp_num))
     
@@ -416,7 +416,7 @@ profile_table_totals <- function(df,
 #' Creates a list of data.frame elements. Each data.frame consists of 4 sets of cross tables. 
 #' These are raw count, col %, row % and col % index tables. There will be as many list elements as there are banner_vars.
 #' @param df data.frame of input variables
-#' @param factor_vars variables that are to be treated as factors in the table output.
+#' @param category_vars variables that are to be treated as factors in the table output.
 #' Will produce counts for each value for each variable. If weight_var is provided, will 
 #' produce weighted counts.
 #' @param numeric_vars variables that are to be treated as numeric in the table output.
@@ -432,12 +432,12 @@ profile_table_totals <- function(df,
 #' 
 #' table_labels <- rsegmenter::extract_datamap(rsegmenter::test_seg_labelled)
 #' 
-#' profile_table(df, factor_vars = c("demog1","demog2"), numeric_vars = NULL,
+#' profile_table(df, category_vars = c("demog1","demog2"), numeric_vars = NULL,
 #' weight_var = "weight", banner_vars = "seg1", table_labels = table_labels)
 #' 
 #' 
 profile_table <- function(df,
-                          factor_vars = NULL,
+                          category_vars = NULL,
                           numeric_vars = NULL,
                           weight_var = NULL,
                           banner_vars,
@@ -447,10 +447,10 @@ profile_table <- function(df,
   
   banner_vars_2 <- purrr::map(banner_vars, function(var) {
 
-    df1 <- profile_table_raw(df,factor_vars = factor_vars,numeric_vars = numeric_vars,weight_var = weight_var,var)
-    df2 <- profile_table_col_perc(df,factor_vars = factor_vars,numeric_vars = numeric_vars,weight_var = weight_var,var)
-    df3 <- profile_table_row_perc(df,factor_vars = factor_vars,numeric_vars = numeric_vars,weight_var = weight_var,var)
-    df4 <- profile_table_col_index(df,factor_vars = factor_vars,numeric_vars = numeric_vars,weight_var = weight_var,var)
+    df1 <- profile_table_raw(df,category_vars = category_vars,numeric_vars = numeric_vars,weight_var = weight_var,var)
+    df2 <- profile_table_col_perc(df,category_vars = category_vars,numeric_vars = numeric_vars,weight_var = weight_var,var)
+    df3 <- profile_table_row_perc(df,category_vars = category_vars,numeric_vars = numeric_vars,weight_var = weight_var,var)
+    df4 <- profile_table_col_index(df,category_vars = category_vars,numeric_vars = numeric_vars,weight_var = weight_var,var)
 
 
     df1 <- df1 %>%
@@ -490,7 +490,7 @@ profile_table <- function(df,
 #' Creates a list of data.frame elements. Each data.frame consists of 4 sets of cross tables. 
 #' These are raw count, col %, row % and col % index tables. There will be as many list elements as there are banner_vars.
 #' @param df data.frame of input variables
-#' @param factor_vars variables that are to be treated as factors in the table output.
+#' @param category_vars variables that are to be treated as factors in the table output.
 #' Will produce counts for each value for each variable. If weight_var is provided, will 
 #' produce weighted counts.
 #' @param numeric_vars variables that are to be treated as numeric in the table output.
@@ -506,13 +506,13 @@ profile_table <- function(df,
 #' 
 #' table_labels <- rsegmenter::extract_datamap(rsegmenter::test_seg_labelled)
 #' 
-#' profile_table_2(df, factor_vars = c("demog1","demog2"), numeric_vars = NULL,
+#' profile_table_2(df, category_vars = c("demog1","demog2"), numeric_vars = NULL,
 #' weight_var = "weight", banner_vars = "seg1", table_labels = table_labels)
 #' 
 #' @export
 #' 
 profile_table_2 <- function(df,
-                            factor_vars = NULL,
+                            category_vars = NULL,
                             numeric_vars = NULL,
                             weight_var = NULL,
                             banner_vars,
@@ -522,10 +522,10 @@ profile_table_2 <- function(df,
   
   banner_vars_2 <- purrr::map(banner_vars, function(var) {
     
-    df1 <- profile_table_raw(df,factor_vars = factor_vars,numeric_vars = numeric_vars,weight_var = weight_var,var)
-    df2 <- profile_table_col_perc(df,factor_vars = factor_vars,numeric_vars = numeric_vars,weight_var = weight_var,var)
-    df3 <- profile_table_row_perc(df,factor_vars = factor_vars,numeric_vars = numeric_vars,weight_var = weight_var,var)
-    df4 <- profile_table_col_index(df,factor_vars = factor_vars,numeric_vars = numeric_vars,weight_var = weight_var,var)
+    df1 <- profile_table_raw(df,category_vars = category_vars,numeric_vars = numeric_vars,weight_var = weight_var,var)
+    df2 <- profile_table_col_perc(df,category_vars = category_vars,numeric_vars = numeric_vars,weight_var = weight_var,var)
+    df3 <- profile_table_row_perc(df,category_vars = category_vars,numeric_vars = numeric_vars,weight_var = weight_var,var)
+    df4 <- profile_table_col_index(df,category_vars = category_vars,numeric_vars = numeric_vars,weight_var = weight_var,var)
     
     total <- profile_table_totals(df,weight_var = weight_var, var) 
       
@@ -573,7 +573,7 @@ profile_table_2 <- function(df,
 #' 
 #' table_labels <- rsegmenter::extract_datamap(rsegmenter::test_seg_labelled)
 #' 
-#' prof_table <- profile_table(df, factor_vars = c("demog1","demog2"), numeric_vars = NULL,
+#' prof_table <- profile_table(df, category_vars = c("demog1","demog2"), numeric_vars = NULL,
 #' weight_var = "weight", banner_vars = "seg1", table_labels = table_labels)
 #' 
 #' export_profile_tables(prof_table = prof_table, filename="profile_table.xlsx")
