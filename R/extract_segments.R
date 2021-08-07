@@ -70,3 +70,23 @@ extract_lca_segments <- function(seglist){
   
   return(return_df)
 }
+
+#' Extract segments from lca segment solutions and stores each segment as a variable in a data.frame.
+#' @param seglist an output from the rsegmenter::lca_segmentation() function. See more details about lca_segmentation() 
+#' in the package documentation.
+#' @export
+#' 
+extract_kmeans_segments <- function(seglist){
+  return_df <- as.data.frame(lapply(seq_along(seglist),
+                                    function(x){
+                                      seglist[[x]][["cluster"]]
+                                    }
+  )
+  )
+  
+  min_sol_num <- max(return_df[,1])
+  max_sol_num <- max(return_df)  
+  colnames(return_df) <- paste0("Kmeans_Cluster_Soln_",seq(min_sol_num,max_sol_num))
+  
+  return(return_df)
+}
