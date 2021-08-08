@@ -23,7 +23,7 @@ df <- rsegmenter::test_seg_unlabelled
 
 table_labels <- rsegmenter::extract_datamap(rsegmenter::test_seg_labelled)
 
-prof_table <- profile_table(df, factor_vars = c("demog1","demog2"), numeric_vars = NULL,
+prof_table <- profile_table(df, category_vars = c("demog1","demog2"), numeric_vars = NULL,
 weight_var = "weight", banner_vars = "seg1", table_labels = table_labels)
 
 export_profile_tables(prof_table = prof_table, filename="profile_table.xlsx")

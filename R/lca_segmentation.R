@@ -48,7 +48,7 @@ lca_segmentation <- function(df,
   if (sum(is.na(df))>0){
     stop("data has NA's. please address these before segmenting")
   }
-  
+
   # check if there are any 0's or negatives in our data
   if (min(df)<=0){
     df_names <- sort(unique(names(df)[apply(df, 2, which.min)]))

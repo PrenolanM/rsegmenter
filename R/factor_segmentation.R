@@ -77,7 +77,8 @@ factor_segmentation <- function(df,
                           
                         } else {
                           
-                          #assigned_segment <- max_score(rcloadings)
+                          rcscores <- as.data.frame(factor_soln[["scores"]])
+                          assigned_segment <- max_score(df,rcscores)
                           
                         }
                         
@@ -88,7 +89,6 @@ factor_segmentation <- function(df,
                           
                         } else if (scores){
                           
-                          rcscores <- as.data.frame(factor_soln[["scores"]])
                           return(list(segments=assigned_segment,
                                       loadings=rcloadings,
                                       scores=rcscores))

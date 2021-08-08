@@ -7,7 +7,7 @@ These are raw count, col \%, row \% and col \% index tables. There will be as ma
 \usage{
 profile_table_2(
   df,
-  factor_vars = NULL,
+  category_vars = NULL,
   numeric_vars = NULL,
   weight_var = NULL,
   banner_vars,
@@ -17,7 +17,7 @@ profile_table_2(
 \arguments{
 \item{df}{data.frame of input variables}
 
-\item{factor_vars}{variables that are to be treated as factors in the table output.
+\item{category_vars}{variables that are to be treated as factors in the table output.
 Will produce counts for each value for each variable. If weight_var is provided, will
 produce weighted counts.}
 
@@ -41,7 +41,7 @@ df <- rsegmenter::test_seg_unlabelled
 
 table_labels <- rsegmenter::extract_datamap(rsegmenter::test_seg_labelled)
 
-profile_table_2(df, factor_vars = c("demog1","demog2"), numeric_vars = NULL,
+profile_table_2(df, category_vars = c("demog1","demog2"), numeric_vars = NULL,
 weight_var = "weight", banner_vars = "seg1", table_labels = table_labels)
 
 }
