@@ -4,11 +4,9 @@
 \alias{max_score}
 \title{assigns segments based on max factor score}
 \usage{
-max_score(df, myfacscores)
+max_score(myfacscores)
 }
 \arguments{
-\item{df}{data.frame that was input to factor analysis}
-
 \item{myfacscores}{factor scores}
 }
 \description{

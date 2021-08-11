@@ -432,80 +432,6 @@ profile_table_totals <- function(df,
 #' 
 #' table_labels <- rsegmenter::extract_datamap(rsegmenter::test_seg_labelled)
 #' 
-#' profile_table(df, category_vars = c("demog1","demog2"), numeric_vars = NULL,
-#' weight_var = "weight", banner_vars = "seg1", table_labels = table_labels)
-#' 
-#' 
-profile_table <- function(df,
-                          category_vars = NULL,
-                          numeric_vars = NULL,
-                          weight_var = NULL,
-                          banner_vars,
-                          table_labels){
-
-  banner_vars <- as.list(banner_vars)
-  
-  banner_vars_2 <- purrr::map(banner_vars, function(var) {
-
-    df1 <- profile_table_raw(df,category_vars = category_vars,numeric_vars = numeric_vars,weight_var = weight_var,var)
-    df2 <- profile_table_col_perc(df,category_vars = category_vars,numeric_vars = numeric_vars,weight_var = weight_var,var)
-    df3 <- profile_table_row_perc(df,category_vars = category_vars,numeric_vars = numeric_vars,weight_var = weight_var,var)
-    df4 <- profile_table_col_index(df,category_vars = category_vars,numeric_vars = numeric_vars,weight_var = weight_var,var)
-
-
-    df1 <- df1 %>%
-      dplyr::left_join(table_labels,by=c("Variable_Name","Value_Code")) %>%
-      dplyr::select(.data[["Variable_Name"]],.data[["Value_Label"]],dplyr::everything(),-.data[["Variable_Label"]],-.data[["Value_Code"]]) %>%
-      dplyr::arrange(.data[["Variable_Order"]]) %>%
-      dplyr::select(-.data[["Variable_Order"]])
-
-    df2 <- df2 %>%
-      dplyr::left_join(table_labels,by=c("Variable_Name","Value_Code")) %>%
-      dplyr::select(.data[["Variable_Name"]],.data[["Value_Label"]],dplyr::everything(),-.data[["Variable_Label"]],-.data[["Value_Code"]]) %>%
-      dplyr::arrange(.data[["Variable_Order"]]) %>%
-      dplyr::select(-.data[["Variable_Order"]])
-
-    df3 <- df3 %>%
-      dplyr::left_join(table_labels,by=c("Variable_Name","Value_Code")) %>%
-      dplyr::select(.data[["Variable_Name"]],.data[["Value_Label"]],dplyr::everything(),-.data[["Variable_Label"]],-.data[["Value_Code"]]) %>%
-      dplyr::arrange(.data[["Variable_Order"]]) %>%
-      dplyr::select(-.data[["Variable_Order"]])
-
-    df4 <- df4 %>%
-      dplyr::left_join(table_labels,by=c("Variable_Name","Value_Code")) %>%
-      dplyr::select(.data[["Variable_Name"]],.data[["Value_Label"]],dplyr::everything(),-.data[["Variable_Label"]],-.data[["Value_Code"]]) %>%
-      dplyr::arrange(.data[["Variable_Order"]]) %>%
-      dplyr::select(-.data[["Variable_Order"]])
-
-    df_final <- dplyr::bind_cols(df1,"",df2,"",df3,"",df4)
-
-    colnames(df_final) <- c(colnames(df1),"empty",colnames(df2),"empty",colnames(df3),"empty",colnames(df4))
-
-    return(df_final)
-  })
-
-  return(banner_vars_2)
-}
-
-#' Creates a list of data.frame elements. Each data.frame consists of 4 sets of cross tables. 
-#' These are raw count, col %, row % and col % index tables. There will be as many list elements as there are banner_vars.
-#' @param df data.frame of input variables
-#' @param category_vars variables that are to be treated as factors in the table output.
-#' Will produce counts for each value for each variable. If weight_var is provided, will 
-#' produce weighted counts.
-#' @param numeric_vars variables that are to be treated as numeric in the table output.
-#' Will produce means for each variable. if weight_var is provided, will produce weighted means.
-#' @param weight_var if not NULL, a vector that contains weights for each observation. The NULL
-#' case is equivalent to all cases being weighted 1.
-#' @param banner_vars name of the variables to appear along the top of the table. The number of cross
-#' tables produced is equal to the number of banner variables.
-#' @param table_labels datamap with variable names and labels. See rsegmenter::extract_datamap
-#' 
-#' @examples
-#' df <- rsegmenter::test_seg_unlabelled
-#' 
-#' table_labels <- rsegmenter::extract_datamap(rsegmenter::test_seg_labelled)
-#' 
 #' profile_table_2(df, category_vars = c("demog1","demog2"), numeric_vars = NULL,
 #' weight_var = "weight", banner_vars = "seg1", table_labels = table_labels)
 #' 
@@ -564,7 +490,7 @@ profile_table_2 <- function(df,
 }
 
 #' Exports cross tables to .xlsx format. Each table will be output on a separate worksheet.
-#' @param prof_table output from rsegmenter::profile_table.
+#' @param prof_table output from rsegmenter::profile_table_2.
 #' @param min_index numeric value for highlighting under-indexing.
 #' @param max_index numeric value for highlighting over-indexing.
 #' @param filename file name to use when saving.
@@ -573,7 +499,7 @@ profile_table_2 <- function(df,
 #' 
 #' table_labels <- rsegmenter::extract_datamap(rsegmenter::test_seg_labelled)
 #' 
-#' prof_table <- profile_table(df, category_vars = c("demog1","demog2"), numeric_vars = NULL,
+#' prof_table <- profile_table_2(df, category_vars = c("demog1","demog2"), numeric_vars = NULL,
 #' weight_var = "weight", banner_vars = "seg1", table_labels = table_labels)
 #' 
 #' export_profile_tables(prof_table = prof_table, filename="profile_table.xlsx")

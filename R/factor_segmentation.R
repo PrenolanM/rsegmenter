@@ -70,15 +70,15 @@ factor_segmentation <- function(df,
                                                         weight = resp_weight)
 
                         rcloadings <- as.data.frame(unclass(factor_soln[["loadings"]]))
-
+                        rcscores <- as.data.frame(factor_soln[["scores"]])
+                        
                         if (fac_assign=="avg_loading"){
                           
                           assigned_segment <- avg_loading(df,rcloadings)
                           
                         } else {
                           
-                          rcscores <- as.data.frame(factor_soln[["scores"]])
-                          assigned_segment <- max_score(df,rcscores)
+                          assigned_segment <- max_score(rcscores)
                           
                         }
                         
