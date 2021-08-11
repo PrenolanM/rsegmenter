@@ -78,7 +78,7 @@ factor_segmentation <- function(df,
                           
                         } else {
                           
-                          assigned_segment <- max_score(df,rcscores)
+                          assigned_segment <- max_score(rcscores)
                           
                         }
                         
