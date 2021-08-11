@@ -1,6 +1,6 @@
 #' assigns segments based on max factor score
 #' @param myfacscores factor scores
-#' 
+#' @export
 max_score <- function(myfacscores){
   set.seed(123456)
   assigned_segment <- max.col(myfacscores)

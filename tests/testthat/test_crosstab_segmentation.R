@@ -5,5 +5,5 @@ testthat::test_that("Correct segments are assigned from crosstab_segmentation",{
                                                  col3 = c(2,5,2,3)
                                                  )
                                       ),
-    c(3,2,3,1))
+    data.frame(Crosstab_Segment = c(3,2,3,1)))
 })
