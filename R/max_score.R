@@ -2,7 +2,8 @@
 #' @param myfacscores factor scores
 #' 
 max_score <- function(myfacscores){
-  
-  assigned_segment <- max.col(myfacscores)  
+  set.seed(123456)
+  assigned_segment <- max.col(myfacscores)
+  return(assigned_segment)
 }
 
