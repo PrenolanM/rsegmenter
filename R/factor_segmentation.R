@@ -5,14 +5,13 @@
 #' case is equivalent to all cases being weighted 1.
 #' @param num_sols number of segment solutions to run.
 #' @param rotate method of rotation for factor analysis. See psych::principal() for more details.
-#' @param scores TRUE/FALSE to include scores in the output or not. If fac_assign="max_score", scores must be set to TRUE.
 #' @param fac_assign method to use to assign segments to rows. Options are one of c("avg_loading","max_score").
 #' 
 #' @examples
 #' df <- rsegmenter::test_seg_unlabelled
 #' segment_input_vars <- c("seg1","seg2","seg3","seg4","seg5","seg6","seg7","seg8","seg9","seg10")
 #' factor_segmentation(df = df, vars = segment_input_vars, weight_var = "weight", num_sols=c(2:3),
-#' rotate="varimax", scores=FALSE, fac_assign="avg_loading")
+#' rotate="varimax", fac_assign="avg_loading")
 #' 
 #' @export
 #' 
@@ -21,17 +20,11 @@ factor_segmentation <- function(df,
                                 weight_var=NULL,
                                 num_sols,
                                 rotate="varimax",
-                                scores=FALSE,
                                 fac_assign="avg_loading"){
   
   # need to check that number of vars is less than equal to max num_sols
   if (length(vars) < max(num_sols)){
     stop("Number of variables is < max(num_sols)")
-  }
-  
-  # ensure if fac_assign = "max_score" then scores=TRUE
-  if (fac_assign=="max_score" & !scores){
-    stop("If fac_assign=max_score, scores must be TRUE")
   }
   
   factor_segs <- vector("list",length = max(num_sols)-min(num_sols) + 1)
@@ -66,7 +59,7 @@ factor_segmentation <- function(df,
                         factor_soln <- psych::principal(df,
                                                         nfactors = x,
                                                         rotate = rotate,
-                                                        scores = scores,
+                                                        scores = TRUE,
                                                         weight = resp_weight)
 
                         rcloadings <- as.data.frame(unclass(factor_soln[["loadings"]]))
@@ -82,18 +75,9 @@ factor_segmentation <- function(df,
                           
                         }
                         
-                        if (!scores){
-                          
-                          return(list(segments=assigned_segment,
-                                      loadings=rcloadings))
-                          
-                        } else if (scores){
-                          
-                          return(list(segments=assigned_segment,
-                                      loadings=rcloadings,
-                                      scores=rcscores))
-                          
-                        }
+                        return(list(segments=assigned_segment,
+                                    loadings=rcloadings,
+                                    scores=rcscores))
                         
                         }
                       )

@@ -7,7 +7,6 @@ testthat::expect_equal(
                                            "seg9","seg10"),
                                   weight_var = "weight",
                                   num_sols = c(2:3),
-                                  scores = FALSE,
                                   fac_assign = "avg_loading") %>% 
     length(),2)
   })
@@ -20,7 +19,6 @@ testthat::test_that("Factoring produces the correct segment assignments for avg 
                                              "seg9","seg10"),
                                     weight_var = "weight",
                                     num_sols = c(3),
-                                    scores = FALSE,
                                     fac_assign = "avg_loading") %>% 
       rsegmenter::extract_factor_segments() %>% 
       dplyr::slice_head(n=10) %>% 
@@ -38,7 +36,6 @@ testthat::test_that("Factoring produces the correct segment assignments for max 
                                              "seg9","seg10"),
                                     weight_var = "weight",
                                     num_sols = c(3),
-                                    scores = TRUE,
                                     fac_assign = "max_score") %>% 
       rsegmenter::extract_factor_segments() %>% 
       dplyr::slice_head(n=10) %>% 
@@ -54,8 +51,8 @@ testthat::test_that("Correct number of segments are extracted",{
       rsegmenter::factor_segmentation(vars = c("seg1","seg2","seg3","seg4",
                                                "seg5","seg6","seg7","seg8",
                                                "seg9","seg10"),
-                                      weight_var = "weight",num_sols = c(2:6),
-                                      scores = FALSE,
+                                      weight_var = "weight",
+                                      num_sols = c(2:6),
                                       fac_assign = "avg_loading") %>% 
       rsegmenter::extract_factor_segments() %>% 
       ncol(),5)
@@ -68,7 +65,6 @@ rsegmenter::factor_segmentation(rsegmenter::test_seg_unlabelled,
                                          "seg9","seg10"),
                                 weight_var = "weight",
                                 num_sols = c(3),
-                                scores = TRUE,
                                 fac_assign = "max_score") %>% 
   rsegmenter::extract_factor_segments() %>% 
   dplyr::slice_head(n=10) %>% 
