@@ -10,6 +10,7 @@
 #' @param banner_var name of the variable to appear along the top of the table.
 #'
 #' @importFrom rlang .data
+#' @export
 #' 
 profile_table_raw <- function(df,
                               category_vars = NULL,
@@ -64,8 +65,14 @@ profile_table_raw <- function(df,
 
     temp_num[is.na(temp_num)] <- 0
 
-    temp_num[["Total"]] <- 1
-
+    #temp_num[["Total"]] <- 1
+    
+    temp_num[["Total"]] <- df %>%
+      dplyr::summarise(dplyr::across(dplyr::all_of(numeric_vars),
+                                     ~ weighted.mean(.x,.data[[weight_var]]))) %>% 
+      unlist() %>% 
+      unname()
+      
   }
 
   # need to add a total column for numeric variables -
@@ -95,7 +102,8 @@ profile_table_raw <- function(df,
 #' @param weight_var if not NULL, a vector that contains weights for each observation. The NULL
 #' case is equivalent to all cases being weighted 1.
 #' @param banner_var name of the variable to appear along the top of the table.
-
+#' @export
+#'
 profile_table_col_perc <- function(df,
                                    category_vars = NULL,
                                    numeric_vars = NULL,
@@ -167,7 +175,13 @@ profile_table_col_perc <- function(df,
     
     temp_num[is.na(temp_num)] <- 0
     
-    temp_num[["Total"]] <- 1
+    #temp_num[["Total"]] <- 1
+    
+    temp_num[["Total"]] <- df %>%
+      dplyr::summarise(dplyr::across(dplyr::all_of(numeric_vars),
+                                     ~ weighted.mean(.x,.data[[weight_var]]))) %>% 
+      unlist() %>% 
+      unname()
     
   }
 
@@ -198,7 +212,8 @@ profile_table_col_perc <- function(df,
 #' @param weight_var if not NULL, a vector that contains weights for each observation. The NULL
 #' case is equivalent to all cases being weighted 1.
 #' @param banner_var name of the variable to appear along the top of the table.
-
+#' @export
+#'
 profile_table_row_perc <- function(df,
                                    category_vars = NULL,
                                    numeric_vars = NULL,
@@ -261,7 +276,11 @@ profile_table_row_perc <- function(df,
     temp_num[is.na(temp_num)] <- 0
     
     #temp_num[["Total"]] <- 1
-    
+    temp_num[["Total"]] <- df %>%
+      dplyr::summarise(dplyr::across(dplyr::all_of(numeric_vars),
+                                     ~ weighted.mean(.x,.data[[weight_var]]))) %>% 
+      unlist() %>% 
+      unname()
   }
 
   # need to add a total column for numeric variables -
@@ -291,6 +310,7 @@ profile_table_row_perc <- function(df,
 #' @param weight_var if not NULL, a vector that contains weights for each observation. The NULL
 #' case is equivalent to all cases being weighted 1.
 #' @param banner_var name of the variable to appear along the top of the table.
+#' @export
 #' 
 profile_table_col_index <- function(df,
                                     category_vars = NULL,
@@ -366,7 +386,11 @@ profile_table_col_index <- function(df,
     temp_num[is.na(temp_num)] <- 0
     
     #temp_num[["Total"]] <- 1
-    
+    temp_num[["Total"]] <- df %>%
+      dplyr::summarise(dplyr::across(dplyr::all_of(numeric_vars),
+                                     ~ weighted.mean(.x,.data[[weight_var]]))) %>% 
+      unlist() %>% 
+      unname()
   }
 
   # need to add a total column for numeric variables -
