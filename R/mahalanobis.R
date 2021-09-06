@@ -11,7 +11,7 @@ mahalanobis_outlier <- function(df,
   
   mycenter <- colMeans(df[,vars,drop=FALSE])
   
-  mycov <- cov(df[,vars,drop=FALSE])
+  mycov <- stats::cov(df[,vars,drop=FALSE])
   
   mymahalanobis <- stats::mahalanobis(x = df[,vars,drop=FALSE],
                                       center = mycenter,
