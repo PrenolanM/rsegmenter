@@ -11,7 +11,7 @@ explore_missings <- function(df,vars){
                                                      2,
                                                      sum))
   
-  resp_missings <- as.data.frame(df[!complete.cases(df[,vars,drop=FALSE]),])
+  resp_missings <- as.data.frame(df[!stats::complete.cases(df[,vars,drop=FALSE]),])
   
   return(list(var_missings,resp_missings))
   

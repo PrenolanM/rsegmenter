@@ -13,11 +13,11 @@ mahalanobis_outlier <- function(df,
   
   mycov <- cov(df[,vars,drop=FALSE])
   
-  mymahalanobis <- mahalanobis(x = df[,vars,drop=FALSE],
-                               center = mycenter,
-                               cov = mycov)
+  mymahalanobis <- stats::mahalanobis(x = df[,vars,drop=FALSE],
+                                      center = mycenter,
+                                      cov = mycov)
   
-  pvalue <- pchisq(mymahalanobis, df=3, lower.tail=FALSE)
+  pvalue <- stats::pchisq(mymahalanobis, df=3, lower.tail=FALSE)
   
   mahalanobis_outlier = ifelse(pvalue<pval_cutoff,1,0)
   
