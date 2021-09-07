@@ -27,21 +27,30 @@ profile_table_raw <- function(df,
   if (!is.null(category_vars)){
 
     # factor variables will have weighted counts
-    temp_fac <- df %>%
-      tidyr::pivot_longer(cols = dplyr::all_of(category_vars),
-                          names_to = "Variable_Name",
-                          values_to = "Value_Code") %>%
-      dplyr::group_by(.data[["Variable_Name"]],.data[["Value_Code"]],.data[[banner_var]]) %>%
-      dplyr::summarise(mycount = sum(.data[[weight_var]])) %>%
-      dplyr::ungroup() %>%
-      dplyr::arrange(.data[[banner_var]]) %>%
-      tidyr::pivot_wider(names_from = .data[[banner_var]],
-                         names_prefix = "Cluster_",
-                         values_from = .data[["mycount"]])
-
-    temp_fac[is.na(temp_fac)] <- 0
-
-    temp_fac[["Total"]] <- rowSums(temp_fac[,3:ncol(temp_fac)])
+    temptabl <- purrr::map(category_vars,function(var){
+      tbldf <- df %>% 
+        dplyr::select(var,banner_var,weight_var) %>% 
+        dplyr::group_by(.data[[var]],.data[[banner_var]]) %>% 
+        dplyr::summarise(mycount = sum(.data[[weight_var]])) %>% 
+        tidyr::pivot_wider(names_from = banner_var,
+                           names_prefix = "Cluster_",
+                           values_from = .data[["mycount"]]) %>% 
+        dplyr::ungroup() %>% 
+        dplyr::mutate(Variable_Name = var)
+      
+      colnames(tbldf)[1] <- "Value_Code"
+      
+      tbldf <- tbldf %>% 
+        dplyr::select(.data[["Variable_Name"]],.data[["Value_Code"]],dplyr::everything())
+      
+      tbldf[is.na(tbldf)] <- 0
+      
+      tbldf[["Total"]] <- rowSums(tbldf[,3:ncol(tbldf)])
+      
+      return(tbldf)
+    })
+    
+    temp_fac <- do.call(dplyr::bind_rows,temptabl)
 
     }
 
@@ -55,7 +64,6 @@ profile_table_raw <- function(df,
                        )
                 ) %>% 
       dplyr::ungroup() %>%
-      dplyr::arrange(.data[[banner_var]]) %>%
       tidyr::pivot_longer(cols = dplyr::all_of(numeric_vars),
                           names_to = "Variable_Name",
                           values_to = "Value_Code") %>% 
@@ -127,19 +135,31 @@ profile_table_col_perc <- function(df,
   if (!is.null(category_vars)){
 
     # factor variables will have weighted counts
-    temp_fac <- df %>%
-      tidyr::pivot_longer(cols = dplyr::all_of(category_vars),
-                          names_to = "Variable_Name",
-                          values_to = "Value_Code") %>%
-      dplyr::group_by(.data[["Variable_Name"]],.data[["Value_Code"]],.data[[banner_var]]) %>%
-      dplyr::summarise(mycount = sum(.data[[weight_var]])) %>%
-      dplyr::ungroup() %>%
-      dplyr::arrange(.data[[banner_var]]) %>%
-      tidyr::pivot_wider(names_from = .data[[banner_var]],
-                         names_prefix = "Cluster_",
-                         values_from = .data[["mycount"]])
-
-    temp_fac[is.na(temp_fac)] <- 0
+    temptabl <- purrr::map(category_vars,function(var){
+      tbldf <- df %>% 
+        dplyr::select(var,banner_var,weight_var) %>% 
+        dplyr::group_by(.data[[var]],.data[[banner_var]]) %>% 
+        dplyr::summarise(mycount = sum(.data[[weight_var]])) %>% 
+        dplyr::arrange(.data[[banner_var]]) %>% 
+        tidyr::pivot_wider(names_from = banner_var,
+                           names_prefix = "Cluster_",
+                           values_from = .data[["mycount"]]) %>% 
+        dplyr::ungroup() %>% 
+        dplyr::mutate(Variable_Name = var)
+      
+      colnames(tbldf)[1] <- "Value_Code"
+      
+      tbldf <- tbldf %>% 
+        dplyr::select(.data[["Variable_Name"]],.data[["Value_Code"]],dplyr::everything())
+      
+      tbldf[is.na(tbldf)] <- 0
+      
+      # tbldf[["Total"]] <- rowSums(tbldf[,3:ncol(tbldf)])
+      
+      return(tbldf)
+    })
+    
+    temp_fac <- do.call(dplyr::bind_rows,temptabl)
 
     temp_fac_col_perc <- temp_fac
 
@@ -229,19 +249,30 @@ profile_table_row_perc <- function(df,
   if (!is.null(category_vars)){
 
     # factor variables will have weighted counts
-    temp_fac <- df %>%
-      tidyr::pivot_longer(cols = dplyr::all_of(category_vars),
-                          names_to = "Variable_Name",
-                          values_to = "Value_Code") %>%
-      dplyr::group_by(.data[["Variable_Name"]],.data[["Value_Code"]],.data[[banner_var]]) %>%
-      dplyr::summarise(mycount = sum(.data[[weight_var]])) %>%
-      dplyr::ungroup() %>%
-      dplyr::arrange(.data[[banner_var]]) %>%
-      tidyr::pivot_wider(names_from = .data[[banner_var]],
-                         names_prefix = "Cluster_",
-                         values_from = .data[["mycount"]])
-
-    temp_fac[is.na(temp_fac)] <- 0
+    temptabl <- purrr::map(category_vars,function(var){
+      tbldf <- df %>% 
+        dplyr::select(var,banner_var,weight_var) %>% 
+        dplyr::group_by(.data[[var]],.data[[banner_var]]) %>% 
+        dplyr::summarise(mycount = sum(.data[[weight_var]])) %>% 
+        tidyr::pivot_wider(names_from = banner_var,
+                           names_prefix = "Cluster_",
+                           values_from = .data[["mycount"]]) %>% 
+        dplyr::ungroup() %>% 
+        dplyr::mutate(Variable_Name = var)
+      
+      colnames(tbldf)[1] <- "Value_Code"
+      
+      tbldf <- tbldf %>% 
+        dplyr::select(.data[["Variable_Name"]],.data[["Value_Code"]],dplyr::everything())
+      
+      tbldf[is.na(tbldf)] <- 0
+      
+      # tbldf[["Total"]] <- rowSums(tbldf[,3:ncol(tbldf)])
+      
+      return(tbldf)
+    })
+    
+    temp_fac <- do.call(dplyr::bind_rows,temptabl)
 
     temp_fac_row_perc <- temp_fac
 
@@ -335,19 +366,30 @@ profile_table_col_index <- function(df,
   if (!is.null(category_vars)){
 
     # factor variables will have weighted counts
-    temp_fac <- df %>%
-      tidyr::pivot_longer(cols = dplyr::all_of(category_vars),
-                          names_to = "Variable_Name",
-                          values_to = "Value_Code") %>%
-      dplyr::group_by(.data[["Variable_Name"]],.data[["Value_Code"]],.data[[banner_var]]) %>%
-      dplyr::summarise(mycount = sum(.data[[weight_var]])) %>%
-      dplyr::ungroup() %>%
-      dplyr::arrange(.data[[banner_var]]) %>%
-      tidyr::pivot_wider(names_from = .data[[banner_var]],
-                         names_prefix = "Cluster_",
-                         values_from = .data[["mycount"]])
-
-    temp_fac[is.na(temp_fac)] <- 0
+    temptabl <- purrr::map(category_vars,function(var){
+      tbldf <- df %>% 
+        dplyr::select(var,banner_var,weight_var) %>% 
+        dplyr::group_by(.data[[var]],.data[[banner_var]]) %>% 
+        dplyr::summarise(mycount = sum(.data[[weight_var]])) %>% 
+        tidyr::pivot_wider(names_from = banner_var,
+                           names_prefix = "Cluster_",
+                           values_from = .data[["mycount"]]) %>% 
+        dplyr::ungroup() %>% 
+        dplyr::mutate(Variable_Name = var)
+      
+      colnames(tbldf)[1] <- "Value_Code"
+      
+      tbldf <- tbldf %>% 
+        dplyr::select(.data[["Variable_Name"]],.data[["Value_Code"]],dplyr::everything())
+      
+      tbldf[is.na(tbldf)] <- 0
+      
+      # tbldf[["Total"]] <- rowSums(tbldf[,3:ncol(tbldf)])
+      
+      return(tbldf)
+    })
+    
+    temp_fac <- do.call(dplyr::bind_rows,temptabl)
 
     temp_fac_col_perc <- temp_fac
 
