@@ -14,8 +14,10 @@ testthat::expect_equal(
                                                     "seg5","seg6","seg7","seg8",
                                                     "seg9","seg10"),
                                   numeric_vars = NULL,
-                                  banner_var = c("Factor_Cluster_Soln_5")),
-    rsegmenter::raw_tab)
+                                  banner_var = c("Factor_Cluster_Soln_5")) %>% 
+    dplyr::arrange(Variable_Name,Value_Code),
+    rsegmenter::raw_tab %>% 
+    dplyr::arrange(Variable_Name,Value_Code))
   })
 
 testthat::test_that("Col % profile tables",{
@@ -33,8 +35,10 @@ testthat::test_that("Col % profile tables",{
                                                            "seg5","seg6","seg7","seg8",
                                                            "seg9","seg10"),
                                          numeric_vars = NULL,
-                                         banner_var = c("Factor_Cluster_Soln_5")),
-    rsegmenter::col_tab)
+                                         banner_var = c("Factor_Cluster_Soln_5")) %>% 
+      dplyr::arrange(Variable_Name,Value_Code),
+    rsegmenter::col_tab %>% 
+      dplyr::arrange(Variable_Name,Value_Code))
 })
 
 testthat::test_that("Row % profile tables",{
@@ -52,8 +56,10 @@ testthat::test_that("Row % profile tables",{
                                                            "seg5","seg6","seg7","seg8",
                                                            "seg9","seg10"),
                                          numeric_vars = NULL,
-                                         banner_var = c("Factor_Cluster_Soln_5")),
-    rsegmenter::row_tab)
+                                         banner_var = c("Factor_Cluster_Soln_5")) %>% 
+      dplyr::arrange(Variable_Name,Value_Code),
+    rsegmenter::row_tab %>% 
+      dplyr::arrange(Variable_Name,Value_Code))
 })
 
 testthat::test_that("Col index profile tables",{
@@ -71,6 +77,9 @@ testthat::test_that("Col index profile tables",{
                                                             "seg5","seg6","seg7","seg8",
                                                             "seg9","seg10"),
                                           numeric_vars = NULL,
-                                          banner_var = c("Factor_Cluster_Soln_5")),
-    rsegmenter::col_ind_tab)
+                                          banner_var = c("Factor_Cluster_Soln_5")) %>% 
+      dplyr::arrange(Variable_Name,Value_Code),
+    rsegmenter::col_ind_tab %>% 
+      dplyr::arrange(Variable_Name,Value_Code))
 })
+
