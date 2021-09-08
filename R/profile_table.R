@@ -28,20 +28,24 @@ profile_table_raw <- function(df,
 
     # factor variables will have weighted counts
     temptabl <- purrr::map(category_vars,function(var){
-      tbldf <- df %>% 
-        dplyr::select(var,banner_var,weight_var) %>% 
+      tbldf <- df %>%
+        dplyr::select(dplyr::all_of(var),
+                      dplyr::all_of(banner_var),
+                      weight_var) %>% 
         dplyr::group_by(.data[[var]],.data[[banner_var]]) %>% 
         dplyr::summarise(mycount = sum(.data[[weight_var]])) %>% 
-        tidyr::pivot_wider(names_from = banner_var,
+        tidyr::pivot_wider(names_from = dplyr::all_of(banner_var),
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
         dplyr::ungroup() %>% 
-        dplyr::mutate(Variable_Name = var)
+        dplyr::mutate(Variable_Name = all_of(var))
       
       colnames(tbldf)[1] <- "Value_Code"
       
       tbldf <- tbldf %>% 
-        dplyr::select(.data[["Variable_Name"]],.data[["Value_Code"]],dplyr::everything())
+        dplyr::select(.data[["Variable_Name"]],
+                      .data[["Value_Code"]],
+                      dplyr::everything())
       
       tbldf[is.na(tbldf)] <- 0
       
@@ -57,28 +61,62 @@ profile_table_raw <- function(df,
   if (!is.null(numeric_vars)){
 
     # numeric variables will have weighted means
-    temp_num <- df %>%
-      dplyr::group_by(.data[[banner_var]]) %>%
-      dplyr::summarise(dplyr::across(dplyr::all_of(numeric_vars),
-                       ~ weighted.mean(.x,.data[[weight_var]])
-                       )
-                ) %>% 
-      dplyr::ungroup() %>%
-      tidyr::pivot_longer(cols = dplyr::all_of(numeric_vars),
-                          names_to = "Variable_Name",
-                          values_to = "Value_Code") %>% 
-      tidyr::pivot_wider(names_from = .data[[banner_var]],
-                         names_prefix = "Cluster_",
-                         values_from = .data[["Value_Code"]])
+    # temp_num <- df %>%
+    #   dplyr::group_by(.data[[banner_var]]) %>%
+    #   dplyr::summarise(dplyr::across(dplyr::all_of(numeric_vars),
+    #                    ~ weighted.mean(.x,.data[[weight_var]])
+    #                    )
+    #             ) %>%
+    #   dplyr::ungroup() %>%
+    #   tidyr::pivot_longer(cols = dplyr::all_of(numeric_vars),
+    #                       names_to = "Variable_Name",
+    #                       values_to = "Value_Code") %>%
+    #   tidyr::pivot_wider(names_from = .data[[banner_var]],
+    #                      names_prefix = "Cluster_",
+    #                      values_from = .data[["Value_Code"]])
+    # 
+    # temp_num[is.na(temp_num)] <- 0
 
-    temp_num[is.na(temp_num)] <- 0
-
+    #temp_num[["Total"]] <- 1
+    
+    temptabl <- purrr::map(category_vars,function(var){
+      tbldf <- df %>% 
+        dplyr::select(dplyr::all_of(var),
+                      dplyr::all_of(banner_var),
+                      weight_var) %>% 
+        dplyr::group_by(.data[[banner_var]]) %>% 
+        dplyr::summarise(mycount = stats::weighted.mean(.data[[var]],
+                                                        .data[[weight_var]])) %>% 
+        tidyr::pivot_wider(names_from = dplyr::all_of(banner_var),
+                           names_prefix = "Cluster_",
+                           values_from = .data[["mycount"]]) %>% 
+        dplyr::ungroup() %>% 
+        dplyr::mutate(Variable_Name = all_of(var),
+                      Value_Code = NA)
+      
+      tbldf <- tbldf %>% 
+        dplyr::select(.data[["Variable_Name"]],
+                      .data[["Value_Code"]],
+                      dplyr::everything())
+      
+      tbldf[is.na(tbldf)] <- 0
+      
+      tbldf[["Value_Code"]] <- NA
+      
+      #tbldf[["Total"]] <- rowSums(tbldf[,3:ncol(tbldf)])
+      
+      return(tbldf)
+    })
+    
+    temp_num <- do.call(dplyr::bind_rows,temptabl)
+    
     #temp_num[["Total"]] <- 1
     
     temp_num[["Total"]] <- df %>%
       dplyr::summarise(dplyr::across(dplyr::all_of(numeric_vars),
-                                     ~ weighted.mean(.x,.data[[weight_var]]))) %>% 
-      unlist() %>% 
+                                     ~ stats::weighted.mean(.x,
+                                                            .data[[weight_var]]))) %>%
+      unlist() %>%
       unname()
       
   }
@@ -137,20 +175,24 @@ profile_table_col_perc <- function(df,
     # factor variables will have weighted counts
     temptabl <- purrr::map(category_vars,function(var){
       tbldf <- df %>% 
-        dplyr::select(var,banner_var,weight_var) %>% 
+        dplyr::select(dplyr::all_of(var),
+                      dplyr::all_of(banner_var),
+                      weight_var) %>% 
         dplyr::group_by(.data[[var]],.data[[banner_var]]) %>% 
         dplyr::summarise(mycount = sum(.data[[weight_var]])) %>% 
         dplyr::arrange(.data[[banner_var]]) %>% 
-        tidyr::pivot_wider(names_from = banner_var,
+        tidyr::pivot_wider(names_from = dplyr::all_of(banner_var),
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
         dplyr::ungroup() %>% 
-        dplyr::mutate(Variable_Name = var)
+        dplyr::mutate(Variable_Name = all_of(var))
       
       colnames(tbldf)[1] <- "Value_Code"
       
       tbldf <- tbldf %>% 
-        dplyr::select(.data[["Variable_Name"]],.data[["Value_Code"]],dplyr::everything())
+        dplyr::select(.data[["Variable_Name"]],
+                      .data[["Value_Code"]],
+                      dplyr::everything())
       
       tbldf[is.na(tbldf)] <- 0
       
@@ -178,28 +220,60 @@ profile_table_col_perc <- function(df,
   if (!is.null(numeric_vars)){
     
     # numeric variables will have weighted means
-    temp_num <- df %>%
-      dplyr::group_by(.data[[banner_var]]) %>%
-      dplyr::summarise(dplyr::across(dplyr::all_of(numeric_vars),
-                       ~ weighted.mean(.x,.data[[weight_var]])
-                       )
-                ) %>% 
-      dplyr::ungroup() %>%
-      dplyr::arrange(.data[[banner_var]]) %>%
-      tidyr::pivot_longer(cols = dplyr::all_of(numeric_vars),
-                          names_to = "Variable_Name",
-                          values_to = "Value_Code") %>% 
-      tidyr::pivot_wider(names_from = .data[[banner_var]],
-                         names_prefix = "Cluster_",
-                         values_from = .data[["Value_Code"]])
-    
-    temp_num[is.na(temp_num)] <- 0
+    # temp_num <- df %>%
+    #   dplyr::group_by(.data[[banner_var]]) %>%
+    #   dplyr::summarise(dplyr::across(dplyr::all_of(numeric_vars),
+    #                    ~ weighted.mean(.x,.data[[weight_var]])
+    #                    )
+    #             ) %>% 
+    #   dplyr::ungroup() %>%
+    #   dplyr::arrange(.data[[banner_var]]) %>%
+    #   tidyr::pivot_longer(cols = dplyr::all_of(numeric_vars),
+    #                       names_to = "Variable_Name",
+    #                       values_to = "Value_Code") %>% 
+    #   tidyr::pivot_wider(names_from = .data[[banner_var]],
+    #                      names_prefix = "Cluster_",
+    #                      values_from = .data[["Value_Code"]])
+    # 
+    # temp_num[is.na(temp_num)] <- 0
     
     #temp_num[["Total"]] <- 1
     
+    temptabl <- purrr::map(category_vars,function(var){
+      tbldf <- df %>% 
+        dplyr::select(dplyr::all_of(var),
+                      dplyr::all_of(banner_var),
+                      weight_var) %>% 
+        dplyr::group_by(.data[[banner_var]]) %>% 
+        dplyr::summarise(mycount = stats::weighted.mean(.data[[var]],
+                                                        .data[[weight_var]])) %>% 
+        tidyr::pivot_wider(names_from = dplyr::all_of(banner_var),
+                           names_prefix = "Cluster_",
+                           values_from = .data[["mycount"]]) %>% 
+        dplyr::ungroup() %>% 
+        dplyr::mutate(Variable_Name = all_of(var),
+                      Value_Code = NA)
+      
+      tbldf <- tbldf %>% 
+        dplyr::select(.data[["Variable_Name"]],
+                      .data[["Value_Code"]],
+                      dplyr::everything())
+      
+      tbldf[is.na(tbldf)] <- 0
+      
+      tbldf[["Value_Code"]] <- NA
+      
+      #tbldf[["Total"]] <- rowSums(tbldf[,3:ncol(tbldf)])
+      
+      return(tbldf)
+    })
+    
+    temp_num <- do.call(dplyr::bind_rows,temptabl)
+    
     temp_num[["Total"]] <- df %>%
       dplyr::summarise(dplyr::across(dplyr::all_of(numeric_vars),
-                                     ~ weighted.mean(.x,.data[[weight_var]]))) %>% 
+                                     ~ stats::weighted.mean(.x,
+                                                            .data[[weight_var]]))) %>% 
       unlist() %>% 
       unname()
     
@@ -251,19 +325,23 @@ profile_table_row_perc <- function(df,
     # factor variables will have weighted counts
     temptabl <- purrr::map(category_vars,function(var){
       tbldf <- df %>% 
-        dplyr::select(var,banner_var,weight_var) %>% 
+        dplyr::select(dplyr::all_of(var),
+                      dplyr::all_of(banner_var),
+                      weight_var) %>% 
         dplyr::group_by(.data[[var]],.data[[banner_var]]) %>% 
         dplyr::summarise(mycount = sum(.data[[weight_var]])) %>% 
-        tidyr::pivot_wider(names_from = banner_var,
+        tidyr::pivot_wider(names_from = dplyr::all_of(banner_var),
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
         dplyr::ungroup() %>% 
-        dplyr::mutate(Variable_Name = var)
+        dplyr::mutate(Variable_Name = all_of(var))
       
       colnames(tbldf)[1] <- "Value_Code"
       
       tbldf <- tbldf %>% 
-        dplyr::select(.data[["Variable_Name"]],.data[["Value_Code"]],dplyr::everything())
+        dplyr::select(.data[["Variable_Name"]],
+                      .data[["Value_Code"]],
+                      dplyr::everything())
       
       tbldf[is.na(tbldf)] <- 0
       
@@ -289,27 +367,60 @@ profile_table_row_perc <- function(df,
   if (!is.null(numeric_vars)){
     
     # numeric variables will have weighted means
-    temp_num <- df %>%
-      dplyr::group_by(.data[[banner_var]]) %>%
-      dplyr::summarise(dplyr::across(dplyr::all_of(numeric_vars),
-                       ~ weighted.mean(.x,.data[[weight_var]])
-                       )
-                ) %>% 
-      dplyr::ungroup() %>%
-      dplyr::arrange(.data[[banner_var]]) %>%
-      tidyr::pivot_longer(cols = dplyr::all_of(numeric_vars),
-                          names_to = "Variable_Name",
-                          values_to = "Value_Code") %>% 
-      tidyr::pivot_wider(names_from = .data[[banner_var]],
-                         names_prefix = "Cluster_",
-                         values_from = .data[["Value_Code"]])
-    
-    temp_num[is.na(temp_num)] <- 0
+    # temp_num <- df %>%
+    #   dplyr::group_by(.data[[banner_var]]) %>%
+    #   dplyr::summarise(dplyr::across(dplyr::all_of(numeric_vars),
+    #                    ~ weighted.mean(.x,.data[[weight_var]])
+    #                    )
+    #             ) %>% 
+    #   dplyr::ungroup() %>%
+    #   dplyr::arrange(.data[[banner_var]]) %>%
+    #   tidyr::pivot_longer(cols = dplyr::all_of(numeric_vars),
+    #                       names_to = "Variable_Name",
+    #                       values_to = "Value_Code") %>% 
+    #   tidyr::pivot_wider(names_from = .data[[banner_var]],
+    #                      names_prefix = "Cluster_",
+    #                      values_from = .data[["Value_Code"]])
+    # 
+    # temp_num[is.na(temp_num)] <- 0
     
     #temp_num[["Total"]] <- 1
+    
+    temptabl <- purrr::map(category_vars,function(var){
+      tbldf <- df %>% 
+        dplyr::select(dplyr::all_of(var),
+                      dplyr::all_of(banner_var),
+                      weight_var) %>% 
+        dplyr::group_by(.data[[banner_var]]) %>% 
+        dplyr::summarise(mycount = stats::weighted.mean(.data[[var]],
+                                                        .data[[weight_var]])) %>% 
+        tidyr::pivot_wider(names_from = dplyr::all_of(banner_var),
+                           names_prefix = "Cluster_",
+                           values_from = .data[["mycount"]]) %>% 
+        dplyr::ungroup() %>% 
+        dplyr::mutate(Variable_Name = all_of(var),
+                      Value_Code = NA)
+      
+      tbldf <- tbldf %>% 
+        dplyr::select(.data[["Variable_Name"]],
+                      .data[["Value_Code"]],
+                      dplyr::everything())
+      
+      tbldf[is.na(tbldf)] <- 0
+      
+      tbldf[["Value_Code"]] <- NA
+      
+      #tbldf[["Total"]] <- rowSums(tbldf[,3:ncol(tbldf)])
+      
+      return(tbldf)
+    })
+    
+    temp_num <- do.call(dplyr::bind_rows,temptabl)
+    
     temp_num[["Total"]] <- df %>%
       dplyr::summarise(dplyr::across(dplyr::all_of(numeric_vars),
-                                     ~ weighted.mean(.x,.data[[weight_var]]))) %>% 
+                                     ~ stats::weighted.mean(.x,
+                                                            .data[[weight_var]]))) %>% 
       unlist() %>% 
       unname()
   }
@@ -368,19 +479,23 @@ profile_table_col_index <- function(df,
     # factor variables will have weighted counts
     temptabl <- purrr::map(category_vars,function(var){
       tbldf <- df %>% 
-        dplyr::select(var,banner_var,weight_var) %>% 
+        dplyr::select(dplyr::all_of(var),
+                      dplyr::all_of(banner_var),
+                      weight_var) %>% 
         dplyr::group_by(.data[[var]],.data[[banner_var]]) %>% 
         dplyr::summarise(mycount = sum(.data[[weight_var]])) %>% 
-        tidyr::pivot_wider(names_from = banner_var,
+        tidyr::pivot_wider(names_from = dplyr::all_of(banner_var),
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
         dplyr::ungroup() %>% 
-        dplyr::mutate(Variable_Name = var)
+        dplyr::mutate(Variable_Name = all_of(var))
       
       colnames(tbldf)[1] <- "Value_Code"
       
       tbldf <- tbldf %>% 
-        dplyr::select(.data[["Variable_Name"]],.data[["Value_Code"]],dplyr::everything())
+        dplyr::select(.data[["Variable_Name"]],
+                      .data[["Value_Code"]],
+                      dplyr::everything())
       
       tbldf[is.na(tbldf)] <- 0
       
@@ -410,27 +525,58 @@ profile_table_col_index <- function(df,
   if (!is.null(numeric_vars)){
     
     # numeric variables will have weighted means
-    temp_num <- df %>%
-      dplyr::group_by(.data[[banner_var]]) %>%
-      dplyr::summarise(dplyr::across(dplyr::all_of(numeric_vars),
-                       ~ weighted.mean(.x,.data[[weight_var]])
-                       )
-                ) %>% 
-      dplyr::ungroup() %>%
-      dplyr::arrange(.data[[banner_var]]) %>%
-      tidyr::pivot_longer(cols = dplyr::all_of(numeric_vars),
-                          names_to = "Variable_Name",
-                          values_to = "Value_Code") %>% 
-      tidyr::pivot_wider(names_from = .data[[banner_var]],
-                         names_prefix = "Cluster_",
-                         values_from = .data[["Value_Code"]])
-    
-    temp_num[is.na(temp_num)] <- 0
+    # temp_num <- df %>%
+    #   dplyr::group_by(.data[[banner_var]]) %>%
+    #   dplyr::summarise(dplyr::across(dplyr::all_of(numeric_vars),
+    #                    ~ weighted.mean(.x,.data[[weight_var]])
+    #                    )
+    #             ) %>% 
+    #   dplyr::ungroup() %>%
+    #   dplyr::arrange(.data[[banner_var]]) %>%
+    #   tidyr::pivot_longer(cols = dplyr::all_of(numeric_vars),
+    #                       names_to = "Variable_Name",
+    #                       values_to = "Value_Code") %>% 
+    #   tidyr::pivot_wider(names_from = .data[[banner_var]],
+    #                      names_prefix = "Cluster_",
+    #                      values_from = .data[["Value_Code"]])
+    # 
+    # temp_num[is.na(temp_num)] <- 0
     
     #temp_num[["Total"]] <- 1
+    
+    temptabl <- purrr::map(category_vars,function(var){
+      tbldf <- df %>% 
+        dplyr::select(dplyr::all_of(var),
+                      dplyr::all_of(banner_var),
+                      weight_var) %>% 
+        dplyr::group_by(.data[[banner_var]]) %>% 
+        dplyr::summarise(mycount = stats::weighted.mean(.data[[var]],
+                                                        .data[[weight_var]])) %>% 
+        tidyr::pivot_wider(names_from = dplyr::all_of(banner_var),
+                           names_prefix = "Cluster_",
+                           values_from = .data[["mycount"]]) %>% 
+        dplyr::ungroup() %>% 
+        dplyr::mutate(Variable_Name = all_of(var),
+                      Value_Code = NA)
+      
+      tbldf <- tbldf %>% 
+        dplyr::select(.data[["Variable_Name"]],.data[["Value_Code"]],dplyr::everything())
+      
+      tbldf[is.na(tbldf)] <- 0
+      
+      tbldf[["Value_Code"]] <- NA
+      
+      #tbldf[["Total"]] <- rowSums(tbldf[,3:ncol(tbldf)])
+      
+      return(tbldf)
+    })
+    
+    temp_num <- do.call(dplyr::bind_rows,temptabl)
+    
     temp_num[["Total"]] <- df %>%
       dplyr::summarise(dplyr::across(dplyr::all_of(numeric_vars),
-                                     ~ weighted.mean(.x,.data[[weight_var]]))) %>% 
+                                     ~ stats::weighted.mean(.x,
+                                                            .data[[weight_var]]))) %>% 
       unlist() %>% 
       unname()
   }
