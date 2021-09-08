@@ -38,7 +38,7 @@ profile_table_raw <- function(df,
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
         dplyr::ungroup() %>% 
-        dplyr::mutate(Variable_Name = all_of(var))
+        dplyr::mutate(Variable_Name = dplyr::all_of(var))
       
       colnames(tbldf)[1] <- "Value_Code"
       
@@ -91,7 +91,7 @@ profile_table_raw <- function(df,
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
         dplyr::ungroup() %>% 
-        dplyr::mutate(Variable_Name = all_of(var),
+        dplyr::mutate(Variable_Name = dplyr::all_of(var),
                       Value_Code = NA)
       
       tbldf <- tbldf %>% 
@@ -185,7 +185,7 @@ profile_table_col_perc <- function(df,
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
         dplyr::ungroup() %>% 
-        dplyr::mutate(Variable_Name = all_of(var))
+        dplyr::mutate(Variable_Name = dplyr::all_of(var))
       
       colnames(tbldf)[1] <- "Value_Code"
       
@@ -251,7 +251,7 @@ profile_table_col_perc <- function(df,
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
         dplyr::ungroup() %>% 
-        dplyr::mutate(Variable_Name = all_of(var),
+        dplyr::mutate(Variable_Name = dplyr::all_of(var),
                       Value_Code = NA)
       
       tbldf <- tbldf %>% 
@@ -334,7 +334,7 @@ profile_table_row_perc <- function(df,
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
         dplyr::ungroup() %>% 
-        dplyr::mutate(Variable_Name = all_of(var))
+        dplyr::mutate(Variable_Name = dplyr::all_of(var))
       
       colnames(tbldf)[1] <- "Value_Code"
       
@@ -398,7 +398,7 @@ profile_table_row_perc <- function(df,
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
         dplyr::ungroup() %>% 
-        dplyr::mutate(Variable_Name = all_of(var),
+        dplyr::mutate(Variable_Name = dplyr::all_of(var),
                       Value_Code = NA)
       
       tbldf <- tbldf %>% 
@@ -488,7 +488,7 @@ profile_table_col_index <- function(df,
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
         dplyr::ungroup() %>% 
-        dplyr::mutate(Variable_Name = all_of(var))
+        dplyr::mutate(Variable_Name = dplyr::all_of(var))
       
       colnames(tbldf)[1] <- "Value_Code"
       
@@ -556,7 +556,7 @@ profile_table_col_index <- function(df,
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
         dplyr::ungroup() %>% 
-        dplyr::mutate(Variable_Name = all_of(var),
+        dplyr::mutate(Variable_Name = dplyr::all_of(var),
                       Value_Code = NA)
       
       tbldf <- tbldf %>% 
