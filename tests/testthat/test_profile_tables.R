@@ -13,7 +13,9 @@ testthat::expect_equal(
     rsegmenter::profile_table_raw(category_vars = c("seg1","seg2","seg3","seg4",
                                                     "seg5","seg6","seg7","seg8",
                                                     "seg9","seg10"),
-                                  numeric_vars = NULL,
+                                  numeric_vars = c("seg1","seg2","seg3","seg4",
+                                                   "seg5","seg6","seg7","seg8",
+                                                   "seg9","seg10"),
                                   banner_var = c("Factor_Cluster_Soln_5")) %>% 
     dplyr::arrange(Variable_Name,Value_Code),
     rsegmenter::raw_tab %>% 
@@ -34,7 +36,9 @@ testthat::test_that("Col % profile tables",{
       rsegmenter::profile_table_col_perc(category_vars = c("seg1","seg2","seg3","seg4",
                                                            "seg5","seg6","seg7","seg8",
                                                            "seg9","seg10"),
-                                         numeric_vars = NULL,
+                                         numeric_vars = c("seg1","seg2","seg3","seg4",
+                                                          "seg5","seg6","seg7","seg8",
+                                                          "seg9","seg10"),
                                          banner_var = c("Factor_Cluster_Soln_5")) %>% 
       dplyr::arrange(Variable_Name,Value_Code),
     rsegmenter::col_tab %>% 
@@ -55,7 +59,9 @@ testthat::test_that("Row % profile tables",{
       rsegmenter::profile_table_row_perc(category_vars = c("seg1","seg2","seg3","seg4",
                                                            "seg5","seg6","seg7","seg8",
                                                            "seg9","seg10"),
-                                         numeric_vars = NULL,
+                                         numeric_vars = c("seg1","seg2","seg3","seg4",
+                                                          "seg5","seg6","seg7","seg8",
+                                                          "seg9","seg10"),
                                          banner_var = c("Factor_Cluster_Soln_5")) %>% 
       dplyr::arrange(Variable_Name,Value_Code),
     rsegmenter::row_tab %>% 
@@ -76,7 +82,9 @@ testthat::test_that("Col index profile tables",{
       rsegmenter::profile_table_col_index(category_vars = c("seg1","seg2","seg3","seg4",
                                                             "seg5","seg6","seg7","seg8",
                                                             "seg9","seg10"),
-                                          numeric_vars = NULL,
+                                          numeric_vars = c("seg1","seg2","seg3","seg4",
+                                                           "seg5","seg6","seg7","seg8",
+                                                           "seg9","seg10"),
                                           banner_var = c("Factor_Cluster_Soln_5")) %>% 
       dplyr::arrange(Variable_Name,Value_Code),
     rsegmenter::col_ind_tab %>% 
