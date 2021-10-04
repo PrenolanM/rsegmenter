@@ -79,7 +79,7 @@ profile_table_raw <- function(df,
 
     #temp_num[["Total"]] <- 1
     
-    temptabl <- purrr::map(category_vars,function(var){
+    temptabl <- purrr::map(numeric_vars,function(var){
       tbldf <- df %>% 
         dplyr::select(dplyr::all_of(var),
                       dplyr::all_of(banner_var),
@@ -239,7 +239,7 @@ profile_table_col_perc <- function(df,
     
     #temp_num[["Total"]] <- 1
     
-    temptabl <- purrr::map(category_vars,function(var){
+    temptabl <- purrr::map(numeric_vars,function(var){
       tbldf <- df %>% 
         dplyr::select(dplyr::all_of(var),
                       dplyr::all_of(banner_var),
@@ -386,7 +386,7 @@ profile_table_row_perc <- function(df,
     
     #temp_num[["Total"]] <- 1
     
-    temptabl <- purrr::map(category_vars,function(var){
+    temptabl <- purrr::map(numeric_vars,function(var){
       tbldf <- df %>% 
         dplyr::select(dplyr::all_of(var),
                       dplyr::all_of(banner_var),
@@ -544,7 +544,7 @@ profile_table_col_index <- function(df,
     
     #temp_num[["Total"]] <- 1
     
-    temptabl <- purrr::map(category_vars,function(var){
+    temptabl <- purrr::map(numeric_vars,function(var){
       tbldf <- df %>% 
         dplyr::select(dplyr::all_of(var),
                       dplyr::all_of(banner_var),
