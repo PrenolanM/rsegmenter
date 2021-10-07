@@ -5,7 +5,7 @@
 \alias{row_tab}
 \title{row_tab.}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 50 rows and 8 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 50 rows and 7 columns.
 }
 \usage{
 row_tab
