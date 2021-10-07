@@ -417,12 +417,12 @@ profile_table_row_perc <- function(df,
     
     temp_num <- do.call(dplyr::bind_rows,temptabl)
     
-    temp_num[["Total"]] <- df %>%
-      dplyr::summarise(dplyr::across(dplyr::all_of(numeric_vars),
-                                     ~ stats::weighted.mean(.x,
-                                                            .data[[weight_var]]))) %>% 
-      unlist() %>% 
-      unname()
+    # temp_num[["Total"]] <- df %>%
+    #   dplyr::summarise(dplyr::across(dplyr::all_of(numeric_vars),
+    #                                  ~ stats::weighted.mean(.x,
+    #                                                         .data[[weight_var]]))) %>% 
+    #   unlist() %>% 
+    #   unname()
   }
 
   # need to add a total column for numeric variables -
@@ -573,12 +573,12 @@ profile_table_col_index <- function(df,
     
     temp_num <- do.call(dplyr::bind_rows,temptabl)
     
-    temp_num[["Total"]] <- df %>%
-      dplyr::summarise(dplyr::across(dplyr::all_of(numeric_vars),
-                                     ~ stats::weighted.mean(.x,
-                                                            .data[[weight_var]]))) %>% 
-      unlist() %>% 
-      unname()
+    # temp_num[["Total"]] <- df %>%
+    #   dplyr::summarise(dplyr::across(dplyr::all_of(numeric_vars),
+    #                                  ~ stats::weighted.mean(.x,
+    #                                                         .data[[weight_var]]))) %>% 
+    #   unlist() %>% 
+    #   unname()
   }
 
   # need to add a total column for numeric variables -
