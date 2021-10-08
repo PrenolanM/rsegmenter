@@ -17,7 +17,9 @@ extract_factor_segments <- function(seglist,suffix=NULL){
   
   min_sol_num <- max(return_df[,1])
   max_sol_num <- max(return_df)
-  colnames(return_df) <- paste0("Factor_Cluster_Soln_",ifelse(is.null(suffix),"",suffix),seq(min_sol_num,max_sol_num))
+  colnames(return_df) <- paste0("Factor_Cluster_Soln_",
+                                ifelse(is.null(suffix),"",paste0(suffix,"_")),
+                                seq(min_sol_num,max_sol_num))
 
   return(return_df)
   
@@ -46,6 +48,7 @@ extract_factor_scores <- function(seglist,suffix=NULL){
   min_sol_num <- ncol(return_list[[1]])
   max_sol_num <- ncol(return_list[[length(return_list)]])
   names(return_list) <- paste0("Factor_Cluster_Soln_",
+                               ifelse(is.null(suffix),"",paste0(suffix,"_")),
                                seq(min_sol_num,max_sol_num))
   
   return(return_list)
