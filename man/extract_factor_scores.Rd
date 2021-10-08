@@ -4,7 +4,7 @@
 \alias{extract_factor_scores}
 \title{Extract factor scores for each segment solution from factor analysis stores each set of scores as a data.frame as element of a list.}
 \usage{
-extract_factor_scores(seglist)
+extract_factor_scores(seglist, suffix = NULL)
 }
 \arguments{
 \item{seglist}{an output from the rsegmenter::factor_segmentation() function. See more details about factor_segmentation()
