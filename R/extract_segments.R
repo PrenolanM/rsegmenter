@@ -28,12 +28,13 @@ extract_factor_segments <- function(seglist,suffix=NULL){
 #' in the package documentation.
 #' @export
 #' 
-extract_factor_scores <- function(seglist){
+extract_factor_scores <- function(seglist,suffix=NULL){
   
   return_list <- (lapply(seq_along(seglist),
                          function(x){
                            scores <- seglist[[x]][["scores"]]
                            colnames(scores) <- paste0("Factor_Cluster_Soln_",
+                                                      ifelse(is.null(suffix),"",paste0(suffix,"_")),
                                                       ncol(scores),
                                                       "_Scores_",
                                                       seq(1,ncol(scores))) 
