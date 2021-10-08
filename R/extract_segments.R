@@ -3,7 +3,7 @@
 #' in the package documentation.
 #' @export
 #' 
-extract_factor_segments <- function(seglist){
+extract_factor_segments <- function(seglist,suffix=NULL){
   
   # need to check that seglist is not empty
   
@@ -17,7 +17,7 @@ extract_factor_segments <- function(seglist){
   
   min_sol_num <- max(return_df[,1])
   max_sol_num <- max(return_df)
-  colnames(return_df) <- paste0("Factor_Cluster_Soln_",seq(min_sol_num,max_sol_num))
+  colnames(return_df) <- paste0("Factor_Cluster_Soln_",ifelse(is.null(suffix),"",suffix),seq(min_sol_num,max_sol_num))
 
   return(return_df)
   
