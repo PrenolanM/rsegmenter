@@ -4,7 +4,7 @@
 \alias{extract_factor_segments}
 \title{Extract segments from factor analysis segment solutions and stores each segment as a variable in a data.frame.}
 \usage{
-extract_factor_segments(seglist)
+extract_factor_segments(seglist, suffix = NULL)
 }
 \arguments{
 \item{seglist}{an output from the rsegmenter::factor_segmentation() function. See more details about factor_segmentation()
