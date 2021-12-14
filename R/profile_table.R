@@ -86,7 +86,8 @@ profile_table_raw <- function(df,
                       weight_var) %>% 
         dplyr::group_by(.data[[banner_var]]) %>% 
         dplyr::summarise(mycount = stats::weighted.mean(.data[[var]],
-                                                        .data[[weight_var]])) %>% 
+                                                        .data[[weight_var]],
+                                                        na.rm = TRUE)) %>% 
         tidyr::pivot_wider(names_from = dplyr::all_of(banner_var),
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
@@ -115,7 +116,8 @@ profile_table_raw <- function(df,
     temp_num[["Total"]] <- df %>%
       dplyr::summarise(dplyr::across(dplyr::all_of(numeric_vars),
                                      ~ stats::weighted.mean(.x,
-                                                            .data[[weight_var]]))) %>%
+                                                            .data[[weight_var]],
+                                                            na.rm = TRUE))) %>%
       unlist() %>%
       unname()
       
@@ -246,7 +248,8 @@ profile_table_col_perc <- function(df,
                       weight_var) %>% 
         dplyr::group_by(.data[[banner_var]]) %>% 
         dplyr::summarise(mycount = stats::weighted.mean(.data[[var]],
-                                                        .data[[weight_var]])) %>% 
+                                                        .data[[weight_var]],
+                                                        na.rm = TRUE)) %>% 
         tidyr::pivot_wider(names_from = dplyr::all_of(banner_var),
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
@@ -273,7 +276,8 @@ profile_table_col_perc <- function(df,
     temp_num[["Total"]] <- df %>%
       dplyr::summarise(dplyr::across(dplyr::all_of(numeric_vars),
                                      ~ stats::weighted.mean(.x,
-                                                            .data[[weight_var]]))) %>% 
+                                                            .data[[weight_var]],
+                                                            na.rm = TRUE))) %>% 
       unlist() %>% 
       unname()
     
@@ -393,7 +397,8 @@ profile_table_row_perc <- function(df,
                       weight_var) %>% 
         dplyr::group_by(.data[[banner_var]]) %>% 
         dplyr::summarise(mycount = stats::weighted.mean(.data[[var]],
-                                                        .data[[weight_var]])) %>% 
+                                                        .data[[weight_var]],
+                                                        na.rm = TRUE)) %>% 
         tidyr::pivot_wider(names_from = dplyr::all_of(banner_var),
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
@@ -551,7 +556,8 @@ profile_table_col_index <- function(df,
                       weight_var) %>% 
         dplyr::group_by(.data[[banner_var]]) %>% 
         dplyr::summarise(mycount = stats::weighted.mean(.data[[var]],
-                                                        .data[[weight_var]])) %>% 
+                                                        .data[[weight_var]],
+                                                        na.rm = TRUE)) %>% 
         tidyr::pivot_wider(names_from = dplyr::all_of(banner_var),
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
