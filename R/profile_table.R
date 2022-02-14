@@ -86,7 +86,8 @@ profile_table_raw <- function(df,
                       weight_var) %>% 
         dplyr::group_by(.data[[banner_var]]) %>% 
         dplyr::summarise(mycount = stats::weighted.mean(.data[[var]],
-                                                        .data[[weight_var]])) %>% 
+                                                        .data[[weight_var]],
+                                                        na.rm = TRUE)) %>% 
         tidyr::pivot_wider(names_from = dplyr::all_of(banner_var),
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
@@ -115,7 +116,8 @@ profile_table_raw <- function(df,
     temp_num[["Total"]] <- df %>%
       dplyr::summarise(dplyr::across(dplyr::all_of(numeric_vars),
                                      ~ stats::weighted.mean(.x,
-                                                            .data[[weight_var]]))) %>%
+                                                            .data[[weight_var]],
+                                                            na.rm = TRUE))) %>%
       unlist() %>%
       unname()
       
@@ -246,7 +248,8 @@ profile_table_col_perc <- function(df,
                       weight_var) %>% 
         dplyr::group_by(.data[[banner_var]]) %>% 
         dplyr::summarise(mycount = stats::weighted.mean(.data[[var]],
-                                                        .data[[weight_var]])) %>% 
+                                                        .data[[weight_var]],
+                                                        na.rm = TRUE)) %>% 
         tidyr::pivot_wider(names_from = dplyr::all_of(banner_var),
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
@@ -273,7 +276,8 @@ profile_table_col_perc <- function(df,
     temp_num[["Total"]] <- df %>%
       dplyr::summarise(dplyr::across(dplyr::all_of(numeric_vars),
                                      ~ stats::weighted.mean(.x,
-                                                            .data[[weight_var]]))) %>% 
+                                                            .data[[weight_var]],
+                                                            na.rm = TRUE))) %>% 
       unlist() %>% 
       unname()
     
@@ -393,7 +397,8 @@ profile_table_row_perc <- function(df,
                       weight_var) %>% 
         dplyr::group_by(.data[[banner_var]]) %>% 
         dplyr::summarise(mycount = stats::weighted.mean(.data[[var]],
-                                                        .data[[weight_var]])) %>% 
+                                                        .data[[weight_var]],
+                                                        na.rm = TRUE)) %>% 
         tidyr::pivot_wider(names_from = dplyr::all_of(banner_var),
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
@@ -551,7 +556,8 @@ profile_table_col_index <- function(df,
                       weight_var) %>% 
         dplyr::group_by(.data[[banner_var]]) %>% 
         dplyr::summarise(mycount = stats::weighted.mean(.data[[var]],
-                                                        .data[[weight_var]])) %>% 
+                                                        .data[[weight_var]],
+                                                        na.rm = TRUE)) %>% 
         tidyr::pivot_wider(names_from = dplyr::all_of(banner_var),
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
@@ -833,4 +839,40 @@ add_table_labels <- function(prof_table,table_labels){
   return(dplyr::left_join(prof_table,
                           table_labels,
                           by=c("Variable_Name","Value_Code")))
+}
+
+#' Exports factor loadings to .xlsx format. Each table will be output on a separate worksheet.
+#' The max loading per row is highlighted.
+#' @param fac_loadings output from rsegmenter::extract_factor_loadings.
+#' @param filename file name to use when saving.
+#' @examples
+#' 
+#' @export
+#' 
+export_factor_loadings <- function (fac_loadings, filename) 
+{
+  num_seg_sols <- length(fac_loadings)
+  wb <- openxlsx::createWorkbook()
+  sheet_names <- (lapply(seq(1, num_seg_sols), function(x) {
+    openxlsx::addWorksheet(wb, paste0("Solution_", 
+                                      x))
+    tab1_start <- 1
+    
+    startrow = 1
+    
+    openxlsx::writeData(wb, paste0("Solution_", x), 
+                        fac_loadings[[x]], colNames = TRUE, rowNames = TRUE,
+                        startCol = tab1_start, startRow = startrow)
+    
+    lapply((startrow + 1):(nrow(fac_loadings[[x]]) + startrow),
+           function(y){
+             openxlsx::conditionalFormatting(wb, paste0("Solution_", x),
+                                             cols = (tab1_start):(tab1_start + ncol(fac_loadings[[x]])),
+                                             rows = y,
+                                             type = "topN",
+                                             rank = 1)})
+  }))
+  
+  
+  openxlsx::saveWorkbook(wb, filename, overwrite = TRUE)
 }
