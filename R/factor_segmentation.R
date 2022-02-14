@@ -63,6 +63,9 @@ factor_segmentation <- function(df,
                                                         weight = resp_weight)
 
                         rcloadings <- as.data.frame(unclass(factor_soln[["loadings"]]))
+                        full_rcloadings <- rbind(as.data.frame(unclass(factor_soln[["loadings"]])),
+                                                 as.data.frame(unclass(factor_soln[["Vaccounted"]])))
+                        
                         rcscores <- as.data.frame(factor_soln[["scores"]])
                         
                         if (fac_assign=="avg_loading"){
@@ -76,7 +79,7 @@ factor_segmentation <- function(df,
                         }
                         
                         return(list(segments=assigned_segment,
-                                    loadings=rcloadings,
+                                    loadings=full_rcloadings,
                                     scores=rcscores))
                         
                         }

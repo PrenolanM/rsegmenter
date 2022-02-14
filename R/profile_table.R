@@ -864,7 +864,7 @@ export_factor_loadings <- function (fac_loadings, filename)
                         fac_loadings[[x]], colNames = TRUE, rowNames = TRUE,
                         startCol = tab1_start, startRow = startrow)
     
-    lapply((startrow + 1):(nrow(fac_loadings[[x]]) + startrow),
+    lapply((startrow + 1):(nrow(fac_loadings[[x]]) + startrow - 5),
            function(y){
              openxlsx::conditionalFormatting(wb, paste0("Solution_", x),
                                              cols = (tab1_start):(tab1_start + ncol(fac_loadings[[x]])),
