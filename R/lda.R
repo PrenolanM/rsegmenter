@@ -103,7 +103,9 @@ pred_seg <- function(df,indeps,coefs){
   coefs_const <- coefs[1,]
   coefs_vars <- coefs[2:nrow(coefs),]
   
-  sum_prod <- as.matrix(df[,indeps,drop=FALSE]) %*% coefs_vars + coefs_const
+  # sum_prod <- as.matrix(df[,indeps,drop=FALSE]) %*% coefs_vars + coefs_const
+  sum_prod <- (as.matrix(df[,indeps,drop=FALSE]) %*% coefs_vars) + matrix(rep(coefs_const,each = nrow(df)),nrow = nrow(df))
+  
   final_pred <- max.col(sum_prod)
   return (final_pred)
   
