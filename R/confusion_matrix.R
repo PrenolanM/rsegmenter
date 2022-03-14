@@ -29,6 +29,10 @@ confusion_matrix <- function(df,
   conf_table_raw[is.na(conf_table_raw)] <- 0
 
   conf_table_raw <- as.matrix(conf_table_raw[,2:ncol(conf_table_raw)])
+  
+  conf_table_raw <- 
+    conf_table_raw[,as.numeric(colnames(conf_table_raw))]
+  
   colnames(conf_table_raw) <- paste0("Predicted:",seq(ncol(conf_table_raw)))
   rownames(conf_table_raw) <- paste0("Actual:",seq(ncol(conf_table_raw)))
   
