@@ -24,11 +24,15 @@ confusion_matrix <- function(df,
     dplyr::ungroup() %>% 
     tidyr::pivot_wider(names_from = predicted,
                        names_prefix = predicted,
-                       values_from = .data[["mycount"]])
+                       values_from = .data[["mycount"]]) %>% 
+    dplyr::select(-actual)
     
   conf_table_raw[is.na(conf_table_raw)] <- 0
 
-  conf_table_raw <- as.matrix(conf_table_raw[,2:ncol(conf_table_raw)])
+  conf_table_raw <- 
+    conf_table_raw[,as.numeric(colnames(conf_table_raw))]
+  
+  conf_table_raw <- as.matrix(conf_table_raw)
   
   conf_table_raw <- 
     conf_table_raw[,as.numeric(colnames(conf_table_raw))]
