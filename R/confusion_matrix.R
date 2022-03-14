@@ -23,10 +23,12 @@ confusion_matrix <- function(df,
     dplyr::summarise(mycount = sum(.data[[weight_var]])) %>% 
     dplyr::ungroup() %>% 
     tidyr::pivot_wider(names_from = predicted,
-                       names_prefix = predicted,
+                       # names_prefix = predicted,
                        values_from = .data[["mycount"]]) %>% 
     dplyr::select(-actual)
     
+  
+  
   conf_table_raw[is.na(conf_table_raw)] <- 0
 
   conf_table_raw <- 
