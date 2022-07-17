@@ -33,11 +33,12 @@ profile_table_raw <- function(df,
                       dplyr::all_of(banner_var),
                       weight_var) %>% 
         dplyr::group_by(.data[[var]],.data[[banner_var]]) %>% 
-        dplyr::summarise(mycount = sum(.data[[weight_var]])) %>% 
+        dplyr::summarise(mycount = sum(.data[[weight_var]])) %>%
+        dplyr::ungroup() %>% 
+        dplyr::arrange(dplyr::all_of(banner_var), dplyr::all_of(var)) %>% 
         tidyr::pivot_wider(names_from = dplyr::all_of(banner_var),
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
-        dplyr::ungroup() %>% 
         dplyr::mutate(Variable_Name = dplyr::all_of(var))
       
       colnames(tbldf)[1] <- "Value_Code"
@@ -87,11 +88,12 @@ profile_table_raw <- function(df,
         dplyr::group_by(.data[[banner_var]]) %>% 
         dplyr::summarise(mycount = stats::weighted.mean(.data[[var]],
                                                         .data[[weight_var]],
-                                                        na.rm = TRUE)) %>% 
+                                                        na.rm = TRUE)) %>%
+        dplyr::ungroup() %>% 
+        dplyr::arrange(dplyr::all_of(banner_var), dplyr::all_of(var)) %>% 
         tidyr::pivot_wider(names_from = dplyr::all_of(banner_var),
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
-        dplyr::ungroup() %>% 
         dplyr::mutate(Variable_Name = dplyr::all_of(var),
                       Value_Code = NA)
       
@@ -182,11 +184,11 @@ profile_table_col_perc <- function(df,
                       weight_var) %>% 
         dplyr::group_by(.data[[var]],.data[[banner_var]]) %>% 
         dplyr::summarise(mycount = sum(.data[[weight_var]])) %>% 
-        dplyr::arrange(.data[[banner_var]]) %>% 
+        dplyr::ungroup() %>% 
+        dplyr::arrange(dplyr::all_of(banner_var), dplyr::all_of(var)) %>%  
         tidyr::pivot_wider(names_from = dplyr::all_of(banner_var),
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
-        dplyr::ungroup() %>% 
         dplyr::mutate(Variable_Name = dplyr::all_of(var))
       
       colnames(tbldf)[1] <- "Value_Code"
@@ -249,11 +251,12 @@ profile_table_col_perc <- function(df,
         dplyr::group_by(.data[[banner_var]]) %>% 
         dplyr::summarise(mycount = stats::weighted.mean(.data[[var]],
                                                         .data[[weight_var]],
-                                                        na.rm = TRUE)) %>% 
+                                                        na.rm = TRUE)) %>%
+        dplyr::ungroup() %>% 
+        dplyr::arrange(dplyr::all_of(banner_var), dplyr::all_of(var)) %>% 
         tidyr::pivot_wider(names_from = dplyr::all_of(banner_var),
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
-        dplyr::ungroup() %>% 
         dplyr::mutate(Variable_Name = dplyr::all_of(var),
                       Value_Code = NA)
       
@@ -334,10 +337,11 @@ profile_table_row_perc <- function(df,
                       weight_var) %>% 
         dplyr::group_by(.data[[var]],.data[[banner_var]]) %>% 
         dplyr::summarise(mycount = sum(.data[[weight_var]])) %>% 
+        dplyr::ungroup() %>% 
+        dplyr::arrange(dplyr::all_of(banner_var), dplyr::all_of(var)) %>% 
         tidyr::pivot_wider(names_from = dplyr::all_of(banner_var),
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
-        dplyr::ungroup() %>% 
         dplyr::mutate(Variable_Name = dplyr::all_of(var))
       
       colnames(tbldf)[1] <- "Value_Code"
@@ -398,11 +402,12 @@ profile_table_row_perc <- function(df,
         dplyr::group_by(.data[[banner_var]]) %>% 
         dplyr::summarise(mycount = stats::weighted.mean(.data[[var]],
                                                         .data[[weight_var]],
-                                                        na.rm = TRUE)) %>% 
+                                                        na.rm = TRUE)) %>%
+        dplyr::ungroup() %>% 
+        dplyr::arrange(dplyr::all_of(banner_var), dplyr::all_of(var)) %>% 
         tidyr::pivot_wider(names_from = dplyr::all_of(banner_var),
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
-        dplyr::ungroup() %>% 
         dplyr::mutate(Variable_Name = dplyr::all_of(var),
                       Value_Code = NA)
       
@@ -489,10 +494,11 @@ profile_table_col_index <- function(df,
                       weight_var) %>% 
         dplyr::group_by(.data[[var]],.data[[banner_var]]) %>% 
         dplyr::summarise(mycount = sum(.data[[weight_var]])) %>% 
+        dplyr::ungroup() %>% 
+        dplyr::arrange(dplyr::all_of(banner_var), dplyr::all_of(var)) %>% 
         tidyr::pivot_wider(names_from = dplyr::all_of(banner_var),
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
-        dplyr::ungroup() %>% 
         dplyr::mutate(Variable_Name = dplyr::all_of(var))
       
       colnames(tbldf)[1] <- "Value_Code"
@@ -557,11 +563,12 @@ profile_table_col_index <- function(df,
         dplyr::group_by(.data[[banner_var]]) %>% 
         dplyr::summarise(mycount = stats::weighted.mean(.data[[var]],
                                                         .data[[weight_var]],
-                                                        na.rm = TRUE)) %>% 
+                                                        na.rm = TRUE)) %>%
+        dplyr::ungroup() %>% 
+        dplyr::arrange(dplyr::all_of(banner_var), dplyr::all_of(var)) %>% 
         tidyr::pivot_wider(names_from = dplyr::all_of(banner_var),
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
-        dplyr::ungroup() %>% 
         dplyr::mutate(Variable_Name = dplyr::all_of(var),
                       Value_Code = NA)
       
