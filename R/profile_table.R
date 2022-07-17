@@ -35,7 +35,7 @@ profile_table_raw <- function(df,
         dplyr::group_by(.data[[var]],.data[[banner_var]]) %>% 
         dplyr::summarise(mycount = sum(.data[[weight_var]])) %>%
         dplyr::ungroup() %>% 
-        dplyr::arrange(dplyr::all_of(banner_var), dplyr::all_of(var)) %>% 
+        dplyr::arrange(dplyr::all_of(banner_var)) %>% 
         tidyr::pivot_wider(names_from = dplyr::all_of(banner_var),
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
@@ -90,7 +90,7 @@ profile_table_raw <- function(df,
                                                         .data[[weight_var]],
                                                         na.rm = TRUE)) %>%
         dplyr::ungroup() %>% 
-        dplyr::arrange(dplyr::all_of(banner_var), dplyr::all_of(var)) %>% 
+        dplyr::arrange(dplyr::all_of(banner_var)) %>%
         tidyr::pivot_wider(names_from = dplyr::all_of(banner_var),
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
@@ -185,7 +185,7 @@ profile_table_col_perc <- function(df,
         dplyr::group_by(.data[[var]],.data[[banner_var]]) %>% 
         dplyr::summarise(mycount = sum(.data[[weight_var]])) %>% 
         dplyr::ungroup() %>% 
-        dplyr::arrange(dplyr::all_of(banner_var), dplyr::all_of(var)) %>%  
+        dplyr::arrange(dplyr::all_of(banner_var)) %>%  
         tidyr::pivot_wider(names_from = dplyr::all_of(banner_var),
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
@@ -253,7 +253,7 @@ profile_table_col_perc <- function(df,
                                                         .data[[weight_var]],
                                                         na.rm = TRUE)) %>%
         dplyr::ungroup() %>% 
-        dplyr::arrange(dplyr::all_of(banner_var), dplyr::all_of(var)) %>% 
+        dplyr::arrange(dplyr::all_of(banner_var)) %>% 
         tidyr::pivot_wider(names_from = dplyr::all_of(banner_var),
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
@@ -338,7 +338,7 @@ profile_table_row_perc <- function(df,
         dplyr::group_by(.data[[var]],.data[[banner_var]]) %>% 
         dplyr::summarise(mycount = sum(.data[[weight_var]])) %>% 
         dplyr::ungroup() %>% 
-        dplyr::arrange(dplyr::all_of(banner_var), dplyr::all_of(var)) %>% 
+        dplyr::arrange(dplyr::all_of(banner_var)) %>% 
         tidyr::pivot_wider(names_from = dplyr::all_of(banner_var),
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
@@ -404,7 +404,7 @@ profile_table_row_perc <- function(df,
                                                         .data[[weight_var]],
                                                         na.rm = TRUE)) %>%
         dplyr::ungroup() %>% 
-        dplyr::arrange(dplyr::all_of(banner_var), dplyr::all_of(var)) %>% 
+        dplyr::arrange(dplyr::all_of(banner_var)) %>% 
         tidyr::pivot_wider(names_from = dplyr::all_of(banner_var),
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
@@ -495,7 +495,7 @@ profile_table_col_index <- function(df,
         dplyr::group_by(.data[[var]],.data[[banner_var]]) %>% 
         dplyr::summarise(mycount = sum(.data[[weight_var]])) %>% 
         dplyr::ungroup() %>% 
-        dplyr::arrange(dplyr::all_of(banner_var), dplyr::all_of(var)) %>% 
+        dplyr::arrange(dplyr::all_of(banner_var)) %>% 
         tidyr::pivot_wider(names_from = dplyr::all_of(banner_var),
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
@@ -565,7 +565,7 @@ profile_table_col_index <- function(df,
                                                         .data[[weight_var]],
                                                         na.rm = TRUE)) %>%
         dplyr::ungroup() %>% 
-        dplyr::arrange(dplyr::all_of(banner_var), dplyr::all_of(var)) %>% 
+        dplyr::arrange(dplyr::all_of(banner_var)) %>% 
         tidyr::pivot_wider(names_from = dplyr::all_of(banner_var),
                            names_prefix = "Cluster_",
                            values_from = .data[["mycount"]]) %>% 
