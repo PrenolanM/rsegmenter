@@ -100,7 +100,7 @@ lda <- function(df,
 
 pred_seg <- function(df,indeps,coefs){
   
-  coefs_const <- coefs[1,]
+  coefs_const <- matrix(coefs[1,],nrow = 1, ncol = ncol(coefs)) 
   coefs_vars <- coefs[2:nrow(coefs),]
   
   # sum_prod <- as.matrix(df[,indeps,drop=FALSE]) %*% coefs_vars + coefs_const
