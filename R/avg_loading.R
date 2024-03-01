@@ -28,6 +28,6 @@ avg_loading <- function(df,myloadings){
                                       )
                                )
   
-  assigned_segment <- max.col(rowmeans_df)  
+  assigned_segment <- max.col(rowmeans_df,"first")  
 }
 
